@@ -1,0 +1,1503 @@
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"mpu_6050.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "sdk/common/mpu_6050/mpu_6050.c"
+  20              		.section	.text.mpu_6050_get_data_raw,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	mpu_6050_get_data_raw:
+  27              	.LVL0:
+  28              	.LFB141:
+   1:sdk/common/mpu_6050/mpu_6050.c **** /*
+   2:sdk/common/mpu_6050/mpu_6050.c ****  * mpu_6050.c
+   3:sdk/common/mpu_6050/mpu_6050.c ****  *
+   4:sdk/common/mpu_6050/mpu_6050.c ****  *  Created on: Nov 10, 2026
+   5:sdk/common/mpu_6050/mpu_6050.c ****  *      Author: vanlo
+   6:sdk/common/mpu_6050/mpu_6050.c ****  */
+   7:sdk/common/mpu_6050/mpu_6050.c **** #include "mpu_6050.h"
+   8:sdk/common/mpu_6050/mpu_6050.c **** 
+   9:sdk/common/mpu_6050/mpu_6050.c **** #define MPU_6050_ID          0x68<<1
+  10:sdk/common/mpu_6050/mpu_6050.c **** #define DLPF_CONFIG          0x1A
+  11:sdk/common/mpu_6050/mpu_6050.c **** #define GYRO_CONFIG          0x1B
+  12:sdk/common/mpu_6050/mpu_6050.c **** #define ACCEL_CONFIG         0x1C
+  13:sdk/common/mpu_6050/mpu_6050.c **** #define WHO_AM_I             0x75
+  14:sdk/common/mpu_6050/mpu_6050.c **** #define GET_MPU_DATA         0x3B
+  15:sdk/common/mpu_6050/mpu_6050.c **** #define MPU_DATA_SIZE        14
+  16:sdk/common/mpu_6050/mpu_6050.c **** #define POWER_CTRL           0x6B
+  17:sdk/common/mpu_6050/mpu_6050.c **** 
+  18:sdk/common/mpu_6050/mpu_6050.c **** #define _impl(x)             ((mpu_6050_impl_t*)(x))
+  19:sdk/common/mpu_6050/mpu_6050.c **** 
+  20:sdk/common/mpu_6050/mpu_6050.c **** typedef struct {
+  21:sdk/common/mpu_6050/mpu_6050.c ****     int16_t ax;
+  22:sdk/common/mpu_6050/mpu_6050.c ****     int16_t ay;
+  23:sdk/common/mpu_6050/mpu_6050.c ****     int16_t az;
+  24:sdk/common/mpu_6050/mpu_6050.c ****     int16_t temp;
+  25:sdk/common/mpu_6050/mpu_6050.c ****     int16_t gx;
+  26:sdk/common/mpu_6050/mpu_6050.c ****     int16_t gy;
+  27:sdk/common/mpu_6050/mpu_6050.c ****     int16_t gz;
+  28:sdk/common/mpu_6050/mpu_6050.c **** } mpu6050_raw_data_t;
+  29:sdk/common/mpu_6050/mpu_6050.c **** 
+  30:sdk/common/mpu_6050/mpu_6050.c **** typedef struct {
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 2
+
+
+  31:sdk/common/mpu_6050/mpu_6050.c ****     float accel_x;
+  32:sdk/common/mpu_6050/mpu_6050.c ****     float accel_y;
+  33:sdk/common/mpu_6050/mpu_6050.c ****     float accel_z;
+  34:sdk/common/mpu_6050/mpu_6050.c ****     float gyro_x;
+  35:sdk/common/mpu_6050/mpu_6050.c ****     float gyro_y;
+  36:sdk/common/mpu_6050/mpu_6050.c ****     float gyro_z;
+  37:sdk/common/mpu_6050/mpu_6050.c **** } mpu6050_data_t;
+  38:sdk/common/mpu_6050/mpu_6050.c **** 
+  39:sdk/common/mpu_6050/mpu_6050.c **** typedef struct {
+  40:sdk/common/mpu_6050/mpu_6050.c ****     float roll;     // nghieng trai, phai
+  41:sdk/common/mpu_6050/mpu_6050.c ****     float pitch;    // nghieng truoc, sau
+  42:sdk/common/mpu_6050/mpu_6050.c ****     float yaw;      // xoay
+  43:sdk/common/mpu_6050/mpu_6050.c **** } mpu6050_angle_data_t;
+  44:sdk/common/mpu_6050/mpu_6050.c **** 
+  45:sdk/common/mpu_6050/mpu_6050.c **** typedef struct mpu_6050_impl {
+  46:sdk/common/mpu_6050/mpu_6050.c ****     sm_hal_i2c_t* m_i2c;
+  47:sdk/common/mpu_6050/mpu_6050.c **** 
+  48:sdk/common/mpu_6050/mpu_6050.c ****     mpu6050_raw_data_t m_raw_data;
+  49:sdk/common/mpu_6050/mpu_6050.c ****     mpu6050_data_t m_data;
+  50:sdk/common/mpu_6050/mpu_6050.c ****     mpu6050_angle_data_t m_angle;
+  51:sdk/common/mpu_6050/mpu_6050.c **** 
+  52:sdk/common/mpu_6050/mpu_6050.c ****     float m_accel_sensitivity;
+  53:sdk/common/mpu_6050/mpu_6050.c ****     float m_gyro_sensitivity;
+  54:sdk/common/mpu_6050/mpu_6050.c **** 
+  55:sdk/common/mpu_6050/mpu_6050.c ****     mpu6050_data_t m_offset;    // bo sung offset, don vi g va do/s
+  56:sdk/common/mpu_6050/mpu_6050.c **** } mpu_6050_impl_t;
+  57:sdk/common/mpu_6050/mpu_6050.c **** 
+  58:sdk/common/mpu_6050/mpu_6050.c **** static mpu_6050_impl_t g_mpu_6050;
+  59:sdk/common/mpu_6050/mpu_6050.c **** 
+  60:sdk/common/mpu_6050/mpu_6050.c **** mpu_6050_t* mpu_6050_init(sm_hal_i2c_t* i2c) {
+  61:sdk/common/mpu_6050/mpu_6050.c ****     if (!i2c) return NULL;
+  62:sdk/common/mpu_6050/mpu_6050.c **** 
+  63:sdk/common/mpu_6050/mpu_6050.c ****     g_mpu_6050.m_i2c = i2c;
+  64:sdk/common/mpu_6050/mpu_6050.c ****     g_mpu_6050.m_offset = (mpu6050_data_t){0};
+  65:sdk/common/mpu_6050/mpu_6050.c ****     g_mpu_6050.m_angle = (mpu6050_angle_data_t){0};
+  66:sdk/common/mpu_6050/mpu_6050.c **** 
+  67:sdk/common/mpu_6050/mpu_6050.c ****     sm_hal_i2c_set_addr(i2c, MPU_6050_ID);
+  68:sdk/common/mpu_6050/mpu_6050.c **** 
+  69:sdk/common/mpu_6050/mpu_6050.c ****     return &g_mpu_6050;
+  70:sdk/common/mpu_6050/mpu_6050.c **** }
+  71:sdk/common/mpu_6050/mpu_6050.c **** int32_t mpu_6050_set_power_ctrl(mpu_6050_t *_this, uint8_t enable) {
+  72:sdk/common/mpu_6050/mpu_6050.c **** 
+  73:sdk/common/mpu_6050/mpu_6050.c **** 	if (!_this)return -1;
+  74:sdk/common/mpu_6050/mpu_6050.c **** 
+  75:sdk/common/mpu_6050/mpu_6050.c **** 	uint8_t value = 0;
+  76:sdk/common/mpu_6050/mpu_6050.c **** 	if (enable) {
+  77:sdk/common/mpu_6050/mpu_6050.c **** 		value &= (uint8_t) ~0x40U;
+  78:sdk/common/mpu_6050/mpu_6050.c **** 	} else {
+  79:sdk/common/mpu_6050/mpu_6050.c **** 		value |= 0x40U;
+  80:sdk/common/mpu_6050/mpu_6050.c **** 	}
+  81:sdk/common/mpu_6050/mpu_6050.c **** 	if (sm_hal_i2c_write(_impl(_this)->m_i2c, POWER_CTRL, I2C_MEMADD_SIZE_8BIT,
+  82:sdk/common/mpu_6050/mpu_6050.c **** 			&value, 1, 100) < 0)
+  83:sdk/common/mpu_6050/mpu_6050.c **** 		return -1;
+  84:sdk/common/mpu_6050/mpu_6050.c **** 	return 0;
+  85:sdk/common/mpu_6050/mpu_6050.c **** }
+  86:sdk/common/mpu_6050/mpu_6050.c **** int32_t mpu_6050_set_gyro_config(mpu_6050_t* _this, GYRO_CONFIG_DATA gyro_config) {
+  87:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return -1;
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 3
+
+
+  88:sdk/common/mpu_6050/mpu_6050.c **** 
+  89:sdk/common/mpu_6050/mpu_6050.c ****     uint8_t value = (uint8_t)gyro_config;
+  90:sdk/common/mpu_6050/mpu_6050.c **** 
+  91:sdk/common/mpu_6050/mpu_6050.c ****     if (value > 0x18 || (value & 0x07)) return -1;
+  92:sdk/common/mpu_6050/mpu_6050.c **** 
+  93:sdk/common/mpu_6050/mpu_6050.c ****     if (sm_hal_i2c_write(_impl(_this)->m_i2c, GYRO_CONFIG, I2C_MEMADD_SIZE_8BIT,
+  94:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+  95:sdk/common/mpu_6050/mpu_6050.c **** 
+  96:sdk/common/mpu_6050/mpu_6050.c ****     static const float sensitivity[] = { 131.0f, 65.5f, 32.8f, 16.4f };
+  97:sdk/common/mpu_6050/mpu_6050.c **** 
+  98:sdk/common/mpu_6050/mpu_6050.c ****     _impl(_this)->m_gyro_sensitivity = 1.0f / sensitivity[value >> 3];
+  99:sdk/common/mpu_6050/mpu_6050.c **** 
+ 100:sdk/common/mpu_6050/mpu_6050.c ****     return 0;
+ 101:sdk/common/mpu_6050/mpu_6050.c **** }
+ 102:sdk/common/mpu_6050/mpu_6050.c **** 
+ 103:sdk/common/mpu_6050/mpu_6050.c **** int32_t mpu_6050_set_accel_config(mpu_6050_t* _this, ACCEL_CONFIG_DATA accel_config) {
+ 104:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return -1;
+ 105:sdk/common/mpu_6050/mpu_6050.c **** 
+ 106:sdk/common/mpu_6050/mpu_6050.c ****     uint8_t value = (uint8_t)accel_config;
+ 107:sdk/common/mpu_6050/mpu_6050.c **** 
+ 108:sdk/common/mpu_6050/mpu_6050.c ****     if (value > 0x18 || (value & 0x07)) return -1;
+ 109:sdk/common/mpu_6050/mpu_6050.c **** 
+ 110:sdk/common/mpu_6050/mpu_6050.c ****     if (sm_hal_i2c_write(_impl(_this)->m_i2c, ACCEL_CONFIG, I2C_MEMADD_SIZE_8BIT,
+ 111:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 112:sdk/common/mpu_6050/mpu_6050.c **** 
+ 113:sdk/common/mpu_6050/mpu_6050.c ****     _impl(_this)->m_accel_sensitivity = (float)((1U << (value >> 3)) / 16384.0f);
+ 114:sdk/common/mpu_6050/mpu_6050.c **** 
+ 115:sdk/common/mpu_6050/mpu_6050.c ****     return 0;
+ 116:sdk/common/mpu_6050/mpu_6050.c **** }
+ 117:sdk/common/mpu_6050/mpu_6050.c **** 
+ 118:sdk/common/mpu_6050/mpu_6050.c **** static int32_t mpu_6050_get_data_raw(mpu_6050_impl_t* _this) {
+  29              		.loc 1 118 62 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+ 119:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return -1;
+  33              		.loc 1 119 5 view .LVU1
+  34              		.loc 1 119 8 is_stmt 0 view .LVU2
+  35 0000 0028     		cmp	r0, #0
+  36 0002 00F08580 		beq	.L5
+ 118:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return -1;
+  37              		.loc 1 118 62 view .LVU3
+  38 0006 10B5     		push	{r4, lr}
+  39              	.LCFI0:
+  40              		.cfi_def_cfa_offset 8
+  41              		.cfi_offset 4, -8
+  42              		.cfi_offset 14, -4
+  43 0008 86B0     		sub	sp, sp, #24
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 32
+  46 000a 0446     		mov	r4, r0
+ 120:sdk/common/mpu_6050/mpu_6050.c **** 
+ 121:sdk/common/mpu_6050/mpu_6050.c ****     mpu6050_raw_data_t raw_data = {0};
+  47              		.loc 1 121 5 is_stmt 1 view .LVU4
+  48              		.loc 1 121 24 is_stmt 0 view .LVU5
+  49 000c 02AB     		add	r3, sp, #8
+  50 000e 0022     		movs	r2, #0
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 4
+
+
+  51 0010 0292     		str	r2, [sp, #8]
+  52 0012 5A60     		str	r2, [r3, #4]
+  53 0014 9A60     		str	r2, [r3, #8]
+  54 0016 9A81     		strh	r2, [r3, #12]	@ movhi
+ 122:sdk/common/mpu_6050/mpu_6050.c **** 
+ 123:sdk/common/mpu_6050/mpu_6050.c ****     int32_t ret = sm_hal_i2c_read(_this->m_i2c, GET_MPU_DATA, I2C_MEMADD_SIZE_8BIT,
+  55              		.loc 1 123 5 is_stmt 1 view .LVU6
+  56              		.loc 1 123 19 is_stmt 0 view .LVU7
+  57 0018 6422     		movs	r2, #100
+  58 001a 0192     		str	r2, [sp, #4]
+  59 001c 0E22     		movs	r2, #14
+  60 001e 0092     		str	r2, [sp]
+  61 0020 0122     		movs	r2, #1
+  62 0022 3B21     		movs	r1, #59
+  63 0024 0068     		ldr	r0, [r0]
+  64              	.LVL1:
+  65              		.loc 1 123 19 view .LVU8
+  66 0026 FFF7FEFF 		bl	sm_hal_i2c_read
+  67              	.LVL2:
+ 124:sdk/common/mpu_6050/mpu_6050.c ****     		(uint8_t*)&raw_data, MPU_DATA_SIZE, 100);
+ 125:sdk/common/mpu_6050/mpu_6050.c **** 
+ 126:sdk/common/mpu_6050/mpu_6050.c ****     if (ret < 0) return -1;
+  68              		.loc 1 126 5 is_stmt 1 view .LVU9
+  69              		.loc 1 126 8 is_stmt 0 view .LVU10
+  70 002a 0028     		cmp	r0, #0
+  71 002c 73DB     		blt	.L6
+  72              	.LBB2:
+ 127:sdk/common/mpu_6050/mpu_6050.c **** 
+ 128:sdk/common/mpu_6050/mpu_6050.c ****     uint8_t* p = (uint8_t*)&raw_data;
+ 129:sdk/common/mpu_6050/mpu_6050.c **** 
+ 130:sdk/common/mpu_6050/mpu_6050.c ****     for (uint32_t i = 0; i < MPU_DATA_SIZE; i += 2) {
+  73              		.loc 1 130 19 view .LVU11
+  74 002e 0023     		movs	r3, #0
+  75 0030 08E0     		b	.L3
+  76              	.LVL3:
+  77              	.L4:
+  78              	.LBB3:
+ 131:sdk/common/mpu_6050/mpu_6050.c ****         uint8_t temp = p[i];
+  79              		.loc 1 131 9 is_stmt 1 view .LVU12
+  80              		.loc 1 131 25 is_stmt 0 view .LVU13
+  81 0032 02AA     		add	r2, sp, #8
+  82              		.loc 1 131 17 view .LVU14
+  83 0034 D05C     		ldrb	r0, [r2, r3]	@ zero_extendqisi2
+  84              	.LVL4:
+ 132:sdk/common/mpu_6050/mpu_6050.c ****         p[i] = p[i + 1];
+  85              		.loc 1 132 9 is_stmt 1 view .LVU15
+  86              		.loc 1 132 17 is_stmt 0 view .LVU16
+  87 0036 591C     		adds	r1, r3, #1
+  88 0038 12F801C0 		ldrb	ip, [r2, r1]	@ zero_extendqisi2
+  89              		.loc 1 132 14 view .LVU17
+  90 003c 02F803C0 		strb	ip, [r2, r3]
+ 133:sdk/common/mpu_6050/mpu_6050.c ****         p[i + 1] = temp;
+  91              		.loc 1 133 9 is_stmt 1 view .LVU18
+  92              		.loc 1 133 18 is_stmt 0 view .LVU19
+  93 0040 5054     		strb	r0, [r2, r1]
+  94              	.LBE3:
+ 130:sdk/common/mpu_6050/mpu_6050.c ****         uint8_t temp = p[i];
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 5
+
+
+  95              		.loc 1 130 47 is_stmt 1 discriminator 3 view .LVU20
+  96 0042 0233     		adds	r3, r3, #2
+  97              	.LVL5:
+  98              	.L3:
+ 130:sdk/common/mpu_6050/mpu_6050.c ****         uint8_t temp = p[i];
+  99              		.loc 1 130 28 discriminator 1 view .LVU21
+ 100 0044 0D2B     		cmp	r3, #13
+ 101 0046 F4D9     		bls	.L4
+ 102              	.LBE2:
+ 134:sdk/common/mpu_6050/mpu_6050.c ****     }
+ 135:sdk/common/mpu_6050/mpu_6050.c **** 
+ 136:sdk/common/mpu_6050/mpu_6050.c ****     _this->m_raw_data = raw_data;
+ 103              		.loc 1 136 5 view .LVU22
+ 104              		.loc 1 136 23 is_stmt 0 view .LVU23
+ 105 0048 04F1040C 		add	ip, r4, #4
+ 106 004c 06AB     		add	r3, sp, #24
+ 107              	.LVL6:
+ 108              		.loc 1 136 23 view .LVU24
+ 109 004e 13E90F00 		ldmdb	r3, {r0, r1, r2, r3}
+ 110 0052 ACE80700 		stmia	ip!, {r0, r1, r2}
+ 111 0056 ACF80030 		strh	r3, [ip]	@ movhi
+ 137:sdk/common/mpu_6050/mpu_6050.c **** 
+ 138:sdk/common/mpu_6050/mpu_6050.c ****     _this->m_data.accel_x = raw_data.ax * _this->m_accel_sensitivity - _this->m_offset.accel_x;
+ 112              		.loc 1 138 5 is_stmt 1 view .LVU25
+ 113              		.loc 1 138 37 is_stmt 0 view .LVU26
+ 114 005a BDF90830 		ldrsh	r3, [sp, #8]
+ 115 005e 07EE903A 		vmov	s15, r3	@ int
+ 116              		.loc 1 138 48 view .LVU27
+ 117 0062 94ED0E7A 		vldr.32	s14, [r4, #56]
+ 118              		.loc 1 138 41 view .LVU28
+ 119 0066 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 120 006a 67EE877A 		vmul.f32	s15, s15, s14
+ 121              		.loc 1 138 87 view .LVU29
+ 122 006e D4ED106A 		vldr.32	s13, [r4, #64]
+ 123              		.loc 1 138 70 view .LVU30
+ 124 0072 77EEE67A 		vsub.f32	s15, s15, s13
+ 125              		.loc 1 138 27 view .LVU31
+ 126 0076 C4ED057A 		vstr.32	s15, [r4, #20]
+ 139:sdk/common/mpu_6050/mpu_6050.c ****     _this->m_data.accel_y = raw_data.ay * _this->m_accel_sensitivity - _this->m_offset.accel_y;
+ 127              		.loc 1 139 5 is_stmt 1 view .LVU32
+ 128              		.loc 1 139 37 is_stmt 0 view .LVU33
+ 129 007a BDF90A30 		ldrsh	r3, [sp, #10]
+ 130 007e 07EE903A 		vmov	s15, r3	@ int
+ 131              		.loc 1 139 41 view .LVU34
+ 132 0082 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 133 0086 67EE877A 		vmul.f32	s15, s15, s14
+ 134              		.loc 1 139 87 view .LVU35
+ 135 008a D4ED116A 		vldr.32	s13, [r4, #68]
+ 136              		.loc 1 139 70 view .LVU36
+ 137 008e 77EEE67A 		vsub.f32	s15, s15, s13
+ 138              		.loc 1 139 27 view .LVU37
+ 139 0092 C4ED067A 		vstr.32	s15, [r4, #24]
+ 140:sdk/common/mpu_6050/mpu_6050.c ****     _this->m_data.accel_z = raw_data.az * _this->m_accel_sensitivity - _this->m_offset.accel_z;
+ 140              		.loc 1 140 5 is_stmt 1 view .LVU38
+ 141              		.loc 1 140 37 is_stmt 0 view .LVU39
+ 142 0096 BDF90C30 		ldrsh	r3, [sp, #12]
+ 143 009a 07EE903A 		vmov	s15, r3	@ int
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 6
+
+
+ 144              		.loc 1 140 41 view .LVU40
+ 145 009e F8EEE77A 		vcvt.f32.s32	s15, s15
+ 146 00a2 67EE877A 		vmul.f32	s15, s15, s14
+ 147              		.loc 1 140 87 view .LVU41
+ 148 00a6 94ED127A 		vldr.32	s14, [r4, #72]
+ 149              		.loc 1 140 70 view .LVU42
+ 150 00aa 77EEC77A 		vsub.f32	s15, s15, s14
+ 151              		.loc 1 140 27 view .LVU43
+ 152 00ae C4ED077A 		vstr.32	s15, [r4, #28]
+ 141:sdk/common/mpu_6050/mpu_6050.c **** 
+ 142:sdk/common/mpu_6050/mpu_6050.c ****     _this->m_data.gyro_x = raw_data.gx * _this->m_gyro_sensitivity - _this->m_offset.gyro_x;
+ 153              		.loc 1 142 5 is_stmt 1 view .LVU44
+ 154              		.loc 1 142 36 is_stmt 0 view .LVU45
+ 155 00b2 BDF91030 		ldrsh	r3, [sp, #16]
+ 156 00b6 07EE903A 		vmov	s15, r3	@ int
+ 157              		.loc 1 142 47 view .LVU46
+ 158 00ba 94ED0F7A 		vldr.32	s14, [r4, #60]
+ 159              		.loc 1 142 40 view .LVU47
+ 160 00be F8EEE77A 		vcvt.f32.s32	s15, s15
+ 161 00c2 67EE877A 		vmul.f32	s15, s15, s14
+ 162              		.loc 1 142 85 view .LVU48
+ 163 00c6 D4ED136A 		vldr.32	s13, [r4, #76]
+ 164              		.loc 1 142 68 view .LVU49
+ 165 00ca 77EEE67A 		vsub.f32	s15, s15, s13
+ 166              		.loc 1 142 26 view .LVU50
+ 167 00ce C4ED087A 		vstr.32	s15, [r4, #32]
+ 143:sdk/common/mpu_6050/mpu_6050.c ****     _this->m_data.gyro_y = raw_data.gy * _this->m_gyro_sensitivity - _this->m_offset.gyro_y;
+ 168              		.loc 1 143 5 is_stmt 1 view .LVU51
+ 169              		.loc 1 143 36 is_stmt 0 view .LVU52
+ 170 00d2 BDF91230 		ldrsh	r3, [sp, #18]
+ 171 00d6 07EE903A 		vmov	s15, r3	@ int
+ 172              		.loc 1 143 40 view .LVU53
+ 173 00da F8EEE77A 		vcvt.f32.s32	s15, s15
+ 174 00de 67EE877A 		vmul.f32	s15, s15, s14
+ 175              		.loc 1 143 85 view .LVU54
+ 176 00e2 D4ED146A 		vldr.32	s13, [r4, #80]
+ 177              		.loc 1 143 68 view .LVU55
+ 178 00e6 77EEE67A 		vsub.f32	s15, s15, s13
+ 179              		.loc 1 143 26 view .LVU56
+ 180 00ea C4ED097A 		vstr.32	s15, [r4, #36]
+ 144:sdk/common/mpu_6050/mpu_6050.c ****     _this->m_data.gyro_z = raw_data.gz * _this->m_gyro_sensitivity - _this->m_offset.gyro_z;
+ 181              		.loc 1 144 5 is_stmt 1 view .LVU57
+ 182              		.loc 1 144 36 is_stmt 0 view .LVU58
+ 183 00ee BDF91430 		ldrsh	r3, [sp, #20]
+ 184 00f2 07EE903A 		vmov	s15, r3	@ int
+ 185              		.loc 1 144 40 view .LVU59
+ 186 00f6 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 187 00fa 67EE877A 		vmul.f32	s15, s15, s14
+ 188              		.loc 1 144 85 view .LVU60
+ 189 00fe 94ED157A 		vldr.32	s14, [r4, #84]
+ 190              		.loc 1 144 68 view .LVU61
+ 191 0102 77EEC77A 		vsub.f32	s15, s15, s14
+ 192              		.loc 1 144 26 view .LVU62
+ 193 0106 C4ED0A7A 		vstr.32	s15, [r4, #40]
+ 145:sdk/common/mpu_6050/mpu_6050.c **** 
+ 146:sdk/common/mpu_6050/mpu_6050.c ****     return 0;
+ 194              		.loc 1 146 5 is_stmt 1 view .LVU63
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 7
+
+
+ 195              		.loc 1 146 12 is_stmt 0 view .LVU64
+ 196 010a 0020     		movs	r0, #0
+ 197              	.LVL7:
+ 198              	.L1:
+ 147:sdk/common/mpu_6050/mpu_6050.c **** }
+ 199              		.loc 1 147 1 view .LVU65
+ 200 010c 06B0     		add	sp, sp, #24
+ 201              	.LCFI2:
+ 202              		.cfi_def_cfa_offset 8
+ 203              		@ sp needed
+ 204 010e 10BD     		pop	{r4, pc}
+ 205              	.LVL8:
+ 206              	.L5:
+ 207              	.LCFI3:
+ 208              		.cfi_def_cfa_offset 0
+ 209              		.cfi_restore 4
+ 210              		.cfi_restore 14
+ 119:sdk/common/mpu_6050/mpu_6050.c **** 
+ 211              		.loc 1 119 24 discriminator 1 view .LVU66
+ 212 0110 4FF0FF30 		mov	r0, #-1
+ 213              	.LVL9:
+ 214              		.loc 1 147 1 view .LVU67
+ 215 0114 7047     		bx	lr
+ 216              	.LVL10:
+ 217              	.L6:
+ 218              	.LCFI4:
+ 219              		.cfi_def_cfa_offset 32
+ 220              		.cfi_offset 4, -8
+ 221              		.cfi_offset 14, -4
+ 126:sdk/common/mpu_6050/mpu_6050.c **** 
+ 222              		.loc 1 126 25 discriminator 1 view .LVU68
+ 223 0116 4FF0FF30 		mov	r0, #-1
+ 224              	.LVL11:
+ 126:sdk/common/mpu_6050/mpu_6050.c **** 
+ 225              		.loc 1 126 25 discriminator 1 view .LVU69
+ 226 011a F7E7     		b	.L1
+ 227              		.cfi_endproc
+ 228              	.LFE141:
+ 230              		.section	.text.mpu_6050_init,"ax",%progbits
+ 231              		.align	1
+ 232              		.global	mpu_6050_init
+ 233              		.syntax unified
+ 234              		.thumb
+ 235              		.thumb_func
+ 237              	mpu_6050_init:
+ 238              	.LVL12:
+ 239              	.LFB137:
+  60:sdk/common/mpu_6050/mpu_6050.c ****     if (!i2c) return NULL;
+ 240              		.loc 1 60 46 is_stmt 1 view -0
+ 241              		.cfi_startproc
+ 242              		@ args = 0, pretend = 0, frame = 0
+ 243              		@ frame_needed = 0, uses_anonymous_args = 0
+  60:sdk/common/mpu_6050/mpu_6050.c ****     if (!i2c) return NULL;
+ 244              		.loc 1 60 46 is_stmt 0 view .LVU71
+ 245 0000 38B5     		push	{r3, r4, r5, lr}
+ 246              	.LCFI5:
+ 247              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 8
+
+
+ 248              		.cfi_offset 3, -16
+ 249              		.cfi_offset 4, -12
+ 250              		.cfi_offset 5, -8
+ 251              		.cfi_offset 14, -4
+  61:sdk/common/mpu_6050/mpu_6050.c **** 
+ 252              		.loc 1 61 5 is_stmt 1 view .LVU72
+  61:sdk/common/mpu_6050/mpu_6050.c **** 
+ 253              		.loc 1 61 8 is_stmt 0 view .LVU73
+ 254 0002 88B1     		cbz	r0, .L11
+  63:sdk/common/mpu_6050/mpu_6050.c ****     g_mpu_6050.m_offset = (mpu6050_data_t){0};
+ 255              		.loc 1 63 5 is_stmt 1 view .LVU74
+  63:sdk/common/mpu_6050/mpu_6050.c ****     g_mpu_6050.m_offset = (mpu6050_data_t){0};
+ 256              		.loc 1 63 22 is_stmt 0 view .LVU75
+ 257 0004 094C     		ldr	r4, .L15
+ 258 0006 2246     		mov	r2, r4
+ 259 0008 42F8400B 		str	r0, [r2], #64
+  64:sdk/common/mpu_6050/mpu_6050.c ****     g_mpu_6050.m_angle = (mpu6050_angle_data_t){0};
+ 260              		.loc 1 64 5 is_stmt 1 view .LVU76
+  64:sdk/common/mpu_6050/mpu_6050.c ****     g_mpu_6050.m_angle = (mpu6050_angle_data_t){0};
+ 261              		.loc 1 64 25 is_stmt 0 view .LVU77
+ 262 000c 0023     		movs	r3, #0
+ 263 000e 2364     		str	r3, [r4, #64]
+ 264 0010 5360     		str	r3, [r2, #4]
+ 265 0012 9360     		str	r3, [r2, #8]
+ 266 0014 D360     		str	r3, [r2, #12]
+ 267 0016 1361     		str	r3, [r2, #16]
+ 268 0018 5361     		str	r3, [r2, #20]
+  65:sdk/common/mpu_6050/mpu_6050.c **** 
+ 269              		.loc 1 65 5 is_stmt 1 view .LVU78
+  65:sdk/common/mpu_6050/mpu_6050.c **** 
+ 270              		.loc 1 65 24 is_stmt 0 view .LVU79
+ 271 001a E362     		str	r3, [r4, #44]
+ 272 001c 2363     		str	r3, [r4, #48]
+ 273 001e 6363     		str	r3, [r4, #52]
+  67:sdk/common/mpu_6050/mpu_6050.c **** 
+ 274              		.loc 1 67 5 is_stmt 1 view .LVU80
+ 275 0020 D021     		movs	r1, #208
+ 276 0022 FFF7FEFF 		bl	sm_hal_i2c_set_addr
+ 277              	.LVL13:
+  69:sdk/common/mpu_6050/mpu_6050.c **** }
+ 278              		.loc 1 69 5 view .LVU81
+  69:sdk/common/mpu_6050/mpu_6050.c **** }
+ 279              		.loc 1 69 12 is_stmt 0 view .LVU82
+ 280 0026 2046     		mov	r0, r4
+ 281              	.L11:
+  70:sdk/common/mpu_6050/mpu_6050.c **** int32_t mpu_6050_set_power_ctrl(mpu_6050_t *_this, uint8_t enable) {
+ 282              		.loc 1 70 1 view .LVU83
+ 283 0028 38BD     		pop	{r3, r4, r5, pc}
+ 284              	.L16:
+ 285 002a 00BF     		.align	2
+ 286              	.L15:
+ 287 002c 00000000 		.word	g_mpu_6050
+ 288              		.cfi_endproc
+ 289              	.LFE137:
+ 291              		.section	.text.mpu_6050_set_power_ctrl,"ax",%progbits
+ 292              		.align	1
+ 293              		.global	mpu_6050_set_power_ctrl
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 9
+
+
+ 294              		.syntax unified
+ 295              		.thumb
+ 296              		.thumb_func
+ 298              	mpu_6050_set_power_ctrl:
+ 299              	.LVL14:
+ 300              	.LFB138:
+  71:sdk/common/mpu_6050/mpu_6050.c **** 
+ 301              		.loc 1 71 68 is_stmt 1 view -0
+ 302              		.cfi_startproc
+ 303              		@ args = 0, pretend = 0, frame = 8
+ 304              		@ frame_needed = 0, uses_anonymous_args = 0
+  73:sdk/common/mpu_6050/mpu_6050.c **** 
+ 305              		.loc 1 73 2 view .LVU85
+  73:sdk/common/mpu_6050/mpu_6050.c **** 
+ 306              		.loc 1 73 5 is_stmt 0 view .LVU86
+ 307 0000 C8B1     		cbz	r0, .L20
+  71:sdk/common/mpu_6050/mpu_6050.c **** 
+ 308              		.loc 1 71 68 view .LVU87
+ 309 0002 00B5     		push	{lr}
+ 310              	.LCFI6:
+ 311              		.cfi_def_cfa_offset 4
+ 312              		.cfi_offset 14, -4
+ 313 0004 85B0     		sub	sp, sp, #20
+ 314              	.LCFI7:
+ 315              		.cfi_def_cfa_offset 24
+ 316 0006 8446     		mov	ip, r0
+  75:sdk/common/mpu_6050/mpu_6050.c **** 	if (enable) {
+ 317              		.loc 1 75 2 is_stmt 1 view .LVU88
+  75:sdk/common/mpu_6050/mpu_6050.c **** 	if (enable) {
+ 318              		.loc 1 75 10 is_stmt 0 view .LVU89
+ 319 0008 0023     		movs	r3, #0
+ 320 000a 8DF80F30 		strb	r3, [sp, #15]
+  76:sdk/common/mpu_6050/mpu_6050.c **** 		value &= (uint8_t) ~0x40U;
+ 321              		.loc 1 76 2 is_stmt 1 view .LVU90
+  76:sdk/common/mpu_6050/mpu_6050.c **** 		value &= (uint8_t) ~0x40U;
+ 322              		.loc 1 76 5 is_stmt 0 view .LVU91
+ 323 000e 11B9     		cbnz	r1, .L19
+  79:sdk/common/mpu_6050/mpu_6050.c **** 	}
+ 324              		.loc 1 79 3 is_stmt 1 view .LVU92
+  79:sdk/common/mpu_6050/mpu_6050.c **** 	}
+ 325              		.loc 1 79 9 is_stmt 0 view .LVU93
+ 326 0010 4023     		movs	r3, #64
+ 327 0012 8DF80F30 		strb	r3, [sp, #15]
+ 328              	.L19:
+  81:sdk/common/mpu_6050/mpu_6050.c **** 			&value, 1, 100) < 0)
+ 329              		.loc 1 81 2 is_stmt 1 view .LVU94
+  81:sdk/common/mpu_6050/mpu_6050.c **** 			&value, 1, 100) < 0)
+ 330              		.loc 1 81 6 is_stmt 0 view .LVU95
+ 331 0016 6423     		movs	r3, #100
+ 332 0018 0193     		str	r3, [sp, #4]
+ 333 001a 0122     		movs	r2, #1
+ 334 001c 0092     		str	r2, [sp]
+ 335 001e 0DF10F03 		add	r3, sp, #15
+ 336 0022 6B21     		movs	r1, #107
+ 337              	.LVL15:
+  81:sdk/common/mpu_6050/mpu_6050.c **** 			&value, 1, 100) < 0)
+ 338              		.loc 1 81 6 view .LVU96
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 10
+
+
+ 339 0024 DCF80000 		ldr	r0, [ip]
+ 340              	.LVL16:
+  81:sdk/common/mpu_6050/mpu_6050.c **** 			&value, 1, 100) < 0)
+ 341              		.loc 1 81 6 view .LVU97
+ 342 0028 FFF7FEFF 		bl	sm_hal_i2c_write
+ 343              	.LVL17:
+  81:sdk/common/mpu_6050/mpu_6050.c **** 			&value, 1, 100) < 0)
+ 344              		.loc 1 81 5 discriminator 1 view .LVU98
+ 345 002c 0028     		cmp	r0, #0
+ 346 002e 05DB     		blt	.L21
+  84:sdk/common/mpu_6050/mpu_6050.c **** }
+ 347              		.loc 1 84 9 view .LVU99
+ 348 0030 0020     		movs	r0, #0
+ 349              	.L17:
+  85:sdk/common/mpu_6050/mpu_6050.c **** int32_t mpu_6050_set_gyro_config(mpu_6050_t* _this, GYRO_CONFIG_DATA gyro_config) {
+ 350              		.loc 1 85 1 view .LVU100
+ 351 0032 05B0     		add	sp, sp, #20
+ 352              	.LCFI8:
+ 353              		.cfi_def_cfa_offset 4
+ 354              		@ sp needed
+ 355 0034 00BD     		pop	{pc}
+ 356              	.LVL18:
+ 357              	.L20:
+ 358              	.LCFI9:
+ 359              		.cfi_def_cfa_offset 0
+ 360              		.cfi_restore 14
+  73:sdk/common/mpu_6050/mpu_6050.c **** 
+ 361              		.loc 1 73 20 discriminator 1 view .LVU101
+ 362 0036 4FF0FF30 		mov	r0, #-1
+ 363              	.LVL19:
+  85:sdk/common/mpu_6050/mpu_6050.c **** int32_t mpu_6050_set_gyro_config(mpu_6050_t* _this, GYRO_CONFIG_DATA gyro_config) {
+ 364              		.loc 1 85 1 view .LVU102
+ 365 003a 7047     		bx	lr
+ 366              	.LVL20:
+ 367              	.L21:
+ 368              	.LCFI10:
+ 369              		.cfi_def_cfa_offset 24
+ 370              		.cfi_offset 14, -4
+  83:sdk/common/mpu_6050/mpu_6050.c **** 	return 0;
+ 371              		.loc 1 83 10 view .LVU103
+ 372 003c 4FF0FF30 		mov	r0, #-1
+ 373 0040 F7E7     		b	.L17
+ 374              		.cfi_endproc
+ 375              	.LFE138:
+ 377              		.section	.text.mpu_6050_set_gyro_config,"ax",%progbits
+ 378              		.align	1
+ 379              		.global	mpu_6050_set_gyro_config
+ 380              		.syntax unified
+ 381              		.thumb
+ 382              		.thumb_func
+ 384              	mpu_6050_set_gyro_config:
+ 385              	.LVL21:
+ 386              	.LFB139:
+  86:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return -1;
+ 387              		.loc 1 86 83 is_stmt 1 view -0
+ 388              		.cfi_startproc
+ 389              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 11
+
+
+ 390              		@ frame_needed = 0, uses_anonymous_args = 0
+  87:sdk/common/mpu_6050/mpu_6050.c **** 
+ 391              		.loc 1 87 5 view .LVU105
+  87:sdk/common/mpu_6050/mpu_6050.c **** 
+ 392              		.loc 1 87 8 is_stmt 0 view .LVU106
+ 393 0000 30B3     		cbz	r0, .L28
+  86:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return -1;
+ 394              		.loc 1 86 83 view .LVU107
+ 395 0002 10B5     		push	{r4, lr}
+ 396              	.LCFI11:
+ 397              		.cfi_def_cfa_offset 8
+ 398              		.cfi_offset 4, -8
+ 399              		.cfi_offset 14, -4
+ 400 0004 84B0     		sub	sp, sp, #16
+ 401              	.LCFI12:
+ 402              		.cfi_def_cfa_offset 24
+ 403 0006 0446     		mov	r4, r0
+  89:sdk/common/mpu_6050/mpu_6050.c **** 
+ 404              		.loc 1 89 5 is_stmt 1 view .LVU108
+  89:sdk/common/mpu_6050/mpu_6050.c **** 
+ 405              		.loc 1 89 13 is_stmt 0 view .LVU109
+ 406 0008 8DF80F10 		strb	r1, [sp, #15]
+  91:sdk/common/mpu_6050/mpu_6050.c **** 
+ 407              		.loc 1 91 5 is_stmt 1 view .LVU110
+  91:sdk/common/mpu_6050/mpu_6050.c **** 
+ 408              		.loc 1 91 8 is_stmt 0 view .LVU111
+ 409 000c 1829     		cmp	r1, #24
+ 410 000e 22D8     		bhi	.L29
+  91:sdk/common/mpu_6050/mpu_6050.c **** 
+ 411              		.loc 1 91 22 discriminator 2 view .LVU112
+ 412 0010 11F0070F 		tst	r1, #7
+ 413 0014 22D1     		bne	.L30
+  93:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 414              		.loc 1 93 5 is_stmt 1 view .LVU113
+  93:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 415              		.loc 1 93 9 is_stmt 0 view .LVU114
+ 416 0016 6423     		movs	r3, #100
+ 417 0018 0193     		str	r3, [sp, #4]
+ 418 001a 0122     		movs	r2, #1
+ 419 001c 0092     		str	r2, [sp]
+ 420 001e 0DF10F03 		add	r3, sp, #15
+ 421 0022 1B21     		movs	r1, #27
+ 422              	.LVL22:
+  93:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 423              		.loc 1 93 9 view .LVU115
+ 424 0024 0068     		ldr	r0, [r0]
+ 425              	.LVL23:
+  93:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 426              		.loc 1 93 9 view .LVU116
+ 427 0026 FFF7FEFF 		bl	sm_hal_i2c_write
+ 428              	.LVL24:
+  93:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 429              		.loc 1 93 8 discriminator 1 view .LVU117
+ 430 002a 0028     		cmp	r0, #0
+ 431 002c 19DB     		blt	.L31
+  96:sdk/common/mpu_6050/mpu_6050.c **** 
+ 432              		.loc 1 96 5 is_stmt 1 view .LVU118
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 12
+
+
+  98:sdk/common/mpu_6050/mpu_6050.c **** 
+ 433              		.loc 1 98 5 view .LVU119
+  98:sdk/common/mpu_6050/mpu_6050.c **** 
+ 434              		.loc 1 98 65 is_stmt 0 view .LVU120
+ 435 002e 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+ 436 0032 D208     		lsrs	r2, r2, #3
+  98:sdk/common/mpu_6050/mpu_6050.c **** 
+ 437              		.loc 1 98 58 view .LVU121
+ 438 0034 0C4B     		ldr	r3, .L36
+ 439 0036 03EB8203 		add	r3, r3, r2, lsl #2
+ 440 003a 93ED007A 		vldr.32	s14, [r3]
+  98:sdk/common/mpu_6050/mpu_6050.c **** 
+ 441              		.loc 1 98 45 view .LVU122
+ 442 003e F7EE006A 		vmov.f32	s13, #1.0e+0
+ 443 0042 C6EE877A 		vdiv.f32	s15, s13, s14
+  98:sdk/common/mpu_6050/mpu_6050.c **** 
+ 444              		.loc 1 98 38 view .LVU123
+ 445 0046 C4ED0F7A 		vstr.32	s15, [r4, #60]
+ 100:sdk/common/mpu_6050/mpu_6050.c **** }
+ 446              		.loc 1 100 5 is_stmt 1 view .LVU124
+ 100:sdk/common/mpu_6050/mpu_6050.c **** }
+ 447              		.loc 1 100 12 is_stmt 0 view .LVU125
+ 448 004a 0020     		movs	r0, #0
+ 449              	.L26:
+ 101:sdk/common/mpu_6050/mpu_6050.c **** 
+ 450              		.loc 1 101 1 view .LVU126
+ 451 004c 04B0     		add	sp, sp, #16
+ 452              	.LCFI13:
+ 453              		.cfi_def_cfa_offset 8
+ 454              		@ sp needed
+ 455 004e 10BD     		pop	{r4, pc}
+ 456              	.LVL25:
+ 457              	.L28:
+ 458              	.LCFI14:
+ 459              		.cfi_def_cfa_offset 0
+ 460              		.cfi_restore 4
+ 461              		.cfi_restore 14
+  87:sdk/common/mpu_6050/mpu_6050.c **** 
+ 462              		.loc 1 87 24 discriminator 1 view .LVU127
+ 463 0050 4FF0FF30 		mov	r0, #-1
+ 464              	.LVL26:
+ 101:sdk/common/mpu_6050/mpu_6050.c **** 
+ 465              		.loc 1 101 1 view .LVU128
+ 466 0054 7047     		bx	lr
+ 467              	.LVL27:
+ 468              	.L29:
+ 469              	.LCFI15:
+ 470              		.cfi_def_cfa_offset 24
+ 471              		.cfi_offset 4, -8
+ 472              		.cfi_offset 14, -4
+  91:sdk/common/mpu_6050/mpu_6050.c **** 
+ 473              		.loc 1 91 48 discriminator 3 view .LVU129
+ 474 0056 4FF0FF30 		mov	r0, #-1
+ 475              	.LVL28:
+  91:sdk/common/mpu_6050/mpu_6050.c **** 
+ 476              		.loc 1 91 48 discriminator 3 view .LVU130
+ 477 005a F7E7     		b	.L26
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 13
+
+
+ 478              	.LVL29:
+ 479              	.L30:
+  91:sdk/common/mpu_6050/mpu_6050.c **** 
+ 480              		.loc 1 91 48 discriminator 3 view .LVU131
+ 481 005c 4FF0FF30 		mov	r0, #-1
+ 482              	.LVL30:
+  91:sdk/common/mpu_6050/mpu_6050.c **** 
+ 483              		.loc 1 91 48 discriminator 3 view .LVU132
+ 484 0060 F4E7     		b	.L26
+ 485              	.LVL31:
+ 486              	.L31:
+  94:sdk/common/mpu_6050/mpu_6050.c **** 
+ 487              		.loc 1 94 41 view .LVU133
+ 488 0062 4FF0FF30 		mov	r0, #-1
+ 489 0066 F1E7     		b	.L26
+ 490              	.L37:
+ 491              		.align	2
+ 492              	.L36:
+ 493 0068 00000000 		.word	sensitivity.0
+ 494              		.cfi_endproc
+ 495              	.LFE139:
+ 497              		.section	.text.mpu_6050_set_accel_config,"ax",%progbits
+ 498              		.align	1
+ 499              		.global	mpu_6050_set_accel_config
+ 500              		.syntax unified
+ 501              		.thumb
+ 502              		.thumb_func
+ 504              	mpu_6050_set_accel_config:
+ 505              	.LVL32:
+ 506              	.LFB140:
+ 103:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return -1;
+ 507              		.loc 1 103 86 is_stmt 1 view -0
+ 508              		.cfi_startproc
+ 509              		@ args = 0, pretend = 0, frame = 8
+ 510              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104:sdk/common/mpu_6050/mpu_6050.c **** 
+ 511              		.loc 1 104 5 view .LVU135
+ 104:sdk/common/mpu_6050/mpu_6050.c **** 
+ 512              		.loc 1 104 8 is_stmt 0 view .LVU136
+ 513 0000 38B3     		cbz	r0, .L40
+ 103:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return -1;
+ 514              		.loc 1 103 86 view .LVU137
+ 515 0002 10B5     		push	{r4, lr}
+ 516              	.LCFI16:
+ 517              		.cfi_def_cfa_offset 8
+ 518              		.cfi_offset 4, -8
+ 519              		.cfi_offset 14, -4
+ 520 0004 84B0     		sub	sp, sp, #16
+ 521              	.LCFI17:
+ 522              		.cfi_def_cfa_offset 24
+ 523 0006 0446     		mov	r4, r0
+ 106:sdk/common/mpu_6050/mpu_6050.c **** 
+ 524              		.loc 1 106 5 is_stmt 1 view .LVU138
+ 106:sdk/common/mpu_6050/mpu_6050.c **** 
+ 525              		.loc 1 106 13 is_stmt 0 view .LVU139
+ 526 0008 8DF80F10 		strb	r1, [sp, #15]
+ 108:sdk/common/mpu_6050/mpu_6050.c **** 
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 14
+
+
+ 527              		.loc 1 108 5 is_stmt 1 view .LVU140
+ 108:sdk/common/mpu_6050/mpu_6050.c **** 
+ 528              		.loc 1 108 8 is_stmt 0 view .LVU141
+ 529 000c 1829     		cmp	r1, #24
+ 530 000e 23D8     		bhi	.L41
+ 108:sdk/common/mpu_6050/mpu_6050.c **** 
+ 531              		.loc 1 108 22 discriminator 2 view .LVU142
+ 532 0010 11F0070F 		tst	r1, #7
+ 533 0014 23D1     		bne	.L42
+ 110:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 534              		.loc 1 110 5 is_stmt 1 view .LVU143
+ 110:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 535              		.loc 1 110 9 is_stmt 0 view .LVU144
+ 536 0016 6423     		movs	r3, #100
+ 537 0018 0193     		str	r3, [sp, #4]
+ 538 001a 0122     		movs	r2, #1
+ 539 001c 0092     		str	r2, [sp]
+ 540 001e 0DF10F03 		add	r3, sp, #15
+ 541 0022 1C21     		movs	r1, #28
+ 542              	.LVL33:
+ 110:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 543              		.loc 1 110 9 view .LVU145
+ 544 0024 0068     		ldr	r0, [r0]
+ 545              	.LVL34:
+ 110:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 546              		.loc 1 110 9 view .LVU146
+ 547 0026 FFF7FEFF 		bl	sm_hal_i2c_write
+ 548              	.LVL35:
+ 110:sdk/common/mpu_6050/mpu_6050.c ****             &value, 1, 100) < 0) return -1;
+ 549              		.loc 1 110 8 discriminator 1 view .LVU147
+ 550 002a 0028     		cmp	r0, #0
+ 551 002c 1ADB     		blt	.L43
+ 113:sdk/common/mpu_6050/mpu_6050.c **** 
+ 552              		.loc 1 113 5 is_stmt 1 view .LVU148
+ 113:sdk/common/mpu_6050/mpu_6050.c **** 
+ 553              		.loc 1 113 63 is_stmt 0 view .LVU149
+ 554 002e 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+ 555 0032 D208     		lsrs	r2, r2, #3
+ 113:sdk/common/mpu_6050/mpu_6050.c **** 
+ 556              		.loc 1 113 53 view .LVU150
+ 557 0034 0123     		movs	r3, #1
+ 558 0036 9340     		lsls	r3, r3, r2
+ 559 0038 07EE903A 		vmov	s15, r3	@ int
+ 113:sdk/common/mpu_6050/mpu_6050.c **** 
+ 560              		.loc 1 113 41 view .LVU151
+ 561 003c F8EE677A 		vcvt.f32.u32	s15, s15
+ 562 0040 9FED0A7A 		vldr.32	s14, .L48
+ 563 0044 67EE877A 		vmul.f32	s15, s15, s14
+ 113:sdk/common/mpu_6050/mpu_6050.c **** 
+ 564              		.loc 1 113 39 view .LVU152
+ 565 0048 C4ED0E7A 		vstr.32	s15, [r4, #56]
+ 115:sdk/common/mpu_6050/mpu_6050.c **** }
+ 566              		.loc 1 115 5 is_stmt 1 view .LVU153
+ 115:sdk/common/mpu_6050/mpu_6050.c **** }
+ 567              		.loc 1 115 12 is_stmt 0 view .LVU154
+ 568 004c 0020     		movs	r0, #0
+ 569              	.L38:
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 15
+
+
+ 116:sdk/common/mpu_6050/mpu_6050.c **** 
+ 570              		.loc 1 116 1 view .LVU155
+ 571 004e 04B0     		add	sp, sp, #16
+ 572              	.LCFI18:
+ 573              		.cfi_def_cfa_offset 8
+ 574              		@ sp needed
+ 575 0050 10BD     		pop	{r4, pc}
+ 576              	.LVL36:
+ 577              	.L40:
+ 578              	.LCFI19:
+ 579              		.cfi_def_cfa_offset 0
+ 580              		.cfi_restore 4
+ 581              		.cfi_restore 14
+ 104:sdk/common/mpu_6050/mpu_6050.c **** 
+ 582              		.loc 1 104 24 discriminator 1 view .LVU156
+ 583 0052 4FF0FF30 		mov	r0, #-1
+ 584              	.LVL37:
+ 116:sdk/common/mpu_6050/mpu_6050.c **** 
+ 585              		.loc 1 116 1 view .LVU157
+ 586 0056 7047     		bx	lr
+ 587              	.LVL38:
+ 588              	.L41:
+ 589              	.LCFI20:
+ 590              		.cfi_def_cfa_offset 24
+ 591              		.cfi_offset 4, -8
+ 592              		.cfi_offset 14, -4
+ 108:sdk/common/mpu_6050/mpu_6050.c **** 
+ 593              		.loc 1 108 48 discriminator 3 view .LVU158
+ 594 0058 4FF0FF30 		mov	r0, #-1
+ 595              	.LVL39:
+ 108:sdk/common/mpu_6050/mpu_6050.c **** 
+ 596              		.loc 1 108 48 discriminator 3 view .LVU159
+ 597 005c F7E7     		b	.L38
+ 598              	.LVL40:
+ 599              	.L42:
+ 108:sdk/common/mpu_6050/mpu_6050.c **** 
+ 600              		.loc 1 108 48 discriminator 3 view .LVU160
+ 601 005e 4FF0FF30 		mov	r0, #-1
+ 602              	.LVL41:
+ 108:sdk/common/mpu_6050/mpu_6050.c **** 
+ 603              		.loc 1 108 48 discriminator 3 view .LVU161
+ 604 0062 F4E7     		b	.L38
+ 605              	.LVL42:
+ 606              	.L43:
+ 111:sdk/common/mpu_6050/mpu_6050.c **** 
+ 607              		.loc 1 111 41 view .LVU162
+ 608 0064 4FF0FF30 		mov	r0, #-1
+ 609 0068 F1E7     		b	.L38
+ 610              	.L49:
+ 611 006a 00BF     		.align	2
+ 612              	.L48:
+ 613 006c 00008038 		.word	947912704
+ 614              		.cfi_endproc
+ 615              	.LFE140:
+ 617              		.section	.text.mpu_6050_calibrate,"ax",%progbits
+ 618              		.align	1
+ 619              		.global	mpu_6050_calibrate
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 16
+
+
+ 620              		.syntax unified
+ 621              		.thumb
+ 622              		.thumb_func
+ 624              	mpu_6050_calibrate:
+ 625              	.LVL43:
+ 626              	.LFB142:
+ 148:sdk/common/mpu_6050/mpu_6050.c **** 
+ 149:sdk/common/mpu_6050/mpu_6050.c **** // Dat MPU6050 nam ngang, dung yen, truc Z huong len khi calib.
+ 150:sdk/common/mpu_6050/mpu_6050.c **** int32_t mpu_6050_calibrate(mpu_6050_t* _this) {
+ 627              		.loc 1 150 47 is_stmt 1 view -0
+ 628              		.cfi_startproc
+ 629              		@ args = 0, pretend = 0, frame = 24
+ 630              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return -1;
+ 631              		.loc 1 151 5 view .LVU164
+ 632              		.loc 1 151 8 is_stmt 0 view .LVU165
+ 633 0000 0028     		cmp	r0, #0
+ 634 0002 00F0BA80 		beq	.L54
+ 150:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return -1;
+ 635              		.loc 1 150 47 view .LVU166
+ 636 0006 30B5     		push	{r4, r5, lr}
+ 637              	.LCFI21:
+ 638              		.cfi_def_cfa_offset 12
+ 639              		.cfi_offset 4, -12
+ 640              		.cfi_offset 5, -8
+ 641              		.cfi_offset 14, -4
+ 642 0008 87B0     		sub	sp, sp, #28
+ 643              	.LCFI22:
+ 644              		.cfi_def_cfa_offset 40
+ 645 000a 0446     		mov	r4, r0
+ 152:sdk/common/mpu_6050/mpu_6050.c **** 
+ 153:sdk/common/mpu_6050/mpu_6050.c ****     if (_impl(_this)->m_accel_sensitivity < 0.0f ||
+ 646              		.loc 1 153 5 is_stmt 1 view .LVU167
+ 647              		.loc 1 153 21 is_stmt 0 view .LVU168
+ 648 000c D0ED0E7A 		vldr.32	s15, [r0, #56]
+ 649              		.loc 1 153 8 view .LVU169
+ 650 0010 F5EEC07A 		vcmpe.f32	s15, #0
+ 651 0014 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 652 0018 00F1B280 		bmi	.L55
+ 154:sdk/common/mpu_6050/mpu_6050.c ****         _impl(_this)->m_gyro_sensitivity < 0.0f) return -1;
+ 653              		.loc 1 154 21 view .LVU170
+ 654 001c D0ED0F7A 		vldr.32	s15, [r0, #60]
+ 153:sdk/common/mpu_6050/mpu_6050.c ****         _impl(_this)->m_gyro_sensitivity < 0.0f) return -1;
+ 655              		.loc 1 153 50 discriminator 1 view .LVU171
+ 656 0020 F5EEC07A 		vcmpe.f32	s15, #0
+ 657 0024 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 658 0028 00F1AD80 		bmi	.L56
+ 155:sdk/common/mpu_6050/mpu_6050.c **** 
+ 156:sdk/common/mpu_6050/mpu_6050.c ****     mpu6050_data_t offset = {0};
+ 659              		.loc 1 156 5 is_stmt 1 view .LVU172
+ 660              		.loc 1 156 20 is_stmt 0 view .LVU173
+ 661 002c 0025     		movs	r5, #0
+ 662 002e 0095     		str	r5, [sp]
+ 663 0030 0195     		str	r5, [sp, #4]
+ 664 0032 0295     		str	r5, [sp, #8]
+ 665 0034 0395     		str	r5, [sp, #12]
+ 666 0036 0495     		str	r5, [sp, #16]
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 17
+
+
+ 667 0038 0595     		str	r5, [sp, #20]
+ 157:sdk/common/mpu_6050/mpu_6050.c ****     const uint32_t sample_count = 2000;
+ 668              		.loc 1 157 5 is_stmt 1 view .LVU174
+ 669              	.LVL44:
+ 158:sdk/common/mpu_6050/mpu_6050.c **** 
+ 159:sdk/common/mpu_6050/mpu_6050.c ****     for (uint32_t i = 0; i < sample_count; i++) {
+ 670              		.loc 1 159 5 view .LVU175
+ 671              	.LBB4:
+ 672              		.loc 1 159 10 view .LVU176
+ 673              	.L52:
+ 674              		.loc 1 159 28 discriminator 1 view .LVU177
+ 675 003a B5F5FA6F 		cmp	r5, #2000
+ 676 003e 62D2     		bcs	.L62
+ 160:sdk/common/mpu_6050/mpu_6050.c ****         if (mpu_6050_get_data_raw(_impl(_this)) < 0) return -1;
+ 677              		.loc 1 160 9 view .LVU178
+ 678              		.loc 1 160 13 is_stmt 0 view .LVU179
+ 679 0040 2046     		mov	r0, r4
+ 680 0042 FFF7FEFF 		bl	mpu_6050_get_data_raw
+ 681              	.LVL45:
+ 682              		.loc 1 160 12 discriminator 1 view .LVU180
+ 683 0046 0028     		cmp	r0, #0
+ 684 0048 C0F2A080 		blt	.L57
+ 161:sdk/common/mpu_6050/mpu_6050.c **** 
+ 162:sdk/common/mpu_6050/mpu_6050.c ****         offset.accel_x += _impl(_this)->m_raw_data.ax * _impl(_this)->m_accel_sensitivity;
+ 685              		.loc 1 162 9 is_stmt 1 view .LVU181
+ 686              		.loc 1 162 51 is_stmt 0 view .LVU182
+ 687 004c B4F90430 		ldrsh	r3, [r4, #4]
+ 688 0050 07EE903A 		vmov	s15, r3	@ int
+ 689              		.loc 1 162 69 view .LVU183
+ 690 0054 94ED0E7A 		vldr.32	s14, [r4, #56]
+ 691              		.loc 1 162 55 view .LVU184
+ 692 0058 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 693 005c 67EE877A 		vmul.f32	s15, s15, s14
+ 694              		.loc 1 162 24 view .LVU185
+ 695 0060 DDED006A 		vldr.32	s13, [sp]
+ 696 0064 76EEA77A 		vadd.f32	s15, s13, s15
+ 697 0068 CDED007A 		vstr.32	s15, [sp]
+ 163:sdk/common/mpu_6050/mpu_6050.c ****         offset.accel_y += _impl(_this)->m_raw_data.ay * _impl(_this)->m_accel_sensitivity;
+ 698              		.loc 1 163 9 is_stmt 1 view .LVU186
+ 699              		.loc 1 163 51 is_stmt 0 view .LVU187
+ 700 006c B4F90630 		ldrsh	r3, [r4, #6]
+ 701 0070 07EE903A 		vmov	s15, r3	@ int
+ 702              		.loc 1 163 55 view .LVU188
+ 703 0074 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 704 0078 67EE877A 		vmul.f32	s15, s15, s14
+ 705              		.loc 1 163 24 view .LVU189
+ 706 007c DDED016A 		vldr.32	s13, [sp, #4]
+ 707 0080 76EEA77A 		vadd.f32	s15, s13, s15
+ 708 0084 CDED017A 		vstr.32	s15, [sp, #4]
+ 164:sdk/common/mpu_6050/mpu_6050.c ****         offset.accel_z += _impl(_this)->m_raw_data.az * _impl(_this)->m_accel_sensitivity;
+ 709              		.loc 1 164 9 is_stmt 1 view .LVU190
+ 710              		.loc 1 164 51 is_stmt 0 view .LVU191
+ 711 0088 B4F90830 		ldrsh	r3, [r4, #8]
+ 712 008c 07EE903A 		vmov	s15, r3	@ int
+ 713              		.loc 1 164 55 view .LVU192
+ 714 0090 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 715 0094 67EE877A 		vmul.f32	s15, s15, s14
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 18
+
+
+ 716              		.loc 1 164 24 view .LVU193
+ 717 0098 9DED027A 		vldr.32	s14, [sp, #8]
+ 718 009c 77EE277A 		vadd.f32	s15, s14, s15
+ 719 00a0 CDED027A 		vstr.32	s15, [sp, #8]
+ 165:sdk/common/mpu_6050/mpu_6050.c **** 
+ 166:sdk/common/mpu_6050/mpu_6050.c ****         offset.gyro_x += _impl(_this)->m_raw_data.gx * _impl(_this)->m_gyro_sensitivity;
+ 720              		.loc 1 166 9 is_stmt 1 view .LVU194
+ 721              		.loc 1 166 50 is_stmt 0 view .LVU195
+ 722 00a4 B4F90C30 		ldrsh	r3, [r4, #12]
+ 723 00a8 07EE903A 		vmov	s15, r3	@ int
+ 724              		.loc 1 166 68 view .LVU196
+ 725 00ac 94ED0F7A 		vldr.32	s14, [r4, #60]
+ 726              		.loc 1 166 54 view .LVU197
+ 727 00b0 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 728 00b4 67EE877A 		vmul.f32	s15, s15, s14
+ 729              		.loc 1 166 23 view .LVU198
+ 730 00b8 DDED036A 		vldr.32	s13, [sp, #12]
+ 731 00bc 76EEA77A 		vadd.f32	s15, s13, s15
+ 732 00c0 CDED037A 		vstr.32	s15, [sp, #12]
+ 167:sdk/common/mpu_6050/mpu_6050.c ****         offset.gyro_y += _impl(_this)->m_raw_data.gy * _impl(_this)->m_gyro_sensitivity;
+ 733              		.loc 1 167 9 is_stmt 1 view .LVU199
+ 734              		.loc 1 167 50 is_stmt 0 view .LVU200
+ 735 00c4 B4F90E30 		ldrsh	r3, [r4, #14]
+ 736 00c8 07EE903A 		vmov	s15, r3	@ int
+ 737              		.loc 1 167 54 view .LVU201
+ 738 00cc F8EEE77A 		vcvt.f32.s32	s15, s15
+ 739 00d0 67EE877A 		vmul.f32	s15, s15, s14
+ 740              		.loc 1 167 23 view .LVU202
+ 741 00d4 DDED046A 		vldr.32	s13, [sp, #16]
+ 742 00d8 76EEA77A 		vadd.f32	s15, s13, s15
+ 743 00dc CDED047A 		vstr.32	s15, [sp, #16]
+ 168:sdk/common/mpu_6050/mpu_6050.c ****         offset.gyro_z += _impl(_this)->m_raw_data.gz * _impl(_this)->m_gyro_sensitivity;
+ 744              		.loc 1 168 9 is_stmt 1 view .LVU203
+ 745              		.loc 1 168 50 is_stmt 0 view .LVU204
+ 746 00e0 B4F91030 		ldrsh	r3, [r4, #16]
+ 747 00e4 07EE903A 		vmov	s15, r3	@ int
+ 748              		.loc 1 168 54 view .LVU205
+ 749 00e8 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 750 00ec 67EE877A 		vmul.f32	s15, s15, s14
+ 751              		.loc 1 168 23 view .LVU206
+ 752 00f0 9DED057A 		vldr.32	s14, [sp, #20]
+ 753 00f4 77EE277A 		vadd.f32	s15, s14, s15
+ 754 00f8 CDED057A 		vstr.32	s15, [sp, #20]
+ 169:sdk/common/mpu_6050/mpu_6050.c **** 
+ 170:sdk/common/mpu_6050/mpu_6050.c ****         HAL_Delay(2);
+ 755              		.loc 1 170 9 is_stmt 1 view .LVU207
+ 756 00fc 0220     		movs	r0, #2
+ 757 00fe FFF7FEFF 		bl	HAL_Delay
+ 758              	.LVL46:
+ 159:sdk/common/mpu_6050/mpu_6050.c ****         if (mpu_6050_get_data_raw(_impl(_this)) < 0) return -1;
+ 759              		.loc 1 159 45 discriminator 2 view .LVU208
+ 760 0102 0135     		adds	r5, r5, #1
+ 761              	.LVL47:
+ 159:sdk/common/mpu_6050/mpu_6050.c ****         if (mpu_6050_get_data_raw(_impl(_this)) < 0) return -1;
+ 762              		.loc 1 159 45 is_stmt 0 discriminator 2 view .LVU209
+ 763 0104 99E7     		b	.L52
+ 764              	.LVL48:
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 19
+
+
+ 765              	.L62:
+ 159:sdk/common/mpu_6050/mpu_6050.c ****         if (mpu_6050_get_data_raw(_impl(_this)) < 0) return -1;
+ 766              		.loc 1 159 45 discriminator 2 view .LVU210
+ 767              	.LBE4:
+ 171:sdk/common/mpu_6050/mpu_6050.c ****     }
+ 172:sdk/common/mpu_6050/mpu_6050.c **** 
+ 173:sdk/common/mpu_6050/mpu_6050.c ****     offset.accel_x /= sample_count;
+ 768              		.loc 1 173 5 is_stmt 1 view .LVU211
+ 769              		.loc 1 173 20 is_stmt 0 view .LVU212
+ 770 0106 DFED237A 		vldr.32	s15, .L63
+ 771 010a DDED006A 		vldr.32	s13, [sp]
+ 772 010e 86EEA77A 		vdiv.f32	s14, s13, s15
+ 773 0112 8DED007A 		vstr.32	s14, [sp]
+ 174:sdk/common/mpu_6050/mpu_6050.c ****     offset.accel_y /= sample_count;
+ 774              		.loc 1 174 5 is_stmt 1 view .LVU213
+ 775              		.loc 1 174 11 is_stmt 0 view .LVU214
+ 776 0116 DDED016A 		vldr.32	s13, [sp, #4]
+ 777              		.loc 1 174 20 view .LVU215
+ 778 011a 86EEA77A 		vdiv.f32	s14, s13, s15
+ 779 011e 8DED017A 		vstr.32	s14, [sp, #4]
+ 175:sdk/common/mpu_6050/mpu_6050.c ****     offset.accel_z = offset.accel_z / sample_count - 1.0f;
+ 780              		.loc 1 175 5 is_stmt 1 view .LVU216
+ 781              		.loc 1 175 28 is_stmt 0 view .LVU217
+ 782 0122 DDED026A 		vldr.32	s13, [sp, #8]
+ 783              		.loc 1 175 37 view .LVU218
+ 784 0126 86EEA77A 		vdiv.f32	s14, s13, s15
+ 785              		.loc 1 175 52 view .LVU219
+ 786 012a F7EE006A 		vmov.f32	s13, #1.0e+0
+ 787 012e 37EE667A 		vsub.f32	s14, s14, s13
+ 788              		.loc 1 175 20 view .LVU220
+ 789 0132 8DED027A 		vstr.32	s14, [sp, #8]
+ 176:sdk/common/mpu_6050/mpu_6050.c **** 
+ 177:sdk/common/mpu_6050/mpu_6050.c ****     offset.gyro_x /= sample_count;
+ 790              		.loc 1 177 5 is_stmt 1 view .LVU221
+ 791              		.loc 1 177 11 is_stmt 0 view .LVU222
+ 792 0136 DDED036A 		vldr.32	s13, [sp, #12]
+ 793              		.loc 1 177 19 view .LVU223
+ 794 013a 86EEA77A 		vdiv.f32	s14, s13, s15
+ 795 013e 8DED037A 		vstr.32	s14, [sp, #12]
+ 178:sdk/common/mpu_6050/mpu_6050.c ****     offset.gyro_y /= sample_count;
+ 796              		.loc 1 178 5 is_stmt 1 view .LVU224
+ 797              		.loc 1 178 11 is_stmt 0 view .LVU225
+ 798 0142 DDED046A 		vldr.32	s13, [sp, #16]
+ 799              		.loc 1 178 19 view .LVU226
+ 800 0146 86EEA77A 		vdiv.f32	s14, s13, s15
+ 801 014a 8DED047A 		vstr.32	s14, [sp, #16]
+ 179:sdk/common/mpu_6050/mpu_6050.c ****     offset.gyro_z /= sample_count;
+ 802              		.loc 1 179 5 is_stmt 1 view .LVU227
+ 803              		.loc 1 179 11 is_stmt 0 view .LVU228
+ 804 014e DDED056A 		vldr.32	s13, [sp, #20]
+ 805              		.loc 1 179 19 view .LVU229
+ 806 0152 86EEA77A 		vdiv.f32	s14, s13, s15
+ 807 0156 8DED057A 		vstr.32	s14, [sp, #20]
+ 180:sdk/common/mpu_6050/mpu_6050.c **** 
+ 181:sdk/common/mpu_6050/mpu_6050.c ****     _impl(_this)->m_offset = offset;
+ 808              		.loc 1 181 5 is_stmt 1 view .LVU230
+ 809              		.loc 1 181 28 is_stmt 0 view .LVU231
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 20
+
+
+ 810 015a 04F14005 		add	r5, r4, #64
+ 811              	.LVL49:
+ 812              		.loc 1 181 28 view .LVU232
+ 813 015e EC46     		mov	ip, sp
+ 814 0160 BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+ 815 0164 0FC5     		stmia	r5!, {r0, r1, r2, r3}
+ 816 0166 9CE80300 		ldm	ip, {r0, r1}
+ 817 016a 85E80300 		stm	r5, {r0, r1}
+ 182:sdk/common/mpu_6050/mpu_6050.c **** 
+ 183:sdk/common/mpu_6050/mpu_6050.c ****     _impl(_this)->m_angle.roll = 0.0f;
+ 818              		.loc 1 183 5 is_stmt 1 view .LVU233
+ 819              		.loc 1 183 32 is_stmt 0 view .LVU234
+ 820 016e 0023     		movs	r3, #0
+ 821 0170 E362     		str	r3, [r4, #44]	@ float
+ 184:sdk/common/mpu_6050/mpu_6050.c ****     _impl(_this)->m_angle.pitch = 0.0f;
+ 822              		.loc 1 184 5 is_stmt 1 view .LVU235
+ 823              		.loc 1 184 33 is_stmt 0 view .LVU236
+ 824 0172 2363     		str	r3, [r4, #48]	@ float
+ 185:sdk/common/mpu_6050/mpu_6050.c ****     _impl(_this)->m_angle.yaw = 0.0f;
+ 825              		.loc 1 185 5 is_stmt 1 view .LVU237
+ 826              		.loc 1 185 31 is_stmt 0 view .LVU238
+ 827 0174 6363     		str	r3, [r4, #52]	@ float
+ 186:sdk/common/mpu_6050/mpu_6050.c **** 
+ 187:sdk/common/mpu_6050/mpu_6050.c ****     return 0;
+ 828              		.loc 1 187 5 is_stmt 1 view .LVU239
+ 829              		.loc 1 187 12 is_stmt 0 view .LVU240
+ 830 0176 0020     		movs	r0, #0
+ 831 0178 0AE0     		b	.L50
+ 832              	.LVL50:
+ 833              	.L54:
+ 834              	.LCFI23:
+ 835              		.cfi_def_cfa_offset 0
+ 836              		.cfi_restore 4
+ 837              		.cfi_restore 5
+ 838              		.cfi_restore 14
+ 151:sdk/common/mpu_6050/mpu_6050.c **** 
+ 839              		.loc 1 151 24 discriminator 1 view .LVU241
+ 840 017a 4FF0FF30 		mov	r0, #-1
+ 841              	.LVL51:
+ 188:sdk/common/mpu_6050/mpu_6050.c **** }
+ 842              		.loc 1 188 1 view .LVU242
+ 843 017e 7047     		bx	lr
+ 844              	.LVL52:
+ 845              	.L55:
+ 846              	.LCFI24:
+ 847              		.cfi_def_cfa_offset 40
+ 848              		.cfi_offset 4, -12
+ 849              		.cfi_offset 5, -8
+ 850              		.cfi_offset 14, -4
+ 154:sdk/common/mpu_6050/mpu_6050.c **** 
+ 851              		.loc 1 154 57 view .LVU243
+ 852 0180 4FF0FF30 		mov	r0, #-1
+ 853              	.LVL53:
+ 154:sdk/common/mpu_6050/mpu_6050.c **** 
+ 854              		.loc 1 154 57 view .LVU244
+ 855 0184 04E0     		b	.L50
+ 856              	.LVL54:
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 21
+
+
+ 857              	.L56:
+ 154:sdk/common/mpu_6050/mpu_6050.c **** 
+ 858              		.loc 1 154 57 view .LVU245
+ 859 0186 4FF0FF30 		mov	r0, #-1
+ 860              	.LVL55:
+ 154:sdk/common/mpu_6050/mpu_6050.c **** 
+ 861              		.loc 1 154 57 view .LVU246
+ 862 018a 01E0     		b	.L50
+ 863              	.LVL56:
+ 864              	.L57:
+ 865              	.LBB5:
+ 160:sdk/common/mpu_6050/mpu_6050.c **** 
+ 866              		.loc 1 160 61 discriminator 1 view .LVU247
+ 867 018c 4FF0FF30 		mov	r0, #-1
+ 868              	.LVL57:
+ 869              	.L50:
+ 160:sdk/common/mpu_6050/mpu_6050.c **** 
+ 870              		.loc 1 160 61 discriminator 1 view .LVU248
+ 871              	.LBE5:
+ 872              		.loc 1 188 1 view .LVU249
+ 873 0190 07B0     		add	sp, sp, #28
+ 874              	.LCFI25:
+ 875              		.cfi_def_cfa_offset 12
+ 876              		@ sp needed
+ 877 0192 30BD     		pop	{r4, r5, pc}
+ 878              	.LVL58:
+ 879              	.L64:
+ 880              		.loc 1 188 1 view .LVU250
+ 881              		.align	2
+ 882              	.L63:
+ 883 0194 0000FA44 		.word	1157234688
+ 884              		.cfi_endproc
+ 885              	.LFE142:
+ 887              		.section	.text.mpu_6050_process,"ax",%progbits
+ 888              		.align	1
+ 889              		.global	mpu_6050_process
+ 890              		.syntax unified
+ 891              		.thumb
+ 892              		.thumb_func
+ 894              	mpu_6050_process:
+ 895              	.LVL59:
+ 896              	.LFB143:
+ 189:sdk/common/mpu_6050/mpu_6050.c **** 
+ 190:sdk/common/mpu_6050/mpu_6050.c **** void mpu_6050_process(mpu_6050_t* _this, uint32_t time_diff) {
+ 897              		.loc 1 190 62 is_stmt 1 view -0
+ 898              		.cfi_startproc
+ 899              		@ args = 0, pretend = 0, frame = 8
+ 900              		@ frame_needed = 0, uses_anonymous_args = 0
+ 901              		.loc 1 190 62 is_stmt 0 view .LVU252
+ 902 0000 10B5     		push	{r4, lr}
+ 903              	.LCFI26:
+ 904              		.cfi_def_cfa_offset 8
+ 905              		.cfi_offset 4, -8
+ 906              		.cfi_offset 14, -4
+ 907 0002 2DED068B 		vpush.64	{d8, d9, d10}
+ 908              	.LCFI27:
+ 909              		.cfi_def_cfa_offset 32
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 22
+
+
+ 910              		.cfi_offset 80, -32
+ 911              		.cfi_offset 81, -28
+ 912              		.cfi_offset 82, -24
+ 913              		.cfi_offset 83, -20
+ 914              		.cfi_offset 84, -16
+ 915              		.cfi_offset 85, -12
+ 916 0006 82B0     		sub	sp, sp, #8
+ 917              	.LCFI28:
+ 918              		.cfi_def_cfa_offset 40
+ 919 0008 0191     		str	r1, [sp, #4]
+ 191:sdk/common/mpu_6050/mpu_6050.c ****     if (!_this) return;
+ 920              		.loc 1 191 5 is_stmt 1 view .LVU253
+ 921              		.loc 1 191 8 is_stmt 0 view .LVU254
+ 922 000a 0028     		cmp	r0, #0
+ 923 000c 5ED0     		beq	.L65
+ 924 000e 0446     		mov	r4, r0
+ 192:sdk/common/mpu_6050/mpu_6050.c **** 
+ 193:sdk/common/mpu_6050/mpu_6050.c ****     if (mpu_6050_get_data_raw(_impl(_this)) < 0) return;
+ 925              		.loc 1 193 5 is_stmt 1 view .LVU255
+ 926              		.loc 1 193 9 is_stmt 0 view .LVU256
+ 927 0010 FFF7FEFF 		bl	mpu_6050_get_data_raw
+ 928              	.LVL60:
+ 929              		.loc 1 193 8 discriminator 1 view .LVU257
+ 930 0014 0028     		cmp	r0, #0
+ 931 0016 59DB     		blt	.L65
+ 194:sdk/common/mpu_6050/mpu_6050.c **** 
+ 195:sdk/common/mpu_6050/mpu_6050.c ****     float roll_acc = atan2f(_impl(_this)->m_data.accel_y,
+ 932              		.loc 1 195 5 is_stmt 1 view .LVU258
+ 933              		.loc 1 195 22 is_stmt 0 view .LVU259
+ 934 0018 94ED069A 		vldr.32	s18, [r4, #24]
+ 935 001c D4ED078A 		vldr.32	s17, [r4, #28]
+ 936 0020 F0EE680A 		vmov.f32	s1, s17
+ 937 0024 B0EE490A 		vmov.f32	s0, s18
+ 938 0028 FFF7FEFF 		bl	atan2f
+ 939              	.LVL61:
+ 940              		.loc 1 195 11 discriminator 1 view .LVU260
+ 941 002c DFED299A 		vldr.32	s19, .L68
+ 942 0030 20EE298A 		vmul.f32	s16, s0, s19
+ 943              	.LVL62:
+ 196:sdk/common/mpu_6050/mpu_6050.c ****                             _impl(_this)->m_data.accel_z) * 57.29578f;
+ 197:sdk/common/mpu_6050/mpu_6050.c **** 
+ 198:sdk/common/mpu_6050/mpu_6050.c ****     float pitch_acc = atan2f(-_impl(_this)->m_data.accel_x,
+ 944              		.loc 1 198 5 is_stmt 1 view .LVU261
+ 945              		.loc 1 198 51 is_stmt 0 view .LVU262
+ 946 0034 94ED05AA 		vldr.32	s20, [r4, #20]
+ 199:sdk/common/mpu_6050/mpu_6050.c ****                             sqrtf(_impl(_this)->m_data.accel_y * _impl(_this)->m_data.accel_y +
+ 947              		.loc 1 199 64 view .LVU263
+ 948 0038 29EE099A 		vmul.f32	s18, s18, s18
+ 200:sdk/common/mpu_6050/mpu_6050.c ****                                   _impl(_this)->m_data.accel_z * _impl(_this)->m_data.accel_z)) * 5
+ 949              		.loc 1 200 64 view .LVU264
+ 950 003c 68EEA88A 		vmul.f32	s17, s17, s17
+ 198:sdk/common/mpu_6050/mpu_6050.c ****                             sqrtf(_impl(_this)->m_data.accel_y * _impl(_this)->m_data.accel_y +
+ 951              		.loc 1 198 23 view .LVU265
+ 952 0040 39EE280A 		vadd.f32	s0, s18, s17
+ 953 0044 FFF7FEFF 		bl	sqrtf
+ 954              	.LVL63:
+ 955 0048 F0EE400A 		vmov.f32	s1, s0
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 23
+
+
+ 198:sdk/common/mpu_6050/mpu_6050.c ****                             sqrtf(_impl(_this)->m_data.accel_y * _impl(_this)->m_data.accel_y +
+ 956              		.loc 1 198 23 discriminator 1 view .LVU266
+ 957 004c B1EE4A0A 		vneg.f32	s0, s20
+ 958 0050 FFF7FEFF 		bl	atan2f
+ 959              	.LVL64:
+ 198:sdk/common/mpu_6050/mpu_6050.c ****                             sqrtf(_impl(_this)->m_data.accel_y * _impl(_this)->m_data.accel_y +
+ 960              		.loc 1 198 11 discriminator 2 view .LVU267
+ 961 0054 20EE290A 		vmul.f32	s0, s0, s19
+ 962              	.LVL65:
+ 201:sdk/common/mpu_6050/mpu_6050.c **** 
+ 202:sdk/common/mpu_6050/mpu_6050.c ****     float alpha = 0.995f;
+ 963              		.loc 1 202 5 is_stmt 1 view .LVU268
+ 203:sdk/common/mpu_6050/mpu_6050.c **** 
+ 204:sdk/common/mpu_6050/mpu_6050.c ****     // time_diff tinh bang ms, can doi sang giay khi tich phan gyro.
+ 205:sdk/common/mpu_6050/mpu_6050.c ****     _impl(_this)->m_angle.roll = alpha * (_impl(_this)->m_angle.roll +
+ 964              		.loc 1 205 5 view .LVU269
+ 965              		.loc 1 205 64 is_stmt 0 view .LVU270
+ 966 0058 94ED0B7A 		vldr.32	s14, [r4, #44]
+ 206:sdk/common/mpu_6050/mpu_6050.c ****             _impl(_this)->m_data.gyro_x * time_diff * 0.001f)
+ 967              		.loc 1 206 33 view .LVU271
+ 968 005c D4ED086A 		vldr.32	s13, [r4, #32]
+ 969              		.loc 1 206 41 view .LVU272
+ 970 0060 DDED017A 		vldr.32	s15, [sp, #4]	@ int
+ 971 0064 F8EE677A 		vcvt.f32.u32	s15, s15
+ 972 0068 66EEA76A 		vmul.f32	s13, s13, s15
+ 973              		.loc 1 206 53 view .LVU273
+ 974 006c 9FED1A6A 		vldr.32	s12, .L68+4
+ 975 0070 66EE866A 		vmul.f32	s13, s13, s12
+ 205:sdk/common/mpu_6050/mpu_6050.c ****             _impl(_this)->m_data.gyro_x * time_diff * 0.001f)
+ 976              		.loc 1 205 70 view .LVU274
+ 977 0074 37EE267A 		vadd.f32	s14, s14, s13
+ 205:sdk/common/mpu_6050/mpu_6050.c ****             _impl(_this)->m_data.gyro_x * time_diff * 0.001f)
+ 978              		.loc 1 205 40 view .LVU275
+ 979 0078 9FED185A 		vldr.32	s10, .L68+8
+ 980 007c 27EE057A 		vmul.f32	s14, s14, s10
+ 207:sdk/common/mpu_6050/mpu_6050.c ****             + (1.0f - alpha) * roll_acc;
+ 981              		.loc 1 207 30 view .LVU276
+ 982 0080 DFED175A 		vldr.32	s11, .L68+12
+ 983 0084 28EE258A 		vmul.f32	s16, s16, s11
+ 984              	.LVL66:
+ 985              		.loc 1 207 13 view .LVU277
+ 986 0088 37EE087A 		vadd.f32	s14, s14, s16
+ 205:sdk/common/mpu_6050/mpu_6050.c ****             _impl(_this)->m_data.gyro_x * time_diff * 0.001f)
+ 987              		.loc 1 205 32 view .LVU278
+ 988 008c 84ED0B7A 		vstr.32	s14, [r4, #44]
+ 208:sdk/common/mpu_6050/mpu_6050.c **** 
+ 209:sdk/common/mpu_6050/mpu_6050.c ****     _impl(_this)->m_angle.pitch = alpha * (_impl(_this)->m_angle.pitch +
+ 989              		.loc 1 209 5 is_stmt 1 view .LVU279
+ 990              		.loc 1 209 65 is_stmt 0 view .LVU280
+ 991 0090 94ED0C7A 		vldr.32	s14, [r4, #48]
+ 210:sdk/common/mpu_6050/mpu_6050.c ****             _impl(_this)->m_data.gyro_y * time_diff * 0.001f)
+ 992              		.loc 1 210 33 view .LVU281
+ 993 0094 D4ED096A 		vldr.32	s13, [r4, #36]
+ 994              		.loc 1 210 41 view .LVU282
+ 995 0098 67EEA66A 		vmul.f32	s13, s15, s13
+ 996              		.loc 1 210 53 view .LVU283
+ 997 009c 66EE866A 		vmul.f32	s13, s13, s12
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 24
+
+
+ 209:sdk/common/mpu_6050/mpu_6050.c ****             _impl(_this)->m_data.gyro_y * time_diff * 0.001f)
+ 998              		.loc 1 209 72 view .LVU284
+ 999 00a0 37EE267A 		vadd.f32	s14, s14, s13
+ 209:sdk/common/mpu_6050/mpu_6050.c ****             _impl(_this)->m_data.gyro_y * time_diff * 0.001f)
+ 1000              		.loc 1 209 41 view .LVU285
+ 1001 00a4 27EE057A 		vmul.f32	s14, s14, s10
+ 211:sdk/common/mpu_6050/mpu_6050.c ****             + (1.0f - alpha) * pitch_acc;
+ 1002              		.loc 1 211 30 view .LVU286
+ 1003 00a8 20EE250A 		vmul.f32	s0, s0, s11
+ 1004              	.LVL67:
+ 1005              		.loc 1 211 13 view .LVU287
+ 1006 00ac 37EE007A 		vadd.f32	s14, s14, s0
+ 209:sdk/common/mpu_6050/mpu_6050.c ****             _impl(_this)->m_data.gyro_y * time_diff * 0.001f)
+ 1007              		.loc 1 209 33 view .LVU288
+ 1008 00b0 84ED0C7A 		vstr.32	s14, [r4, #48]
+ 212:sdk/common/mpu_6050/mpu_6050.c **** 
+ 213:sdk/common/mpu_6050/mpu_6050.c ****     _impl(_this)->m_angle.yaw += _impl(_this)->m_data.gyro_z * time_diff * 0.001f;
+ 1009              		.loc 1 213 5 is_stmt 1 view .LVU289
+ 1010              		.loc 1 213 26 is_stmt 0 view .LVU290
+ 1011 00b4 94ED0D7A 		vldr.32	s14, [r4, #52]
+ 1012              		.loc 1 213 54 view .LVU291
+ 1013 00b8 D4ED0A6A 		vldr.32	s13, [r4, #40]
+ 1014              		.loc 1 213 62 view .LVU292
+ 1015 00bc 67EEA67A 		vmul.f32	s15, s15, s13
+ 1016              		.loc 1 213 74 view .LVU293
+ 1017 00c0 67EE867A 		vmul.f32	s15, s15, s12
+ 1018              		.loc 1 213 31 view .LVU294
+ 1019 00c4 77EE277A 		vadd.f32	s15, s14, s15
+ 1020 00c8 C4ED0D7A 		vstr.32	s15, [r4, #52]
+ 1021              	.LVL68:
+ 1022              	.L65:
+ 214:sdk/common/mpu_6050/mpu_6050.c **** }
+ 1023              		.loc 1 214 1 view .LVU295
+ 1024 00cc 02B0     		add	sp, sp, #8
+ 1025              	.LCFI29:
+ 1026              		.cfi_def_cfa_offset 32
+ 1027              		@ sp needed
+ 1028 00ce BDEC068B 		vldm	sp!, {d8-d10}
+ 1029              	.LCFI30:
+ 1030              		.cfi_restore 84
+ 1031              		.cfi_restore 85
+ 1032              		.cfi_restore 82
+ 1033              		.cfi_restore 83
+ 1034              		.cfi_restore 80
+ 1035              		.cfi_restore 81
+ 1036              		.cfi_def_cfa_offset 8
+ 1037 00d2 10BD     		pop	{r4, pc}
+ 1038              	.LVL69:
+ 1039              	.L69:
+ 1040              		.loc 1 214 1 view .LVU296
+ 1041              		.align	2
+ 1042              	.L68:
+ 1043 00d4 E12E6542 		.word	1113927393
+ 1044 00d8 6F12833A 		.word	981668463
+ 1045 00dc 52B87E3F 		.word	1065269330
+ 1046 00e0 00D7A33B 		.word	1000593152
+ 1047              		.cfi_endproc
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 25
+
+
+ 1048              	.LFE143:
+ 1050              		.section	.rodata.sensitivity.0,"a"
+ 1051              		.align	2
+ 1054              	sensitivity.0:
+ 1055 0000 00000343 		.word	1124270080
+ 1056 0004 00008342 		.word	1115881472
+ 1057 0008 33330342 		.word	1107505971
+ 1058 000c 33338341 		.word	1099117363
+ 1059              		.section	.bss.g_mpu_6050,"aw",%nobits
+ 1060              		.align	2
+ 1063              	g_mpu_6050:
+ 1064 0000 00000000 		.space	88
+ 1064      00000000 
+ 1064      00000000 
+ 1064      00000000 
+ 1064      00000000 
+ 1065              		.text
+ 1066              	.Letext0:
+ 1067              		.file 2 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1068              		.file 3 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1069              		.file 4 "sdk/common/mpu_6050/mpu_6050.h"
+ 1070              		.file 5 "sdk/hal/sm_hal_i2c.h"
+ 1071              		.file 6 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1072              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 mpu_6050.c
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:21     .text.mpu_6050_get_data_raw:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:26     .text.mpu_6050_get_data_raw:00000000 mpu_6050_get_data_raw
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:231    .text.mpu_6050_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:237    .text.mpu_6050_init:00000000 mpu_6050_init
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:287    .text.mpu_6050_init:0000002c $d
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:1063   .bss.g_mpu_6050:00000000 g_mpu_6050
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:292    .text.mpu_6050_set_power_ctrl:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:298    .text.mpu_6050_set_power_ctrl:00000000 mpu_6050_set_power_ctrl
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:378    .text.mpu_6050_set_gyro_config:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:384    .text.mpu_6050_set_gyro_config:00000000 mpu_6050_set_gyro_config
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:493    .text.mpu_6050_set_gyro_config:00000068 $d
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:1054   .rodata.sensitivity.0:00000000 sensitivity.0
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:498    .text.mpu_6050_set_accel_config:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:504    .text.mpu_6050_set_accel_config:00000000 mpu_6050_set_accel_config
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:613    .text.mpu_6050_set_accel_config:0000006c $d
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:618    .text.mpu_6050_calibrate:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:624    .text.mpu_6050_calibrate:00000000 mpu_6050_calibrate
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:883    .text.mpu_6050_calibrate:00000194 $d
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:888    .text.mpu_6050_process:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:894    .text.mpu_6050_process:00000000 mpu_6050_process
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:1043   .text.mpu_6050_process:000000d4 $d
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:1051   .rodata.sensitivity.0:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\cc7rzobm.s:1060   .bss.g_mpu_6050:00000000 $d
+
+UNDEFINED SYMBOLS
+sm_hal_i2c_read
+sm_hal_i2c_set_addr
+sm_hal_i2c_write
+HAL_Delay
+atan2f
+sqrtf

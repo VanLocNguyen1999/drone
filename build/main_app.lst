@@ -1,0 +1,339 @@
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"main_app.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "sdk/app/main_app.c"
+  20              		.section	.text.main_app_drive_init,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	main_app_drive_init:
+  27              	.LVL0:
+  28              	.LFB137:
+   1:sdk/app/main_app.c **** /*
+   2:sdk/app/main_app.c ****  * main_app.c
+   3:sdk/app/main_app.c ****  *
+   4:sdk/app/main_app.c ****  *  Created on: Nov 11, 2026
+   5:sdk/app/main_app.c ****  *      Author: vanlo
+   6:sdk/app/main_app.c ****  */
+   7:sdk/app/main_app.c **** #include "i2c.h"
+   8:sdk/app/main_app.c **** 
+   9:sdk/app/main_app.c **** #include "main_app.h"
+  10:sdk/app/main_app.c **** 
+  11:sdk/app/main_app.c **** static main_app_t g_main_app = {
+  12:sdk/app/main_app.c **** 
+  13:sdk/app/main_app.c **** 		.m_mpu = NULL,
+  14:sdk/app/main_app.c **** 		.m_drive = {
+  15:sdk/app/main_app.c **** 				.mpu_i2c = NULL,
+  16:sdk/app/main_app.c **** 		}
+  17:sdk/app/main_app.c **** };
+  18:sdk/app/main_app.c **** 
+  19:sdk/app/main_app.c **** main_app_t* main_app = NULL;
+  20:sdk/app/main_app.c **** 
+  21:sdk/app/main_app.c **** static int32_t main_app_drive_init(main_app_t* _this){
+  29              		.loc 1 21 54 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 21 54 is_stmt 0 view .LVU1
+  34 0000 10B5     		push	{r4, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 4, -8
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 2
+
+
+  38              		.cfi_offset 14, -4
+  39 0002 0446     		mov	r4, r0
+  22:sdk/app/main_app.c **** 
+  23:sdk/app/main_app.c **** 	sm_hal_i2c_t*i2c =  sm_hal_i2c_init(&hi2c1, 0);
+  40              		.loc 1 23 2 is_stmt 1 view .LVU2
+  41              		.loc 1 23 22 is_stmt 0 view .LVU3
+  42 0004 0021     		movs	r1, #0
+  43 0006 0848     		ldr	r0, .L6
+  44              	.LVL1:
+  45              		.loc 1 23 22 view .LVU4
+  46 0008 FFF7FEFF 		bl	sm_hal_i2c_init
+  47              	.LVL2:
+  24:sdk/app/main_app.c **** 	if(!i2c || !_this) return -1;
+  48              		.loc 1 24 2 is_stmt 1 view .LVU5
+  49              		.loc 1 24 4 is_stmt 0 view .LVU6
+  50 000c 28B1     		cbz	r0, .L3
+  51              		.loc 1 24 10 discriminator 2 view .LVU7
+  52 000e 3CB1     		cbz	r4, .L4
+  25:sdk/app/main_app.c **** 	_this->m_drive.mpu_i2c = i2c;
+  53              		.loc 1 25 2 is_stmt 1 view .LVU8
+  54              		.loc 1 25 25 is_stmt 0 view .LVU9
+  55 0010 6060     		str	r0, [r4, #4]
+  26:sdk/app/main_app.c **** 	sm_hal_i2c_open(i2c);
+  56              		.loc 1 26 2 is_stmt 1 view .LVU10
+  57 0012 FFF7FEFF 		bl	sm_hal_i2c_open
+  58              	.LVL3:
+  27:sdk/app/main_app.c **** 	return 0;
+  59              		.loc 1 27 2 view .LVU11
+  60              		.loc 1 27 9 is_stmt 0 view .LVU12
+  61 0016 0020     		movs	r0, #0
+  62              	.L1:
+  28:sdk/app/main_app.c **** }
+  63              		.loc 1 28 1 view .LVU13
+  64 0018 10BD     		pop	{r4, pc}
+  65              	.LVL4:
+  66              	.L3:
+  24:sdk/app/main_app.c **** 	_this->m_drive.mpu_i2c = i2c;
+  67              		.loc 1 24 28 discriminator 3 view .LVU14
+  68 001a 4FF0FF30 		mov	r0, #-1
+  69              	.LVL5:
+  24:sdk/app/main_app.c **** 	_this->m_drive.mpu_i2c = i2c;
+  70              		.loc 1 24 28 discriminator 3 view .LVU15
+  71 001e FBE7     		b	.L1
+  72              	.LVL6:
+  73              	.L4:
+  24:sdk/app/main_app.c **** 	_this->m_drive.mpu_i2c = i2c;
+  74              		.loc 1 24 28 discriminator 3 view .LVU16
+  75 0020 4FF0FF30 		mov	r0, #-1
+  76              	.LVL7:
+  24:sdk/app/main_app.c **** 	_this->m_drive.mpu_i2c = i2c;
+  77              		.loc 1 24 28 discriminator 3 view .LVU17
+  78 0024 F8E7     		b	.L1
+  79              	.L7:
+  80 0026 00BF     		.align	2
+  81              	.L6:
+  82 0028 00000000 		.word	hi2c1
+  83              		.cfi_endproc
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 3
+
+
+  84              	.LFE137:
+  86              		.section	.text.main_app_mpu_6050_init,"ax",%progbits
+  87              		.align	1
+  88              		.syntax unified
+  89              		.thumb
+  90              		.thumb_func
+  92              	main_app_mpu_6050_init:
+  93              	.LVL8:
+  94              	.LFB138:
+  29:sdk/app/main_app.c **** 
+  30:sdk/app/main_app.c **** static int32_t main_app_mpu_6050_init(main_app_t* _this){
+  95              		.loc 1 30 57 is_stmt 1 view -0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+  99              		.loc 1 30 57 is_stmt 0 view .LVU19
+ 100 0000 38B5     		push	{r3, r4, r5, lr}
+ 101              	.LCFI1:
+ 102              		.cfi_def_cfa_offset 16
+ 103              		.cfi_offset 3, -16
+ 104              		.cfi_offset 4, -12
+ 105              		.cfi_offset 5, -8
+ 106              		.cfi_offset 14, -4
+ 107 0002 0546     		mov	r5, r0
+  31:sdk/app/main_app.c **** 
+  32:sdk/app/main_app.c **** 	mpu_6050_t*mpu = mpu_6050_init(_this->m_drive.mpu_i2c);
+ 108              		.loc 1 32 2 is_stmt 1 view .LVU20
+ 109              		.loc 1 32 19 is_stmt 0 view .LVU21
+ 110 0004 4068     		ldr	r0, [r0, #4]
+ 111              	.LVL9:
+ 112              		.loc 1 32 19 view .LVU22
+ 113 0006 FFF7FEFF 		bl	mpu_6050_init
+ 114              	.LVL10:
+  33:sdk/app/main_app.c **** 	if(!mpu || !_this) return -1;
+ 115              		.loc 1 33 2 is_stmt 1 view .LVU23
+ 116              		.loc 1 33 4 is_stmt 0 view .LVU24
+ 117 000a 88B1     		cbz	r0, .L10
+ 118 000c 0446     		mov	r4, r0
+  34:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
+ 119              		.loc 1 34 2 is_stmt 1 view .LVU25
+ 120              		.loc 1 34 15 is_stmt 0 view .LVU26
+ 121 000e 2860     		str	r0, [r5]
+  35:sdk/app/main_app.c **** 	mpu_6050_set_power_ctrl(mpu, 1);
+ 122              		.loc 1 35 2 is_stmt 1 view .LVU27
+ 123 0010 0121     		movs	r1, #1
+ 124 0012 FFF7FEFF 		bl	mpu_6050_set_power_ctrl
+ 125              	.LVL11:
+  36:sdk/app/main_app.c **** 	mpu_6050_set_gyro_config(mpu,GYRO_CONFIG_250_DEG_S);
+ 126              		.loc 1 36 2 view .LVU28
+ 127 0016 0021     		movs	r1, #0
+ 128 0018 2046     		mov	r0, r4
+ 129 001a FFF7FEFF 		bl	mpu_6050_set_gyro_config
+ 130              	.LVL12:
+  37:sdk/app/main_app.c **** 	mpu_6050_set_accel_config(mpu,ACCEL_CONFIG_2_G);
+ 131              		.loc 1 37 2 view .LVU29
+ 132 001e 0021     		movs	r1, #0
+ 133 0020 2046     		mov	r0, r4
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 4
+
+
+ 134 0022 FFF7FEFF 		bl	mpu_6050_set_accel_config
+ 135              	.LVL13:
+  38:sdk/app/main_app.c **** 	mpu_6050_calibrate(mpu) ;
+ 136              		.loc 1 38 2 view .LVU30
+ 137 0026 2046     		mov	r0, r4
+ 138 0028 FFF7FEFF 		bl	mpu_6050_calibrate
+ 139              	.LVL14:
+  39:sdk/app/main_app.c **** 	return 0;
+ 140              		.loc 1 39 2 view .LVU31
+ 141              		.loc 1 39 9 is_stmt 0 view .LVU32
+ 142 002c 0020     		movs	r0, #0
+ 143              	.LVL15:
+ 144              	.L8:
+  40:sdk/app/main_app.c **** }
+ 145              		.loc 1 40 1 view .LVU33
+ 146 002e 38BD     		pop	{r3, r4, r5, pc}
+ 147              	.LVL16:
+ 148              	.L10:
+  33:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
+ 149              		.loc 1 33 28 discriminator 3 view .LVU34
+ 150 0030 4FF0FF30 		mov	r0, #-1
+ 151              	.LVL17:
+  33:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
+ 152              		.loc 1 33 28 discriminator 3 view .LVU35
+ 153 0034 FBE7     		b	.L8
+ 154              		.cfi_endproc
+ 155              	.LFE138:
+ 157              		.section	.text.main_app_init,"ax",%progbits
+ 158              		.align	1
+ 159              		.global	main_app_init
+ 160              		.syntax unified
+ 161              		.thumb
+ 162              		.thumb_func
+ 164              	main_app_init:
+ 165              	.LFB139:
+  41:sdk/app/main_app.c **** 
+  42:sdk/app/main_app.c **** main_app_t* main_app_init(void){
+ 166              		.loc 1 42 32 is_stmt 1 view -0
+ 167              		.cfi_startproc
+ 168              		@ args = 0, pretend = 0, frame = 0
+ 169              		@ frame_needed = 0, uses_anonymous_args = 0
+ 170 0000 08B5     		push	{r3, lr}
+ 171              	.LCFI2:
+ 172              		.cfi_def_cfa_offset 8
+ 173              		.cfi_offset 3, -8
+ 174              		.cfi_offset 14, -4
+  43:sdk/app/main_app.c **** 
+  44:sdk/app/main_app.c **** 	main_app = &g_main_app;
+ 175              		.loc 1 44 2 view .LVU37
+ 176              		.loc 1 44 11 is_stmt 0 view .LVU38
+ 177 0002 0A48     		ldr	r0, .L17
+ 178 0004 0A4B     		ldr	r3, .L17+4
+ 179 0006 1860     		str	r0, [r3]
+  45:sdk/app/main_app.c **** 	if(main_app_drive_init(main_app) <  0) {
+ 180              		.loc 1 45 2 is_stmt 1 view .LVU39
+ 181              		.loc 1 45 5 is_stmt 0 view .LVU40
+ 182 0008 FFF7FEFF 		bl	main_app_drive_init
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 5
+
+
+ 183              	.LVL18:
+ 184              		.loc 1 45 4 discriminator 1 view .LVU41
+ 185 000c 0028     		cmp	r0, #0
+ 186 000e 08DB     		blt	.L14
+  46:sdk/app/main_app.c **** 		return NULL;
+  47:sdk/app/main_app.c **** 	}
+  48:sdk/app/main_app.c **** 	if(main_app_mpu_6050_init(main_app) < 0){
+ 187              		.loc 1 48 2 is_stmt 1 view .LVU42
+ 188              		.loc 1 48 5 is_stmt 0 view .LVU43
+ 189 0010 074B     		ldr	r3, .L17+4
+ 190 0012 1868     		ldr	r0, [r3]
+ 191 0014 FFF7FEFF 		bl	main_app_mpu_6050_init
+ 192              	.LVL19:
+ 193              		.loc 1 48 4 discriminator 1 view .LVU44
+ 194 0018 0028     		cmp	r0, #0
+ 195 001a 04DB     		blt	.L15
+  49:sdk/app/main_app.c **** 		return NULL;
+  50:sdk/app/main_app.c **** 	}
+  51:sdk/app/main_app.c **** 	return main_app;
+ 196              		.loc 1 51 2 is_stmt 1 view .LVU45
+ 197              		.loc 1 51 9 is_stmt 0 view .LVU46
+ 198 001c 044B     		ldr	r3, .L17+4
+ 199 001e 1868     		ldr	r0, [r3]
+ 200              	.L12:
+  52:sdk/app/main_app.c **** }
+ 201              		.loc 1 52 1 view .LVU47
+ 202 0020 08BD     		pop	{r3, pc}
+ 203              	.L14:
+  46:sdk/app/main_app.c **** 		return NULL;
+ 204              		.loc 1 46 10 view .LVU48
+ 205 0022 0020     		movs	r0, #0
+ 206 0024 FCE7     		b	.L12
+ 207              	.L15:
+  49:sdk/app/main_app.c **** 		return NULL;
+ 208              		.loc 1 49 10 view .LVU49
+ 209 0026 0020     		movs	r0, #0
+ 210 0028 FAE7     		b	.L12
+ 211              	.L18:
+ 212 002a 00BF     		.align	2
+ 213              	.L17:
+ 214 002c 00000000 		.word	g_main_app
+ 215 0030 00000000 		.word	main_app
+ 216              		.cfi_endproc
+ 217              	.LFE139:
+ 219              		.global	main_app
+ 220              		.section	.bss.main_app,"aw",%nobits
+ 221              		.align	2
+ 224              	main_app:
+ 225 0000 00000000 		.space	4
+ 226              		.section	.bss.g_main_app,"aw",%nobits
+ 227              		.align	2
+ 230              	g_main_app:
+ 231 0000 00000000 		.space	8
+ 231      00000000 
+ 232              		.text
+ 233              	.Letext0:
+ 234              		.file 2 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 6
+
+
+ 235              		.file 3 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 236              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ 237              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 238              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 239              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 240              		.file 8 "sdk/common/mpu_6050/mpu_6050.h"
+ 241              		.file 9 "sdk/hal/sm_hal_i2c.h"
+ 242              		.file 10 "sdk/app/main_app.h"
+ 243              		.file 11 "Core/Inc/i2c.h"
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main_app.c
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:21     .text.main_app_drive_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:26     .text.main_app_drive_init:00000000 main_app_drive_init
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:82     .text.main_app_drive_init:00000028 $d
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:87     .text.main_app_mpu_6050_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:92     .text.main_app_mpu_6050_init:00000000 main_app_mpu_6050_init
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:158    .text.main_app_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:164    .text.main_app_init:00000000 main_app_init
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:214    .text.main_app_init:0000002c $d
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:230    .bss.g_main_app:00000000 g_main_app
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:224    .bss.main_app:00000000 main_app
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:221    .bss.main_app:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:227    .bss.g_main_app:00000000 $d
+
+UNDEFINED SYMBOLS
+sm_hal_i2c_init
+sm_hal_i2c_open
+hi2c1
+mpu_6050_init
+mpu_6050_set_power_ctrl
+mpu_6050_set_gyro_config
+mpu_6050_set_accel_config
+mpu_6050_calibrate

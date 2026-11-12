@@ -1,0 +1,528 @@
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"sm_hal_i2c.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c"
+  20              		.section	.text.sm_hal_i2c_init,"ax",%progbits
+  21              		.align	1
+  22              		.global	sm_hal_i2c_init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	sm_hal_i2c_init:
+  28              	.LVL0:
+  29              	.LFB137:
+   1:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** /*
+   2:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c ****  * sm_hal_i2c.c
+   3:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c ****  *
+   4:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c ****  *  Created on: Nov 10, 2026
+   5:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c ****  *      Author: vanlo
+   6:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c ****  */
+   7:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** #include "sm_hal_i2c.h"
+   8:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 
+   9:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** typedef struct {
+  10:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	I2C_HandleTypeDef   *m_channel;
+  11:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	uint16_t			m_devaddress;
+  12:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }ra_i2c_t;
+  13:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** #define _impl(x)         ((ra_i2c_t*)(x))
+  14:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 
+  15:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** sm_hal_i2c_t* sm_hal_i2c_init(void* _channel, uint16_t _addr){
+  30              		.loc 1 15 62 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 15 62 is_stmt 0 view .LVU1
+  35 0000 38B5     		push	{r3, r4, r5, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 3, -16
+  39              		.cfi_offset 4, -12
+  40              		.cfi_offset 5, -8
+  41              		.cfi_offset 14, -4
+  16:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 
+  17:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	if(!_channel) return NULL;
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s 			page 2
+
+
+  42              		.loc 1 17 2 is_stmt 1 view .LVU2
+  43              		.loc 1 17 4 is_stmt 0 view .LVU3
+  44 0002 0546     		mov	r5, r0
+  45 0004 28B1     		cbz	r0, .L1
+  46 0006 0C46     		mov	r4, r1
+  18:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	ra_i2c_t* _this = (ra_i2c_t*)(malloc(sizeof(ra_i2c_t)));
+  47              		.loc 1 18 2 is_stmt 1 view .LVU4
+  48              		.loc 1 18 32 is_stmt 0 view .LVU5
+  49 0008 0820     		movs	r0, #8
+  50              	.LVL1:
+  51              		.loc 1 18 32 view .LVU6
+  52 000a FFF7FEFF 		bl	malloc
+  53              	.LVL2:
+  19:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	_this->m_channel = _channel;
+  54              		.loc 1 19 2 is_stmt 1 view .LVU7
+  55              		.loc 1 19 19 is_stmt 0 view .LVU8
+  56 000e 0560     		str	r5, [r0]
+  20:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	_this->m_devaddress = _addr;
+  57              		.loc 1 20 2 is_stmt 1 view .LVU9
+  58              		.loc 1 20 22 is_stmt 0 view .LVU10
+  59 0010 8480     		strh	r4, [r0, #4]	@ movhi
+  21:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	return (sm_hal_i2c_t*)_this;
+  60              		.loc 1 21 2 is_stmt 1 view .LVU11
+  61              	.LVL3:
+  62              	.L1:
+  22:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+  63              		.loc 1 22 1 is_stmt 0 view .LVU12
+  64 0012 38BD     		pop	{r3, r4, r5, pc}
+  65              		.loc 1 22 1 view .LVU13
+  66              		.cfi_endproc
+  67              	.LFE137:
+  69              		.section	.text.sm_hal_i2c_deinit,"ax",%progbits
+  70              		.align	1
+  71              		.global	sm_hal_i2c_deinit
+  72              		.syntax unified
+  73              		.thumb
+  74              		.thumb_func
+  76              	sm_hal_i2c_deinit:
+  77              	.LVL4:
+  78              	.LFB138:
+  23:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** void sm_hal_i2c_deinit(sm_hal_i2c_t *_this){
+  79              		.loc 1 23 44 is_stmt 1 view -0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 0
+  82              		@ frame_needed = 0, uses_anonymous_args = 0
+  24:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 
+  25:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	if(!_this) return;
+  83              		.loc 1 25 2 view .LVU15
+  84              		.loc 1 25 4 is_stmt 0 view .LVU16
+  85 0000 18B1     		cbz	r0, .L8
+  23:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** void sm_hal_i2c_deinit(sm_hal_i2c_t *_this){
+  86              		.loc 1 23 44 view .LVU17
+  87 0002 08B5     		push	{r3, lr}
+  88              	.LCFI1:
+  89              		.cfi_def_cfa_offset 8
+  90              		.cfi_offset 3, -8
+  91              		.cfi_offset 14, -4
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s 			page 3
+
+
+  26:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	free(_this);
+  92              		.loc 1 26 2 is_stmt 1 view .LVU18
+  93 0004 FFF7FEFF 		bl	free
+  94              	.LVL5:
+  27:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+  95              		.loc 1 27 1 is_stmt 0 view .LVU19
+  96 0008 08BD     		pop	{r3, pc}
+  97              	.LVL6:
+  98              	.L8:
+  99              	.LCFI2:
+ 100              		.cfi_def_cfa_offset 0
+ 101              		.cfi_restore 3
+ 102              		.cfi_restore 14
+ 103              		.loc 1 27 1 view .LVU20
+ 104 000a 7047     		bx	lr
+ 105              		.cfi_endproc
+ 106              	.LFE138:
+ 108              		.section	.text.sm_hal_i2c_set_addr,"ax",%progbits
+ 109              		.align	1
+ 110              		.global	sm_hal_i2c_set_addr
+ 111              		.syntax unified
+ 112              		.thumb
+ 113              		.thumb_func
+ 115              	sm_hal_i2c_set_addr:
+ 116              	.LVL7:
+ 117              	.LFB139:
+  28:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 
+  29:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** int32_t sm_hal_i2c_set_addr(sm_hal_i2c_t *_this, uint16_t _addr){
+ 118              		.loc 1 29 65 is_stmt 1 view -0
+ 119              		.cfi_startproc
+ 120              		@ args = 0, pretend = 0, frame = 0
+ 121              		@ frame_needed = 0, uses_anonymous_args = 0
+ 122              		@ link register save eliminated.
+  30:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 
+  31:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	if(!_this) return -1;
+ 123              		.loc 1 31 2 view .LVU22
+ 124              		.loc 1 31 4 is_stmt 0 view .LVU23
+ 125 0000 10B1     		cbz	r0, .L13
+  32:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	_impl(_this)->m_devaddress = _addr;
+ 126              		.loc 1 32 2 is_stmt 1 view .LVU24
+ 127              		.loc 1 32 29 is_stmt 0 view .LVU25
+ 128 0002 8180     		strh	r1, [r0, #4]	@ movhi
+  33:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	return 0;
+ 129              		.loc 1 33 2 is_stmt 1 view .LVU26
+ 130              		.loc 1 33 9 is_stmt 0 view .LVU27
+ 131 0004 0020     		movs	r0, #0
+ 132              	.LVL8:
+ 133              		.loc 1 33 9 view .LVU28
+ 134 0006 7047     		bx	lr
+ 135              	.LVL9:
+ 136              	.L13:
+  31:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	_impl(_this)->m_devaddress = _addr;
+ 137              		.loc 1 31 20 discriminator 1 view .LVU29
+ 138 0008 4FF0FF30 		mov	r0, #-1
+ 139              	.LVL10:
+  34:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+ 140              		.loc 1 34 1 view .LVU30
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s 			page 4
+
+
+ 141 000c 7047     		bx	lr
+ 142              		.cfi_endproc
+ 143              	.LFE139:
+ 145              		.section	.text.sm_hal_i2c_open,"ax",%progbits
+ 146              		.align	1
+ 147              		.global	sm_hal_i2c_open
+ 148              		.syntax unified
+ 149              		.thumb
+ 150              		.thumb_func
+ 152              	sm_hal_i2c_open:
+ 153              	.LVL11:
+ 154              	.LFB140:
+  35:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** int32_t sm_hal_i2c_open(sm_hal_i2c_t *_this){
+ 155              		.loc 1 35 45 is_stmt 1 view -0
+ 156              		.cfi_startproc
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+  36:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	if(!_this) return -1;
+ 159              		.loc 1 36 2 view .LVU32
+ 160              		.loc 1 36 4 is_stmt 0 view .LVU33
+ 161 0000 28B1     		cbz	r0, .L16
+  35:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** int32_t sm_hal_i2c_open(sm_hal_i2c_t *_this){
+ 162              		.loc 1 35 45 view .LVU34
+ 163 0002 08B5     		push	{r3, lr}
+ 164              	.LCFI3:
+ 165              		.cfi_def_cfa_offset 8
+ 166              		.cfi_offset 3, -8
+ 167              		.cfi_offset 14, -4
+  37:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	HAL_I2C_MspInit(_impl(_this)->m_channel);
+ 168              		.loc 1 37 2 is_stmt 1 view .LVU35
+ 169 0004 0068     		ldr	r0, [r0]
+ 170              	.LVL12:
+ 171              		.loc 1 37 2 is_stmt 0 view .LVU36
+ 172 0006 FFF7FEFF 		bl	HAL_I2C_MspInit
+ 173              	.LVL13:
+  38:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	return 0;
+ 174              		.loc 1 38 2 is_stmt 1 view .LVU37
+ 175              		.loc 1 38 9 is_stmt 0 view .LVU38
+ 176 000a 0020     		movs	r0, #0
+  39:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+ 177              		.loc 1 39 1 view .LVU39
+ 178 000c 08BD     		pop	{r3, pc}
+ 179              	.LVL14:
+ 180              	.L16:
+ 181              	.LCFI4:
+ 182              		.cfi_def_cfa_offset 0
+ 183              		.cfi_restore 3
+ 184              		.cfi_restore 14
+  36:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	HAL_I2C_MspInit(_impl(_this)->m_channel);
+ 185              		.loc 1 36 20 discriminator 1 view .LVU40
+ 186 000e 4FF0FF30 		mov	r0, #-1
+ 187              	.LVL15:
+ 188              		.loc 1 39 1 view .LVU41
+ 189 0012 7047     		bx	lr
+ 190              		.cfi_endproc
+ 191              	.LFE140:
+ 193              		.section	.text.sm_hal_i2c_close,"ax",%progbits
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s 			page 5
+
+
+ 194              		.align	1
+ 195              		.global	sm_hal_i2c_close
+ 196              		.syntax unified
+ 197              		.thumb
+ 198              		.thumb_func
+ 200              	sm_hal_i2c_close:
+ 201              	.LVL16:
+ 202              	.LFB141:
+  40:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** int32_t sm_hal_i2c_close(sm_hal_i2c_t *_this){
+ 203              		.loc 1 40 46 is_stmt 1 view -0
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+  41:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	if(!_this) return -1;
+ 207              		.loc 1 41 2 view .LVU43
+ 208              		.loc 1 41 4 is_stmt 0 view .LVU44
+ 209 0000 28B1     		cbz	r0, .L23
+  40:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** int32_t sm_hal_i2c_close(sm_hal_i2c_t *_this){
+ 210              		.loc 1 40 46 view .LVU45
+ 211 0002 08B5     		push	{r3, lr}
+ 212              	.LCFI5:
+ 213              		.cfi_def_cfa_offset 8
+ 214              		.cfi_offset 3, -8
+ 215              		.cfi_offset 14, -4
+  42:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	HAL_I2C_MspDeInit(_impl(_this)->m_channel);
+ 216              		.loc 1 42 2 is_stmt 1 view .LVU46
+ 217 0004 0068     		ldr	r0, [r0]
+ 218              	.LVL17:
+ 219              		.loc 1 42 2 is_stmt 0 view .LVU47
+ 220 0006 FFF7FEFF 		bl	HAL_I2C_MspDeInit
+ 221              	.LVL18:
+  43:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	return 0;
+ 222              		.loc 1 43 2 is_stmt 1 view .LVU48
+ 223              		.loc 1 43 9 is_stmt 0 view .LVU49
+ 224 000a 0020     		movs	r0, #0
+  44:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+ 225              		.loc 1 44 1 view .LVU50
+ 226 000c 08BD     		pop	{r3, pc}
+ 227              	.LVL19:
+ 228              	.L23:
+ 229              	.LCFI6:
+ 230              		.cfi_def_cfa_offset 0
+ 231              		.cfi_restore 3
+ 232              		.cfi_restore 14
+  41:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	HAL_I2C_MspDeInit(_impl(_this)->m_channel);
+ 233              		.loc 1 41 20 discriminator 1 view .LVU51
+ 234 000e 4FF0FF30 		mov	r0, #-1
+ 235              	.LVL20:
+ 236              		.loc 1 44 1 view .LVU52
+ 237 0012 7047     		bx	lr
+ 238              		.cfi_endproc
+ 239              	.LFE141:
+ 241              		.section	.text.sm_hal_i2c_write,"ax",%progbits
+ 242              		.align	1
+ 243              		.global	sm_hal_i2c_write
+ 244              		.syntax unified
+ 245              		.thumb
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s 			page 6
+
+
+ 246              		.thumb_func
+ 248              	sm_hal_i2c_write:
+ 249              	.LVL21:
+ 250              	.LFB142:
+  45:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** int32_t sm_hal_i2c_write(sm_hal_i2c_t *_this, uint16_t mem_address, uint16_t mem_addsize,uint8_t *_
+ 251              		.loc 1 45 139 is_stmt 1 view -0
+ 252              		.cfi_startproc
+ 253              		@ args = 8, pretend = 0, frame = 0
+ 254              		@ frame_needed = 0, uses_anonymous_args = 0
+  46:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 
+  47:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	if(!_this) return -1;
+ 255              		.loc 1 47 2 view .LVU54
+ 256              		.loc 1 47 4 is_stmt 0 view .LVU55
+ 257 0000 B8B1     		cbz	r0, .L30
+  45:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** int32_t sm_hal_i2c_write(sm_hal_i2c_t *_this, uint16_t mem_address, uint16_t mem_addsize,uint8_t *_
+ 258              		.loc 1 45 139 view .LVU56
+ 259 0002 00B5     		push	{lr}
+ 260              	.LCFI7:
+ 261              		.cfi_def_cfa_offset 4
+ 262              		.cfi_offset 14, -4
+ 263 0004 85B0     		sub	sp, sp, #20
+ 264              	.LCFI8:
+ 265              		.cfi_def_cfa_offset 24
+ 266 0006 8446     		mov	ip, r0
+  48:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	HAL_StatusTypeDef ret = HAL_I2C_Mem_Write(_impl(_this)->m_channel, _impl(_this)->m_devaddress,
+ 267              		.loc 1 48 2 is_stmt 1 view .LVU57
+ 268              		.loc 1 48 26 is_stmt 0 view .LVU58
+ 269 0008 0798     		ldr	r0, [sp, #28]
+ 270              	.LVL22:
+ 271              		.loc 1 48 26 view .LVU59
+ 272 000a 0290     		str	r0, [sp, #8]
+ 273 000c BDF81800 		ldrh	r0, [sp, #24]
+ 274 0010 0190     		str	r0, [sp, #4]
+ 275 0012 0093     		str	r3, [sp]
+ 276 0014 1346     		mov	r3, r2
+ 277              	.LVL23:
+ 278              		.loc 1 48 26 view .LVU60
+ 279 0016 0A46     		mov	r2, r1
+ 280              	.LVL24:
+ 281              		.loc 1 48 26 view .LVU61
+ 282 0018 BCF80410 		ldrh	r1, [ip, #4]
+ 283              	.LVL25:
+ 284              		.loc 1 48 26 view .LVU62
+ 285 001c DCF80000 		ldr	r0, [ip]
+ 286 0020 FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 287              	.LVL26:
+  49:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 			mem_address, mem_addsize, _data, _len, time_out);
+  50:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	return (ret != HAL_OK) ? -1 : 0;
+ 288              		.loc 1 50 2 is_stmt 1 view .LVU63
+ 289              		.loc 1 50 30 is_stmt 0 view .LVU64
+ 290 0024 10B9     		cbnz	r0, .L36
+ 291              		.loc 1 50 30 discriminator 2 view .LVU65
+ 292 0026 0020     		movs	r0, #0
+ 293              	.LVL27:
+ 294              	.L28:
+  51:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+ 295              		.loc 1 51 1 view .LVU66
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s 			page 7
+
+
+ 296 0028 05B0     		add	sp, sp, #20
+ 297              	.LCFI9:
+ 298              		.cfi_remember_state
+ 299              		.cfi_def_cfa_offset 4
+ 300              		@ sp needed
+ 301 002a 00BD     		pop	{pc}
+ 302              	.LVL28:
+ 303              	.L36:
+ 304              	.LCFI10:
+ 305              		.cfi_restore_state
+  50:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+ 306              		.loc 1 50 30 discriminator 1 view .LVU67
+ 307 002c 4FF0FF30 		mov	r0, #-1
+ 308              	.LVL29:
+  50:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+ 309              		.loc 1 50 30 discriminator 1 view .LVU68
+ 310 0030 FAE7     		b	.L28
+ 311              	.LVL30:
+ 312              	.L30:
+ 313              	.LCFI11:
+ 314              		.cfi_def_cfa_offset 0
+ 315              		.cfi_restore 14
+  47:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	HAL_StatusTypeDef ret = HAL_I2C_Mem_Write(_impl(_this)->m_channel, _impl(_this)->m_devaddress,
+ 316              		.loc 1 47 20 discriminator 1 view .LVU69
+ 317 0032 4FF0FF30 		mov	r0, #-1
+ 318              	.LVL31:
+ 319              		.loc 1 51 1 view .LVU70
+ 320 0036 7047     		bx	lr
+ 321              		.cfi_endproc
+ 322              	.LFE142:
+ 324              		.section	.text.sm_hal_i2c_read,"ax",%progbits
+ 325              		.align	1
+ 326              		.global	sm_hal_i2c_read
+ 327              		.syntax unified
+ 328              		.thumb
+ 329              		.thumb_func
+ 331              	sm_hal_i2c_read:
+ 332              	.LVL32:
+ 333              	.LFB143:
+  52:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** int32_t sm_hal_i2c_read(sm_hal_i2c_t *_this, uint16_t mem_address, uint16_t mem_addsize, uint8_t *_
+ 334              		.loc 1 52 139 is_stmt 1 view -0
+ 335              		.cfi_startproc
+ 336              		@ args = 8, pretend = 0, frame = 0
+ 337              		@ frame_needed = 0, uses_anonymous_args = 0
+  53:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 
+  54:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	if(!_this) return -1;
+ 338              		.loc 1 54 2 view .LVU72
+ 339              		.loc 1 54 4 is_stmt 0 view .LVU73
+ 340 0000 B8B1     		cbz	r0, .L39
+  52:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** int32_t sm_hal_i2c_read(sm_hal_i2c_t *_this, uint16_t mem_address, uint16_t mem_addsize, uint8_t *_
+ 341              		.loc 1 52 139 view .LVU74
+ 342 0002 00B5     		push	{lr}
+ 343              	.LCFI12:
+ 344              		.cfi_def_cfa_offset 4
+ 345              		.cfi_offset 14, -4
+ 346 0004 85B0     		sub	sp, sp, #20
+ 347              	.LCFI13:
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s 			page 8
+
+
+ 348              		.cfi_def_cfa_offset 24
+ 349 0006 8446     		mov	ip, r0
+  55:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	HAL_StatusTypeDef ret = HAL_I2C_Mem_Read(_impl(_this)->m_channel, _impl(_this)->m_devaddress,
+ 350              		.loc 1 55 2 is_stmt 1 view .LVU75
+ 351              		.loc 1 55 26 is_stmt 0 view .LVU76
+ 352 0008 0798     		ldr	r0, [sp, #28]
+ 353              	.LVL33:
+ 354              		.loc 1 55 26 view .LVU77
+ 355 000a 0290     		str	r0, [sp, #8]
+ 356 000c BDF81800 		ldrh	r0, [sp, #24]
+ 357 0010 0190     		str	r0, [sp, #4]
+ 358 0012 0093     		str	r3, [sp]
+ 359 0014 1346     		mov	r3, r2
+ 360              	.LVL34:
+ 361              		.loc 1 55 26 view .LVU78
+ 362 0016 0A46     		mov	r2, r1
+ 363              	.LVL35:
+ 364              		.loc 1 55 26 view .LVU79
+ 365 0018 BCF80410 		ldrh	r1, [ip, #4]
+ 366              	.LVL36:
+ 367              		.loc 1 55 26 view .LVU80
+ 368 001c DCF80000 		ldr	r0, [ip]
+ 369 0020 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 370              	.LVL37:
+  56:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 							mem_address, mem_addsize, _data, _len, time_out);
+  57:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	return (ret != HAL_OK) ? -1 : 0;
+ 371              		.loc 1 57 2 is_stmt 1 view .LVU81
+ 372              		.loc 1 57 30 is_stmt 0 view .LVU82
+ 373 0024 10B9     		cbnz	r0, .L45
+ 374              		.loc 1 57 30 discriminator 2 view .LVU83
+ 375 0026 0020     		movs	r0, #0
+ 376              	.LVL38:
+ 377              	.L37:
+  58:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+ 378              		.loc 1 58 1 view .LVU84
+ 379 0028 05B0     		add	sp, sp, #20
+ 380              	.LCFI14:
+ 381              		.cfi_remember_state
+ 382              		.cfi_def_cfa_offset 4
+ 383              		@ sp needed
+ 384 002a 00BD     		pop	{pc}
+ 385              	.LVL39:
+ 386              	.L45:
+ 387              	.LCFI15:
+ 388              		.cfi_restore_state
+  57:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+ 389              		.loc 1 57 30 discriminator 1 view .LVU85
+ 390 002c 4FF0FF30 		mov	r0, #-1
+ 391              	.LVL40:
+  57:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** }
+ 392              		.loc 1 57 30 discriminator 1 view .LVU86
+ 393 0030 FAE7     		b	.L37
+ 394              	.LVL41:
+ 395              	.L39:
+ 396              	.LCFI16:
+ 397              		.cfi_def_cfa_offset 0
+ 398              		.cfi_restore 14
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s 			page 9
+
+
+  54:sdk/platforms/stm32_f401rc/hal/sm_hal_i2c.c **** 	HAL_StatusTypeDef ret = HAL_I2C_Mem_Read(_impl(_this)->m_channel, _impl(_this)->m_devaddress,
+ 399              		.loc 1 54 20 discriminator 1 view .LVU87
+ 400 0032 4FF0FF30 		mov	r0, #-1
+ 401              	.LVL42:
+ 402              		.loc 1 58 1 view .LVU88
+ 403 0036 7047     		bx	lr
+ 404              		.cfi_endproc
+ 405              	.LFE143:
+ 407              		.text
+ 408              	.Letext0:
+ 409              		.file 2 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 410              		.file 3 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 411              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ 412              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 413              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 414              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 415              		.file 8 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 416              		.file 9 "sdk/hal/sm_hal_i2c.h"
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sm_hal_i2c.c
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:21     .text.sm_hal_i2c_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:27     .text.sm_hal_i2c_init:00000000 sm_hal_i2c_init
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:70     .text.sm_hal_i2c_deinit:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:76     .text.sm_hal_i2c_deinit:00000000 sm_hal_i2c_deinit
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:109    .text.sm_hal_i2c_set_addr:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:115    .text.sm_hal_i2c_set_addr:00000000 sm_hal_i2c_set_addr
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:146    .text.sm_hal_i2c_open:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:152    .text.sm_hal_i2c_open:00000000 sm_hal_i2c_open
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:194    .text.sm_hal_i2c_close:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:200    .text.sm_hal_i2c_close:00000000 sm_hal_i2c_close
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:242    .text.sm_hal_i2c_write:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:248    .text.sm_hal_i2c_write:00000000 sm_hal_i2c_write
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:325    .text.sm_hal_i2c_read:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccj6Ndfb.s:331    .text.sm_hal_i2c_read:00000000 sm_hal_i2c_read
+
+UNDEFINED SYMBOLS
+malloc
+free
+HAL_I2C_MspInit
+HAL_I2C_MspDeInit
+HAL_I2C_Mem_Write
+HAL_I2C_Mem_Read
