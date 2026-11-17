@@ -26,8 +26,8 @@ struct sm_storage {
 
 struct sm_storage_config{
 
-	sm_hal_flash_t* m_flash;
 	sm_storage_t m_base;
+	sm_hal_flash_t* m_flash;
     uint32_t m_start_address;
     volatile uint32_t m_config_size;
 };

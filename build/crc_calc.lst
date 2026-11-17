@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
   28:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_8_RESULT_WIDTH - 1u))) {
   29:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (uint8_t) ((retVal << 1u) ^ CRC_8_POLYNOMIAL);
   30:sdk/utils/crc_calc/crc_calc.c **** 				} else {
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 2
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 2
 
 
   31:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (retVal << 1u);
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
   85:sdk/utils/crc_calc/crc_calc.c **** 
   86:sdk/utils/crc_calc/crc_calc.c **** 			uint8_t bitIndex = 0u;
   87:sdk/utils/crc_calc/crc_calc.c **** 			/* Do calculation for current data */
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 3
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 3
 
 
   88:sdk/utils/crc_calc/crc_calc.c **** 			for (bitIndex = 0u; bitIndex < 8u; bitIndex++) {
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
   59              		.loc 1 111 45 view .LVU10
   60 001e 4000     		lsls	r0, r0, #1
   61              	.LVL7:
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 4
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 4
 
 
   62              		.loc 1 111 45 view .LVU11
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
  122:sdk/utils/crc_calc/crc_calc.c ****     {
  123:sdk/utils/crc_calc/crc_calc.c ****         reversed |= (value & 1u) << i;
  107              		.loc 1 123 9 is_stmt 1 view .LVU23
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 5
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 5
 
 
  108              		.loc 1 123 28 is_stmt 0 view .LVU24
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
  153              		.loc 1 14 2 view .LVU37
   16:sdk/utils/crc_calc/crc_calc.c **** 		uint8_t bitIndex = 0u;
  154              		.loc 1 16 2 view .LVU38
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 6
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 6
 
 
   16:sdk/utils/crc_calc/crc_calc.c **** 		uint8_t bitIndex = 0u;
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
  195              		.loc 1 31 6 is_stmt 1 view .LVU52
   31:sdk/utils/crc_calc/crc_calc.c **** 				}
  196              		.loc 1 31 13 is_stmt 0 view .LVU53
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 7
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 7
 
 
  197 0022 5B00     		lsls	r3, r3, #1
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
  236              		.loc 1 41 1 is_stmt 0 view .LVU68
  237 003e 7047     		bx	lr
  238              		.cfi_endproc
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 8
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 8
 
 
  239              	.LFE3:
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
  283              	.LVL37:
   57:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_16_RESULT_WIDTH - 1u))) {
  284              		.loc 1 57 47 is_stmt 0 discriminator 2 view .LVU81
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 9
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 9
 
 
  285 0014 DBB2     		uxtb	r3, r3
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
  323              		.loc 1 57 4 view .LVU97
  324 003c EBE7     		b	.L21
  325              	.LVL42:
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 10
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 10
 
 
  326              	.L32:
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
   74:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t byteIndex = 0u;
  373              		.loc 1 74 2 is_stmt 1 view .LVU107
  374              	.LVL47:
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 11
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 11
 
 
   75:sdk/utils/crc_calc/crc_calc.c **** 
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
  414 0024 F7E7     		b	.L38
  415              	.LVL53:
  416              	.L43:
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 12
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 12
 
 
   92:sdk/utils/crc_calc/crc_calc.c **** 				}
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
  105:sdk/utils/crc_calc/crc_calc.c **** 
  455              		.loc 1 105 1 is_stmt 0 view .LVU139
  456 0040 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 13
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 13
 
 
  457              	.L47:
@@ -731,21 +731,21 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
  465              	.Letext0:
  466              		.file 2 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
  467              		.file 3 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 14
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 crc_calc.c
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:21     .text.CRC_ReverseBitOrder8:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:26     .text.CRC_ReverseBitOrder8:00000000 CRC_ReverseBitOrder8
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:76     .text.CRC_ReverseBitOrder32:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:81     .text.CRC_ReverseBitOrder32:00000000 CRC_ReverseBitOrder32
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:138    .text.crc_calculate_8bit:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:144    .text.crc_calculate_8bit:00000000 crc_calculate_8bit
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:242    .text.crc_calculate_16bit:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:248    .text.crc_calculate_16bit:00000000 crc_calculate_16bit
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:350    .text.crc_calculate_32bit:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:356    .text.crc_calculate_32bit:00000000 crc_calculate_32bit
-C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:460    .text.crc_calculate_32bit:00000044 $d
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:21     .text.CRC_ReverseBitOrder8:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:26     .text.CRC_ReverseBitOrder8:00000000 CRC_ReverseBitOrder8
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:76     .text.CRC_ReverseBitOrder32:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:81     .text.CRC_ReverseBitOrder32:00000000 CRC_ReverseBitOrder32
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:138    .text.crc_calculate_8bit:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:144    .text.crc_calculate_8bit:00000000 crc_calculate_8bit
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:242    .text.crc_calculate_16bit:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:248    .text.crc_calculate_16bit:00000000 crc_calculate_16bit
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:350    .text.crc_calculate_32bit:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:356    .text.crc_calculate_32bit:00000000 crc_calculate_32bit
+C:\Users\vanlo\AppData\Local\Temp\ccdwQer7.s:460    .text.crc_calculate_32bit:00000044 $d
 
 NO UNDEFINED SYMBOLS

@@ -43,7 +43,7 @@ int32_t mpu_6050_set_power_ctrl(mpu_6050_t *_this, uint8_t enable);
 int32_t mpu_6050_set_gyro_config(mpu_6050_t* _this,GYRO_CONFIG_DATA gyro_config);
 int32_t mpu_6050_set_accel_config(mpu_6050_t* _this,ACCEL_CONFIG_DATA accel_config);
 
-int32_t mpu_6050_calibrate(mpu_6050_t* _this, mpu6050_data_t _offset_out) ;
+int32_t mpu_6050_calibrate(mpu_6050_t* _this, mpu6050_data_t* _offset_out) ;
 int32_t mpu_6050_set_offset(mpu_6050_t* _this, mpu6050_data_t _offset) ;
 
 void mpu_6050_process(mpu_6050_t* _this, uint32_t time_diff);

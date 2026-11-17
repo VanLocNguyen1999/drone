@@ -138,7 +138,7 @@ static int32_t mpu_6050_get_data_raw(mpu_6050_impl_t* _this) {
 }
 
 // Dat MPU6050 nam ngang, dung yen, truc Z huong len khi calib.
-int32_t mpu_6050_calibrate(mpu_6050_t* _this, mpu6050_data_t _offset_out) {
+int32_t mpu_6050_calibrate(mpu_6050_t* _this, mpu6050_data_t* _offset_out) {
     if (!_this) return -1;
 
     if (_impl(_this)->m_accel_sensitivity < 0.0f ||
@@ -170,7 +170,7 @@ int32_t mpu_6050_calibrate(mpu_6050_t* _this, mpu6050_data_t _offset_out) {
     offset.gyro_z /= sample_count;
 
     _impl(_this)->m_offset = offset;
-    memcpy(&_offset_out,&_impl(_this)->m_offset,sizeof(mpu6050_data_t));
+    memcpy(_offset_out,&_impl(_this)->m_offset,sizeof(mpu6050_data_t));
     _impl(_this)->m_angle.roll = 0.0f;
     _impl(_this)->m_angle.pitch = 0.0f;
     _impl(_this)->m_angle.yaw = 0.0f;

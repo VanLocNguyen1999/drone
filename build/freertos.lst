@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 1
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 1
   28:Core/Src/freertos.c **** #include "main_app.h"
   29:Core/Src/freertos.c **** 
   30:Core/Src/freertos.c **** #define MPU_TASK_PERIOD_MS			10
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 2
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s 			page 2
 
 
   31:Core/Src/freertos.c **** /* USER CODE END Includes */
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 1
   85:Core/Src/freertos.c ****   /* USER CODE END Init */
   86:Core/Src/freertos.c **** 
   87:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_MUTEX */
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 3
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s 			page 3
 
 
   88:Core/Src/freertos.c ****   /* add mutexes, ... */
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 1
   42              	.L2:
  129:Core/Src/freertos.c ****   /* USER CODE BEGIN StartDefaultTask */
  130:Core/Src/freertos.c ****   /* Infinite loop */
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 4
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s 			page 4
 
 
  131:Core/Src/freertos.c ****   for(;;)
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 1
   80              	.LVL5:
  149:Core/Src/freertos.c ****   /* Infinite loop */
  150:Core/Src/freertos.c ****   for(;;)
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 5
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s 			page 5
 
 
   81              		.loc 1 150 3 is_stmt 1 view .LVU10
@@ -259,7 +259,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 1
   92 0010 024B     		ldr	r3, .L7
   93 0012 1B68     		ldr	r3, [r3]
   94              		.loc 1 154 5 discriminator 1 view .LVU16
-  95 0014 5868     		ldr	r0, [r3, #4]
+  95 0014 1868     		ldr	r0, [r3]
   96 0016 FFF7FEFF 		bl	sm_attitude_est_update
   97              	.LVL8:
  150:Core/Src/freertos.c ****   {
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 1
  129 0006 0748     		ldr	r0, .L11+4
  130 0008 FFF7FEFF 		bl	osThreadNew
  131              	.LVL9:
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 6
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s 			page 6
 
 
  105:Core/Src/freertos.c **** 
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 1
  181              		.global	defaultTask_attributes
  182              		.section	.rodata.str1.4
  183              		.align	2
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 7
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s 			page 7
 
 
  184              	.LC1:
@@ -394,28 +394,28 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 1
  212              		.file 9 "sdk/hal/sm_hal_flash.h"
  213              		.file 10 "sdk/services/storage/sm_storage.h"
  214              		.file 11 "sdk/app/main_app.h"
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s 			page 8
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 freertos.c
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:21     .text.StartDefaultTask:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:27     .text.StartDefaultTask:00000000 StartDefaultTask
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:54     .text.StartMpuTask:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:60     .text.StartMpuTask:00000000 StartMpuTask
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:103    .text.StartMpuTask:0000001c $d
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:108    .text.MX_FREERTOS_Init:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:114    .text.MX_FREERTOS_Init:00000000 MX_FREERTOS_Init
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:150    .text.MX_FREERTOS_Init:00000020 $d
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:190    .rodata.defaultTask_attributes:00000000 defaultTask_attributes
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:201    .bss.defaultTaskHandle:00000000 defaultTaskHandle
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:168    .rodata.mpuTask_attributes:00000000 mpuTask_attributes
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:179    .bss.mpuTaskHandle:00000000 mpuTaskHandle
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:161    .rodata.str1.4:00000000 $d
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:165    .rodata.mpuTask_attributes:00000000 $d
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:176    .bss.mpuTaskHandle:00000000 $d
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:187    .rodata.defaultTask_attributes:00000000 $d
-C:\Users\vanlo\AppData\Local\Temp\ccBVRtdD.s:198    .bss.defaultTaskHandle:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:21     .text.StartDefaultTask:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:27     .text.StartDefaultTask:00000000 StartDefaultTask
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:54     .text.StartMpuTask:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:60     .text.StartMpuTask:00000000 StartMpuTask
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:103    .text.StartMpuTask:0000001c $d
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:108    .text.MX_FREERTOS_Init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:114    .text.MX_FREERTOS_Init:00000000 MX_FREERTOS_Init
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:150    .text.MX_FREERTOS_Init:00000020 $d
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:190    .rodata.defaultTask_attributes:00000000 defaultTask_attributes
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:201    .bss.defaultTaskHandle:00000000 defaultTaskHandle
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:168    .rodata.mpuTask_attributes:00000000 mpuTask_attributes
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:179    .bss.mpuTaskHandle:00000000 mpuTaskHandle
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:161    .rodata.str1.4:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:165    .rodata.mpuTask_attributes:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:176    .bss.mpuTaskHandle:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:187    .rodata.defaultTask_attributes:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccVZJmfw.s:198    .bss.defaultTaskHandle:00000000 $d
 
 UNDEFINED SYMBOLS
 osDelay

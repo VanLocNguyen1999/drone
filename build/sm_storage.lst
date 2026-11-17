@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
   28:sdk/services/storage/sm_storage.c ****     .load  = sm_storage_load,
   29:sdk/services/storage/sm_storage.c ****     .store = sm_storage_store,
   30:sdk/services/storage/sm_storage.c ****     .clear = sm_storage_clear,
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 2
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 2
 
 
   31:sdk/services/storage/sm_storage.c ****     .free  = sm_storage_free
@@ -90,7 +90,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
   57:sdk/services/storage/sm_storage.c **** sm_storage_config_t* sm_storage_create(sm_hal_flash_t* _flash, uint32_t _start_address, uint32_t _c
   58:sdk/services/storage/sm_storage.c **** 
   59:sdk/services/storage/sm_storage.c **** 	sm_storage_config_t *_this = (sm_storage_config_t*) malloc(sizeof(sm_storage_config_t));
-  60:sdk/services/storage/sm_storage.c **** 	if (!_this || _flash)
+  60:sdk/services/storage/sm_storage.c **** 	if (!_this || !_flash)
   61:sdk/services/storage/sm_storage.c **** 		return NULL;
   62:sdk/services/storage/sm_storage.c **** 
   63:sdk/services/storage/sm_storage.c **** 	memset(_this, 0, sizeof(*_this));
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
   81:sdk/services/storage/sm_storage.c **** 	if (!_this)
   33              		.loc 1 81 2 view .LVU1
   34              		.loc 1 81 5 is_stmt 0 view .LVU2
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 3
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 3
 
 
   35 0000 20B1     		cbz	r0, .L3
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
   80              		.loc 1 35 54 view .LVU13
   81 0002 F8B5     		push	{r3, r4, r5, r6, r7, lr}
   82              	.LCFI2:
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 4
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 4
 
 
   83              		.cfi_def_cfa_offset 24
@@ -191,7 +191,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
   90 0004 0646     		mov	r6, r0
   36:sdk/services/storage/sm_storage.c **** 		return -1;
   91              		.loc 1 36 29 discriminator 1 view .LVU14
-  92 0006 0068     		ldr	r0, [r0]
+  92 0006 4068     		ldr	r0, [r0, #4]
   93              	.LVL5:
   36:sdk/services/storage/sm_storage.c **** 		return -1;
   94              		.loc 1 36 13 discriminator 1 view .LVU15
@@ -220,7 +220,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  110              		.loc 1 43 2 is_stmt 1 view .LVU22
   43:sdk/services/storage/sm_storage.c **** 	if (block_size <= 0 || config_size == 0 || addr < lowest_addr)
  111              		.loc 1 43 24 is_stmt 0 view .LVU23
- 112 0014 3068     		ldr	r0, [r6]
+ 112 0014 7068     		ldr	r0, [r6, #4]
  113              	.LVL10:
   43:sdk/services/storage/sm_storage.c **** 	if (block_size <= 0 || config_size == 0 || addr < lowest_addr)
  114              		.loc 1 43 24 view .LVU24
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
   44:sdk/services/storage/sm_storage.c **** 		return -1;
  123              		.loc 1 44 42 discriminator 2 view .LVU28
  124 0020 B842     		cmp	r0, r7
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 5
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 5
 
 
  125 0022 17D8     		bhi	.L14
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  166              	.LVL16:
   55:sdk/services/storage/sm_storage.c **** 
  167              		.loc 1 55 1 view .LVU42
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 6
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 6
 
 
  168 0040 7047     		bx	lr
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  213              	.L17:
   53:sdk/services/storage/sm_storage.c **** 	return 0;
  214              		.loc 1 53 10 view .LVU52
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 7
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 7
 
 
  215 0066 4FF0FF30 		mov	r0, #-1
@@ -413,12 +413,12 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  258 0012 0423     		movs	r3, #4
  259 0014 0DEB0302 		add	r2, sp, r3
  260 0018 A168     		ldr	r1, [r4, #8]
- 261 001a 2068     		ldr	r0, [r4]
+ 261 001a 6068     		ldr	r0, [r4, #4]
  262 001c FFF7FEFF 		bl	sm_hal_flash_write_block
  263              	.LVL29:
  264              		.loc 1 94 5 discriminator 1 view .LVU63
  265 0020 0028     		cmp	r0, #0
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 8
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 8
 
 
  266 0022 05DB     		blt	.L25
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  313              		.cfi_def_cfa_offset 36
  314              		.cfi_offset 4, -36
  315              		.cfi_offset 5, -32
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 9
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 9
 
 
  316              		.cfi_offset 6, -28
@@ -528,7 +528,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  352 0022 0623     		movs	r3, #6
  353 0024 3A46     		mov	r2, r7
  354 0026 4946     		mov	r1, r9
- 355 0028 2068     		ldr	r0, [r4]
+ 355 0028 6068     		ldr	r0, [r4, #4]
  356 002a FFF7FEFF 		bl	sm_hal_flash_read
  357              	.LVL38:
  358              		.loc 1 108 5 discriminator 1 view .LVU83
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  110:sdk/services/storage/sm_storage.c **** 	uint16_t crc = crc_calculate_16bit((uint8_t*) _config, config_size);
  361              		.loc 1 110 2 is_stmt 1 view .LVU84
  362              		.loc 1 110 17 is_stmt 0 view .LVU85
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 10
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 10
 
 
  363 0032 3146     		mov	r1, r6
@@ -598,14 +598,14 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  124:sdk/services/storage/sm_storage.c **** 	/* HAL Flash handles read/modify/erase/write */
  125:sdk/services/storage/sm_storage.c **** 	if (sm_hal_flash_write_block(_impl(_this)->m_flash, addr, config_data, buff_size) < 0)
  404              		.loc 1 125 2 view .LVU97
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 11
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 11
 
 
  405              		.loc 1 125 6 is_stmt 0 view .LVU98
  406 0072 5346     		mov	r3, r10
  407 0074 6A46     		mov	r2, sp
  408 0076 4946     		mov	r1, r9
- 409 0078 2068     		ldr	r0, [r4]
+ 409 0078 6068     		ldr	r0, [r4, #4]
  410 007a FFF7FEFF 		bl	sm_hal_flash_write_block
  411              	.LVL46:
  412              		.loc 1 125 5 discriminator 1 view .LVU99
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  116:sdk/services/storage/sm_storage.c **** 			return 2;
  450              		.loc 1 116 6 discriminator 1 view .LVU108
  451 009e 0028     		cmp	r0, #0
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 12
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 12
 
 
  452 00a0 D6D1     		bne	.L31
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  502              	.LFB9:
  129:sdk/services/storage/sm_storage.c **** 
  130:sdk/services/storage/sm_storage.c **** /* Load configuration */
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 13
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 13
 
 
  131:sdk/services/storage/sm_storage.c **** static int8_t sm_storage_load(sm_storage_t *_this, void *_config) {
@@ -773,12 +773,12 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  541 0016 0623     		movs	r3, #6
  542 0018 6A46     		mov	r2, sp
  543 001a 2946     		mov	r1, r5
- 544 001c 2068     		ldr	r0, [r4]
+ 544 001c 6068     		ldr	r0, [r4, #4]
  545 001e FFF7FEFF 		bl	sm_hal_flash_read
  546              	.LVL60:
  547              		.loc 1 140 5 discriminator 1 view .LVU129
  548 0022 0028     		cmp	r0, #0
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 14
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 14
 
 
  549 0024 19DB     		blt	.L47
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  589              	.LVL68:
  590              	.L46:
  155:sdk/services/storage/sm_storage.c **** }
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 15
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 15
 
 
  591              		.loc 1 155 1 view .LVU145
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  637              	.L56:
  638 0072 00BF     		.align	2
  639              	.L55:
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 16
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 16
 
 
  640 0074 00000000 		.word	MAGIC_NUMBER
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  690              		.cfi_startproc
  691              		@ args = 0, pretend = 0, frame = 0
  692              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 17
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 17
 
 
   57:sdk/services/storage/sm_storage.c **** 
@@ -975,13 +975,13 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  703 0002 0546     		mov	r5, r0
  704 0004 0F46     		mov	r7, r1
  705 0006 1646     		mov	r6, r2
-  59:sdk/services/storage/sm_storage.c **** 	if (!_this || _flash)
+  59:sdk/services/storage/sm_storage.c **** 	if (!_this || !_flash)
  706              		.loc 1 59 2 is_stmt 1 view .LVU164
-  59:sdk/services/storage/sm_storage.c **** 	if (!_this || _flash)
+  59:sdk/services/storage/sm_storage.c **** 	if (!_this || !_flash)
  707              		.loc 1 59 54 is_stmt 0 view .LVU165
  708 0008 1020     		movs	r0, #16
  709              	.LVL78:
-  59:sdk/services/storage/sm_storage.c **** 	if (!_this || _flash)
+  59:sdk/services/storage/sm_storage.c **** 	if (!_this || !_flash)
  710              		.loc 1 59 54 view .LVU166
  711 000a FFF7FEFF 		bl	malloc
  712              	.LVL79:
@@ -990,10 +990,10 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
   60:sdk/services/storage/sm_storage.c **** 		return NULL;
  714              		.loc 1 60 5 is_stmt 0 view .LVU168
  715 000e 0446     		mov	r4, r0
- 716 0010 A0B1     		cbz	r0, .L62
+ 716 0010 70B1     		cbz	r0, .L62
   60:sdk/services/storage/sm_storage.c **** 		return NULL;
  717              		.loc 1 60 13 discriminator 1 view .LVU169
- 718 0012 95B9     		cbnz	r5, .L64
+ 718 0012 A5B1     		cbz	r5, .L64
   63:sdk/services/storage/sm_storage.c **** 	_this->m_flash = _flash;
  719              		.loc 1 63 2 is_stmt 1 view .LVU170
  720 0014 0023     		movs	r3, #0
@@ -1005,7 +1005,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  725              		.loc 1 64 2 view .LVU171
   64:sdk/services/storage/sm_storage.c **** 	_this->m_start_address = _start_address;
  726              		.loc 1 64 17 is_stmt 0 view .LVU172
- 727 001e 0560     		str	r5, [r0]
+ 727 001e 4560     		str	r5, [r0, #4]
   65:sdk/services/storage/sm_storage.c **** 	_this->m_config_size = _config_size;
  728              		.loc 1 65 2 is_stmt 1 view .LVU173
   65:sdk/services/storage/sm_storage.c **** 	_this->m_config_size = _config_size;
@@ -1018,13 +1018,13 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
  733 0022 C660     		str	r6, [r0, #12]
   67:sdk/services/storage/sm_storage.c **** 
  734              		.loc 1 67 2 is_stmt 1 view .LVU177
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 18
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 18
 
 
   67:sdk/services/storage/sm_storage.c **** 
  735              		.loc 1 67 23 is_stmt 0 view .LVU178
- 736 0024 064B     		ldr	r3, .L66
- 737 0026 4360     		str	r3, [r0, #4]
+ 736 0024 074B     		ldr	r3, .L67
+ 737 0026 0360     		str	r3, [r0]
   69:sdk/services/storage/sm_storage.c **** 		free(_this);
  738              		.loc 1 69 2 is_stmt 1 view .LVU179
   69:sdk/services/storage/sm_storage.c **** 		free(_this);
@@ -1034,92 +1034,92 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 1
   69:sdk/services/storage/sm_storage.c **** 		free(_this);
  742              		.loc 1 69 5 discriminator 1 view .LVU181
  743 002c 0028     		cmp	r0, #0
- 744 002e 05DA     		bge	.L62
+ 744 002e 01DB     		blt	.L66
+ 745              	.LVL81:
+ 746              	.L62:
+  75:sdk/services/storage/sm_storage.c **** 
+ 747              		.loc 1 75 1 view .LVU182
+ 748 0030 2046     		mov	r0, r4
+ 749 0032 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 750              	.LVL82:
+ 751              	.L66:
   70:sdk/services/storage/sm_storage.c **** 		return NULL;
- 745              		.loc 1 70 3 is_stmt 1 view .LVU182
- 746 0030 2046     		mov	r0, r4
- 747 0032 FFF7FEFF 		bl	free
- 748              	.LVL81:
-  71:sdk/services/storage/sm_storage.c **** 	}
- 749              		.loc 1 71 3 view .LVU183
-  71:sdk/services/storage/sm_storage.c **** 	}
- 750              		.loc 1 71 10 is_stmt 0 view .LVU184
- 751 0036 2C46     		mov	r4, r5
- 752              	.LVL82:
-  71:sdk/services/storage/sm_storage.c **** 	}
- 753              		.loc 1 71 10 view .LVU185
- 754 0038 00E0     		b	.L62
+ 752              		.loc 1 70 3 is_stmt 1 view .LVU183
+ 753 0034 2046     		mov	r0, r4
+ 754 0036 FFF7FEFF 		bl	free
  755              	.LVL83:
- 756              	.L64:
-  61:sdk/services/storage/sm_storage.c **** 
- 757              		.loc 1 61 10 view .LVU186
+  71:sdk/services/storage/sm_storage.c **** 	}
+ 756              		.loc 1 71 3 view .LVU184
+  71:sdk/services/storage/sm_storage.c **** 	}
+ 757              		.loc 1 71 10 is_stmt 0 view .LVU185
  758 003a 0024     		movs	r4, #0
  759              	.LVL84:
- 760              	.L62:
-  75:sdk/services/storage/sm_storage.c **** 
- 761              		.loc 1 75 1 view .LVU187
- 762 003c 2046     		mov	r0, r4
- 763 003e F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 764              	.LVL85:
- 765              	.L67:
-  75:sdk/services/storage/sm_storage.c **** 
- 766              		.loc 1 75 1 view .LVU188
- 767              		.align	2
- 768              	.L66:
- 769 0040 00000000 		.word	sm_storage_proc_default
- 770              		.cfi_endproc
- 771              	.LFE4:
- 773              		.section	.data.sm_storage_proc_default,"aw"
- 774              		.align	2
- 777              	sm_storage_proc_default:
- 778 0000 00000000 		.word	sm_storage_init
- 779 0004 00000000 		.word	sm_storage_load
- 780 0008 00000000 		.word	sm_storage_store
- 781 000c 00000000 		.word	sm_storage_clear
- 782 0010 00000000 		.word	sm_storage_free
- 783              		.section	.rodata.MAGIC_NUMBER,"a"
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 19
+  71:sdk/services/storage/sm_storage.c **** 	}
+ 760              		.loc 1 71 10 view .LVU186
+ 761 003c F8E7     		b	.L62
+ 762              	.LVL85:
+ 763              	.L64:
+  61:sdk/services/storage/sm_storage.c **** 
+ 764              		.loc 1 61 10 view .LVU187
+ 765 003e 2C46     		mov	r4, r5
+ 766 0040 F6E7     		b	.L62
+ 767              	.L68:
+ 768 0042 00BF     		.align	2
+ 769              	.L67:
+ 770 0044 00000000 		.word	sm_storage_proc_default
+ 771              		.cfi_endproc
+ 772              	.LFE4:
+ 774              		.section	.data.sm_storage_proc_default,"aw"
+ 775              		.align	2
+ 778              	sm_storage_proc_default:
+ 779 0000 00000000 		.word	sm_storage_init
+ 780 0004 00000000 		.word	sm_storage_load
+ 781 0008 00000000 		.word	sm_storage_store
+ 782 000c 00000000 		.word	sm_storage_clear
+ 783 0010 00000000 		.word	sm_storage_free
+ 784              		.section	.rodata.MAGIC_NUMBER,"a"
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 19
 
 
- 784              		.align	2
- 787              	MAGIC_NUMBER:
- 788 0000 5A5A5A5A 		.word	1515870810
- 789              		.text
- 790              	.Letext0:
- 791              		.file 2 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
- 792              		.file 3 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
- 793              		.file 4 "sdk/services/storage/sm_storage.h"
- 794              		.file 5 "sdk/hal/sm_hal_flash.h"
- 795              		.file 6 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
- 796              		.file 7 "sdk/utils/crc_calc/crc_calc.h"
- 797              		.file 8 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
- 798              		.file 9 "<built-in>"
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s 			page 20
+ 785              		.align	2
+ 788              	MAGIC_NUMBER:
+ 789 0000 5A5A5A5A 		.word	1515870810
+ 790              		.text
+ 791              	.Letext0:
+ 792              		.file 2 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 793              		.file 3 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 794              		.file 4 "sdk/services/storage/sm_storage.h"
+ 795              		.file 5 "sdk/hal/sm_hal_flash.h"
+ 796              		.file 6 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 797              		.file 7 "sdk/utils/crc_calc/crc_calc.h"
+ 798              		.file 8 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 799              		.file 9 "<built-in>"
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s 			page 20
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 sm_storage.c
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:21     .text.sm_storage_free:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:26     .text.sm_storage_free:00000000 sm_storage_free
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:65     .text.sm_storage_check:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:70     .text.sm_storage_check:00000000 sm_storage_check
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:221    .text.sm_storage_clear:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:226    .text.sm_storage_clear:00000000 sm_storage_clear
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:294    .text.sm_storage_store:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:299    .text.sm_storage_store:00000000 sm_storage_store
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:490    .text.sm_storage_store:000000b8 $d
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:787    .rodata.MAGIC_NUMBER:00000000 MAGIC_NUMBER
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:495    .text.sm_storage_load:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:500    .text.sm_storage_load:00000000 sm_storage_load
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:640    .text.sm_storage_load:00000074 $d
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:645    .text.sm_storage_init:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:650    .text.sm_storage_init:00000000 sm_storage_init
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:680    .text.sm_storage_create:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:686    .text.sm_storage_create:00000000 sm_storage_create
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:769    .text.sm_storage_create:00000040 $d
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:777    .data.sm_storage_proc_default:00000000 sm_storage_proc_default
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:774    .data.sm_storage_proc_default:00000000 $d
-C:\Users\vanlo\AppData\Local\Temp\ccfdwFqH.s:784    .rodata.MAGIC_NUMBER:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:21     .text.sm_storage_free:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:26     .text.sm_storage_free:00000000 sm_storage_free
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:65     .text.sm_storage_check:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:70     .text.sm_storage_check:00000000 sm_storage_check
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:221    .text.sm_storage_clear:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:226    .text.sm_storage_clear:00000000 sm_storage_clear
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:294    .text.sm_storage_store:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:299    .text.sm_storage_store:00000000 sm_storage_store
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:490    .text.sm_storage_store:000000b8 $d
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:788    .rodata.MAGIC_NUMBER:00000000 MAGIC_NUMBER
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:495    .text.sm_storage_load:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:500    .text.sm_storage_load:00000000 sm_storage_load
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:640    .text.sm_storage_load:00000074 $d
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:645    .text.sm_storage_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:650    .text.sm_storage_init:00000000 sm_storage_init
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:680    .text.sm_storage_create:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:686    .text.sm_storage_create:00000000 sm_storage_create
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:770    .text.sm_storage_create:00000044 $d
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:778    .data.sm_storage_proc_default:00000000 sm_storage_proc_default
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:775    .data.sm_storage_proc_default:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccjyhlGP.s:785    .rodata.MAGIC_NUMBER:00000000 $d
 
 UNDEFINED SYMBOLS
 free

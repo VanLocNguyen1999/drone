@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
   29              		.loc 1 27 57 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 2
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 2
 
 
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
   73 002a 4FF0FF30 		mov	r0, #-1
   74              	.LVL7:
   29:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 3
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 3
 
 
   75              		.loc 1 29 10 view .LVU16
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  123 0016 42F48052 		orr	r2, r2, #4096
  124 001a 1A60     		str	r2, [r3]
  125              		.loc 1 43 3 view .LVU27
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 4
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 4
 
 
  126 001c 1A68     		ldr	r2, [r3]
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  172              		.loc 1 53 25 is_stmt 0 view .LVU39
  173 000c 03F2FF73 		addw	r3, r3, #2047
  174 0010 8360     		str	r3, [r0, #8]
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 5
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 5
 
 
   54:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 	return (sm_hal_flash_t*) &g_flash;
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  224 0000 10B1     		cbz	r0, .L19
   63:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 		return -1;
   64:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 6
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 6
 
 
   65:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 	return FLASH_BUFFER_SIZE;
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  270 0008 7047     		bx	lr
  271              	.L24:
  272 000a 00BF     		.align	2
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 7
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 7
 
 
  273              	.L23:
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
   77:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 		return -1;
   78:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 
   79:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 	uint32_t buffer[FLASH_BUFFER_SIZE / 4U];
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 8
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 8
 
 
  326              		.loc 1 79 2 is_stmt 1 view .LVU69
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
   91:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 	erase.Sector = FLASH_SECTOR_5;
  369              		.loc 1 91 2 view .LVU83
  370              		.loc 1 91 15 is_stmt 0 view .LVU84
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 9
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 9
 
 
  371 005e 0523     		movs	r3, #5
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  411              		.loc 1 97 3 view .LVU102
   97:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 	}
  412              		.loc 1 97 10 is_stmt 0 view .LVU103
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 10
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 10
 
 
  413 0084 6FF00204 		mvn	r4, #2
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  457              		.loc 1 112 5 discriminator 1 view .LVU118
  458 00bc 68B1     		cbz	r0, .L33
  459              		.loc 1 112 33 discriminator 1 view .LVU119
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 11
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 11
 
 
  460 00be 3CB1     		cbz	r4, .L34
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  115:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 
  498              		.loc 1 115 2 is_stmt 1 view .LVU130
  499 00da FFF7FEFF 		bl	flash_reset_cache
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 12
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 12
 
 
  500              	.LVL47:
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  542              	.L44:
  543              		.align	2
  544              	.L43:
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 13
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 13
 
 
  545 0110 00000208 		.word	134348800
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  595 001e FFF7FEFF 		bl	memcpy
  596              	.LVL59:
  127:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** 	return 0;
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 14
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 14
 
 
  597              		.loc 1 127 2 view .LVU153
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  130:sdk/platforms/stm32_f401rc/hal/stm_hal_flash.c **** int32_t sm_hal_flash_write_page(sm_hal_flash_t *_this, uint32_t addr,void *data, int32_t size) {
  647              		.loc 1 130 96 is_stmt 1 view -0
  648              		.cfi_startproc
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 15
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 15
 
 
  649              		@ args = 0, pretend = 0, frame = 0
@@ -877,36 +877,36 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 1
  681              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h"
  682              		.file 10 "sdk/hal/sm_hal_flash.h"
  683              		.file 11 "<built-in>"
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s 			page 16
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s 			page 16
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 stm_hal_flash.c
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:21     .text.flash_check:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:26     .text.flash_check:00000000 flash_check
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:91     .text.flash_check:0000003c $d
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:96     .text.flash_reset_cache:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:101    .text.flash_reset_cache:00000000 flash_reset_cache
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:140    .text.flash_reset_cache:00000030 $d
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:145    .text.sm_hal_flash_init:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:151    .text.sm_hal_flash_init:00000000 sm_hal_flash_init
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:181    .text.sm_hal_flash_init:00000014 $d
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:670    .bss.g_flash:00000000 g_flash
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:187    .text.sm_hal_flash_deinit:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:193    .text.sm_hal_flash_deinit:00000000 sm_hal_flash_deinit
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:208    .text.sm_hal_flash_get_block_size:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:214    .text.sm_hal_flash_get_block_size:00000000 sm_hal_flash_get_block_size
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:241    .text.sm_hal_flash_get_lowest_addr:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:247    .text.sm_hal_flash_get_lowest_addr:00000000 sm_hal_flash_get_lowest_addr
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:274    .text.sm_hal_flash_get_lowest_addr:0000000c $d
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:279    .text.sm_hal_flash_write_block:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:285    .text.sm_hal_flash_write_block:00000000 sm_hal_flash_write_block
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:545    .text.sm_hal_flash_write_block:00000110 $d
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:550    .text.sm_hal_flash_read:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:556    .text.sm_hal_flash_read:00000000 sm_hal_flash_read
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:638    .text.sm_hal_flash_write_page:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:644    .text.sm_hal_flash_write_page:00000000 sm_hal_flash_write_page
-C:\Users\vanlo\AppData\Local\Temp\ccadQPPR.s:667    .bss.g_flash:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:21     .text.flash_check:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:26     .text.flash_check:00000000 flash_check
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:91     .text.flash_check:0000003c $d
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:96     .text.flash_reset_cache:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:101    .text.flash_reset_cache:00000000 flash_reset_cache
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:140    .text.flash_reset_cache:00000030 $d
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:145    .text.sm_hal_flash_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:151    .text.sm_hal_flash_init:00000000 sm_hal_flash_init
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:181    .text.sm_hal_flash_init:00000014 $d
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:670    .bss.g_flash:00000000 g_flash
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:187    .text.sm_hal_flash_deinit:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:193    .text.sm_hal_flash_deinit:00000000 sm_hal_flash_deinit
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:208    .text.sm_hal_flash_get_block_size:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:214    .text.sm_hal_flash_get_block_size:00000000 sm_hal_flash_get_block_size
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:241    .text.sm_hal_flash_get_lowest_addr:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:247    .text.sm_hal_flash_get_lowest_addr:00000000 sm_hal_flash_get_lowest_addr
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:274    .text.sm_hal_flash_get_lowest_addr:0000000c $d
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:279    .text.sm_hal_flash_write_block:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:285    .text.sm_hal_flash_write_block:00000000 sm_hal_flash_write_block
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:545    .text.sm_hal_flash_write_block:00000110 $d
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:550    .text.sm_hal_flash_read:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:556    .text.sm_hal_flash_read:00000000 sm_hal_flash_read
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:638    .text.sm_hal_flash_write_page:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:644    .text.sm_hal_flash_write_page:00000000 sm_hal_flash_write_page
+C:\Users\vanlo\AppData\Local\Temp\ccI2PIBO.s:667    .bss.g_flash:00000000 $d
 
 UNDEFINED SYMBOLS
 memcpy

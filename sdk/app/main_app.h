@@ -16,8 +16,14 @@
 
 typedef struct main_app {
 
-	mpu_6050_t* m_mpu;
+
 	sm_attitude_t* m_attitude;
+
+	struct {
+
+		mpu_6050_t* m_mpu;;
+	}m_drive;
+
 	struct {
 
 		mpu6050_data_t m_mpu_config;

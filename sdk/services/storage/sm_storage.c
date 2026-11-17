@@ -57,7 +57,7 @@ static int32_t sm_storage_check(sm_storage_t *_this) {
 sm_storage_config_t* sm_storage_create(sm_hal_flash_t* _flash, uint32_t _start_address, uint32_t _config_size) {
 
 	sm_storage_config_t *_this = (sm_storage_config_t*) malloc(sizeof(sm_storage_config_t));
-	if (!_this || _flash)
+	if (!_this || !_flash)
 		return NULL;
 
 	memset(_this, 0, sizeof(*_this));
