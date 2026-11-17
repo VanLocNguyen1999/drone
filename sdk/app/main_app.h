@@ -10,14 +10,23 @@
 #include "sm_hal_i2c.h"
 
 #include "mpu_6050.h"
+#include "attitude.h"
+
+#include "sm_storage.h"
 
 typedef struct main_app {
 
 	mpu_6050_t* m_mpu;
+	sm_attitude_t* m_attitude;
 	struct {
 
-		sm_hal_i2c_t* mpu_i2c;
-	}m_drive;
+		mpu6050_data_t m_mpu_config;
+	}m_config;
+
+	struct {
+
+		sm_storage_config_t* m_mpu_storage;
+	}m_storage;
 }main_app_t;
 
 main_app_t* main_app_init(void);

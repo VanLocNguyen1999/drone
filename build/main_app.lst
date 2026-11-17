@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 1
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -20,14 +20,14 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 1
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
   19              		.file 1 "sdk/app/main_app.c"
-  20              		.section	.text.main_app_drive_init,"ax",%progbits
+  20              		.section	.text.main_app_storage_init,"ax",%progbits
   21              		.align	1
   22              		.syntax unified
   23              		.thumb
   24              		.thumb_func
-  26              	main_app_drive_init:
+  26              	main_app_storage_init:
   27              	.LVL0:
-  28              	.LFB137:
+  28              	.LFB821:
    1:sdk/app/main_app.c **** /*
    2:sdk/app/main_app.c ****  * main_app.c
    3:sdk/app/main_app.c ****  *
@@ -38,302 +38,530 @@ ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 1
    8:sdk/app/main_app.c **** 
    9:sdk/app/main_app.c **** #include "main_app.h"
   10:sdk/app/main_app.c **** 
-  11:sdk/app/main_app.c **** static main_app_t g_main_app = {
-  12:sdk/app/main_app.c **** 
-  13:sdk/app/main_app.c **** 		.m_mpu = NULL,
-  14:sdk/app/main_app.c **** 		.m_drive = {
-  15:sdk/app/main_app.c **** 				.mpu_i2c = NULL,
-  16:sdk/app/main_app.c **** 		}
+  11:sdk/app/main_app.c **** #include "sm_flash_config.h"
+  12:sdk/app/main_app.c **** #include "app_bsp.h"
+  13:sdk/app/main_app.c **** 
+  14:sdk/app/main_app.c **** static main_app_t g_main_app = {
+  15:sdk/app/main_app.c **** 
+  16:sdk/app/main_app.c **** 		.m_mpu = NULL,
   17:sdk/app/main_app.c **** };
   18:sdk/app/main_app.c **** 
   19:sdk/app/main_app.c **** main_app_t* main_app = NULL;
-  20:sdk/app/main_app.c **** 
-  21:sdk/app/main_app.c **** static int32_t main_app_drive_init(main_app_t* _this){
-  29              		.loc 1 21 54 view -0
+  20:sdk/app/main_app.c **** static int32_t main_app_storage_init(main_app_t* _this){
+  29              		.loc 1 20 56 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33              		.loc 1 21 54 is_stmt 0 view .LVU1
-  34 0000 10B5     		push	{r4, lr}
-  35              	.LCFI0:
-  36              		.cfi_def_cfa_offset 8
-  37              		.cfi_offset 4, -8
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 2
+  21:sdk/app/main_app.c **** 	if( !_this) return -1;
+  33              		.loc 1 21 2 view .LVU1
+  34              		.loc 1 21 4 is_stmt 0 view .LVU2
+  35 0000 58B1     		cbz	r0, .L3
+  20:sdk/app/main_app.c **** 	if( !_this) return -1;
+  36              		.loc 1 20 56 view .LVU3
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s 			page 2
 
 
-  38              		.cfi_offset 14, -4
-  39 0002 0446     		mov	r4, r0
-  22:sdk/app/main_app.c **** 
-  23:sdk/app/main_app.c **** 	sm_hal_i2c_t*i2c =  sm_hal_i2c_init(&hi2c1, 0);
-  40              		.loc 1 23 2 is_stmt 1 view .LVU2
-  41              		.loc 1 23 22 is_stmt 0 view .LVU3
-  42 0004 0021     		movs	r1, #0
-  43 0006 0848     		ldr	r0, .L6
+  37 0002 10B5     		push	{r4, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 8
+  40              		.cfi_offset 4, -8
+  41              		.cfi_offset 14, -4
+  42 0004 0446     		mov	r4, r0
+  22:sdk/app/main_app.c **** 	sm_storage_config_t* storage = NULL;
+  43              		.loc 1 22 2 is_stmt 1 view .LVU4
   44              	.LVL1:
-  45              		.loc 1 23 22 view .LVU4
-  46 0008 FFF7FEFF 		bl	sm_hal_i2c_init
-  47              	.LVL2:
-  24:sdk/app/main_app.c **** 	if(!i2c || !_this) return -1;
-  48              		.loc 1 24 2 is_stmt 1 view .LVU5
-  49              		.loc 1 24 4 is_stmt 0 view .LVU6
-  50 000c 28B1     		cbz	r0, .L3
-  51              		.loc 1 24 10 discriminator 2 view .LVU7
-  52 000e 3CB1     		cbz	r4, .L4
-  25:sdk/app/main_app.c **** 	_this->m_drive.mpu_i2c = i2c;
-  53              		.loc 1 25 2 is_stmt 1 view .LVU8
-  54              		.loc 1 25 25 is_stmt 0 view .LVU9
-  55 0010 6060     		str	r0, [r4, #4]
-  26:sdk/app/main_app.c **** 	sm_hal_i2c_open(i2c);
-  56              		.loc 1 26 2 is_stmt 1 view .LVU10
-  57 0012 FFF7FEFF 		bl	sm_hal_i2c_open
-  58              	.LVL3:
+  23:sdk/app/main_app.c **** 	sm_hal_flash_t* flash = sm_bsp_get_flash();
+  45              		.loc 1 23 2 view .LVU5
+  46              		.loc 1 23 26 is_stmt 0 view .LVU6
+  47 0006 FFF7FEFF 		bl	sm_bsp_get_flash
+  48              	.LVL2:
+  24:sdk/app/main_app.c **** 	storage = sm_storage_create(flash, FLASH_MPU_OFFSET_CONFIG, sizeof(mpu6050_data_t));
+  49              		.loc 1 24 2 is_stmt 1 view .LVU7
+  50              		.loc 1 24 12 is_stmt 0 view .LVU8
+  51 000a 1822     		movs	r2, #24
+  52 000c 0649     		ldr	r1, .L9
+  53 000e FFF7FEFF 		bl	sm_storage_create
+  54              	.LVL3:
+  25:sdk/app/main_app.c **** 	if(!storage) return -1;
+  55              		.loc 1 25 2 is_stmt 1 view .LVU9
+  56              		.loc 1 25 4 is_stmt 0 view .LVU10
+  57 0012 28B1     		cbz	r0, .L4
+  26:sdk/app/main_app.c **** 	_this->m_storage.m_mpu_storage = storage;
+  58              		.loc 1 26 2 is_stmt 1 view .LVU11
+  59              		.loc 1 26 33 is_stmt 0 view .LVU12
+  60 0014 2062     		str	r0, [r4, #32]
   27:sdk/app/main_app.c **** 	return 0;
-  59              		.loc 1 27 2 view .LVU11
-  60              		.loc 1 27 9 is_stmt 0 view .LVU12
-  61 0016 0020     		movs	r0, #0
-  62              	.L1:
+  61              		.loc 1 27 2 is_stmt 1 view .LVU13
+  62              		.loc 1 27 9 is_stmt 0 view .LVU14
+  63 0016 0020     		movs	r0, #0
+  64              	.LVL4:
+  65              	.L1:
   28:sdk/app/main_app.c **** }
-  63              		.loc 1 28 1 view .LVU13
-  64 0018 10BD     		pop	{r4, pc}
-  65              	.LVL4:
-  66              	.L3:
-  24:sdk/app/main_app.c **** 	_this->m_drive.mpu_i2c = i2c;
-  67              		.loc 1 24 28 discriminator 3 view .LVU14
-  68 001a 4FF0FF30 		mov	r0, #-1
-  69              	.LVL5:
-  24:sdk/app/main_app.c **** 	_this->m_drive.mpu_i2c = i2c;
-  70              		.loc 1 24 28 discriminator 3 view .LVU15
-  71 001e FBE7     		b	.L1
-  72              	.LVL6:
-  73              	.L4:
-  24:sdk/app/main_app.c **** 	_this->m_drive.mpu_i2c = i2c;
-  74              		.loc 1 24 28 discriminator 3 view .LVU16
-  75 0020 4FF0FF30 		mov	r0, #-1
-  76              	.LVL7:
-  24:sdk/app/main_app.c **** 	_this->m_drive.mpu_i2c = i2c;
-  77              		.loc 1 24 28 discriminator 3 view .LVU17
-  78 0024 F8E7     		b	.L1
-  79              	.L7:
-  80 0026 00BF     		.align	2
-  81              	.L6:
-  82 0028 00000000 		.word	hi2c1
-  83              		.cfi_endproc
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 3
+  66              		.loc 1 28 1 view .LVU15
+  67 0018 10BD     		pop	{r4, pc}
+  68              	.LVL5:
+  69              	.L3:
+  70              	.LCFI1:
+  71              		.cfi_def_cfa_offset 0
+  72              		.cfi_restore 4
+  73              		.cfi_restore 14
+  21:sdk/app/main_app.c **** 	sm_storage_config_t* storage = NULL;
+  74              		.loc 1 21 21 discriminator 1 view .LVU16
+  75 001a 4FF0FF30 		mov	r0, #-1
+  76              	.LVL6:
+  77              		.loc 1 28 1 view .LVU17
+  78 001e 7047     		bx	lr
+  79              	.LVL7:
+  80              	.L4:
+  81              	.LCFI2:
+  82              		.cfi_def_cfa_offset 8
+  83              		.cfi_offset 4, -8
+  84              		.cfi_offset 14, -4
+  25:sdk/app/main_app.c **** 	_this->m_storage.m_mpu_storage = storage;
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s 			page 3
 
 
-  84              	.LFE137:
-  86              		.section	.text.main_app_mpu_6050_init,"ax",%progbits
-  87              		.align	1
-  88              		.syntax unified
-  89              		.thumb
-  90              		.thumb_func
-  92              	main_app_mpu_6050_init:
-  93              	.LVL8:
-  94              	.LFB138:
-  29:sdk/app/main_app.c **** 
-  30:sdk/app/main_app.c **** static int32_t main_app_mpu_6050_init(main_app_t* _this){
-  95              		.loc 1 30 57 is_stmt 1 view -0
-  96              		.cfi_startproc
-  97              		@ args = 0, pretend = 0, frame = 0
-  98              		@ frame_needed = 0, uses_anonymous_args = 0
-  99              		.loc 1 30 57 is_stmt 0 view .LVU19
- 100 0000 38B5     		push	{r3, r4, r5, lr}
- 101              	.LCFI1:
- 102              		.cfi_def_cfa_offset 16
- 103              		.cfi_offset 3, -16
- 104              		.cfi_offset 4, -12
- 105              		.cfi_offset 5, -8
- 106              		.cfi_offset 14, -4
- 107 0002 0546     		mov	r5, r0
-  31:sdk/app/main_app.c **** 
-  32:sdk/app/main_app.c **** 	mpu_6050_t*mpu = mpu_6050_init(_this->m_drive.mpu_i2c);
- 108              		.loc 1 32 2 is_stmt 1 view .LVU20
- 109              		.loc 1 32 19 is_stmt 0 view .LVU21
- 110 0004 4068     		ldr	r0, [r0, #4]
- 111              	.LVL9:
- 112              		.loc 1 32 19 view .LVU22
- 113 0006 FFF7FEFF 		bl	mpu_6050_init
- 114              	.LVL10:
-  33:sdk/app/main_app.c **** 	if(!mpu || !_this) return -1;
- 115              		.loc 1 33 2 is_stmt 1 view .LVU23
- 116              		.loc 1 33 4 is_stmt 0 view .LVU24
- 117 000a 88B1     		cbz	r0, .L10
- 118 000c 0446     		mov	r4, r0
-  34:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
- 119              		.loc 1 34 2 is_stmt 1 view .LVU25
- 120              		.loc 1 34 15 is_stmt 0 view .LVU26
- 121 000e 2860     		str	r0, [r5]
-  35:sdk/app/main_app.c **** 	mpu_6050_set_power_ctrl(mpu, 1);
- 122              		.loc 1 35 2 is_stmt 1 view .LVU27
- 123 0010 0121     		movs	r1, #1
- 124 0012 FFF7FEFF 		bl	mpu_6050_set_power_ctrl
- 125              	.LVL11:
-  36:sdk/app/main_app.c **** 	mpu_6050_set_gyro_config(mpu,GYRO_CONFIG_250_DEG_S);
- 126              		.loc 1 36 2 view .LVU28
- 127 0016 0021     		movs	r1, #0
- 128 0018 2046     		mov	r0, r4
- 129 001a FFF7FEFF 		bl	mpu_6050_set_gyro_config
- 130              	.LVL12:
-  37:sdk/app/main_app.c **** 	mpu_6050_set_accel_config(mpu,ACCEL_CONFIG_2_G);
- 131              		.loc 1 37 2 view .LVU29
- 132 001e 0021     		movs	r1, #0
- 133 0020 2046     		mov	r0, r4
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 4
+  85              		.loc 1 25 22 discriminator 1 view .LVU18
+  86 0020 4FF0FF30 		mov	r0, #-1
+  87              	.LVL8:
+  25:sdk/app/main_app.c **** 	_this->m_storage.m_mpu_storage = storage;
+  88              		.loc 1 25 22 discriminator 1 view .LVU19
+  89 0024 F8E7     		b	.L1
+  90              	.L10:
+  91 0026 00BF     		.align	2
+  92              	.L9:
+  93 0028 00000208 		.word	134348800
+  94              		.cfi_endproc
+  95              	.LFE821:
+  97              		.section	.text.main_app_load_config,"ax",%progbits
+  98              		.align	1
+  99              		.syntax unified
+ 100              		.thumb
+ 101              		.thumb_func
+ 103              	main_app_load_config:
+ 104              	.LVL9:
+ 105              	.LFB822:
+  29:sdk/app/main_app.c **** static int32_t main_app_load_config(main_app_t* _this){
+ 106              		.loc 1 29 55 is_stmt 1 view -0
+ 107              		.cfi_startproc
+ 108              		@ args = 0, pretend = 0, frame = 0
+ 109              		@ frame_needed = 0, uses_anonymous_args = 0
+  30:sdk/app/main_app.c **** 	if( !_this) return -1;
+ 110              		.loc 1 30 2 view .LVU21
+ 111              		.loc 1 30 4 is_stmt 0 view .LVU22
+ 112 0000 F0B1     		cbz	r0, .L13
+  29:sdk/app/main_app.c **** static int32_t main_app_load_config(main_app_t* _this){
+ 113              		.loc 1 29 55 view .LVU23
+ 114 0002 30B5     		push	{r4, r5, lr}
+ 115              	.LCFI3:
+ 116              		.cfi_def_cfa_offset 12
+ 117              		.cfi_offset 4, -12
+ 118              		.cfi_offset 5, -8
+ 119              		.cfi_offset 14, -4
+ 120 0004 85B0     		sub	sp, sp, #20
+ 121              	.LCFI4:
+ 122              		.cfi_def_cfa_offset 32
+ 123 0006 0446     		mov	r4, r0
+  31:sdk/app/main_app.c **** 	if(_this->m_storage.m_mpu_storage){
+ 124              		.loc 1 31 2 is_stmt 1 view .LVU24
+ 125              		.loc 1 31 21 is_stmt 0 view .LVU25
+ 126 0008 006A     		ldr	r0, [r0, #32]
+ 127              	.LVL10:
+ 128              		.loc 1 31 4 view .LVU26
+ 129 000a E0B1     		cbz	r0, .L14
+  32:sdk/app/main_app.c **** 		if (_this->m_storage.m_mpu_storage->m_base.m_proc->load(
+ 130              		.loc 1 32 3 is_stmt 1 view .LVU27
+ 131              		.loc 1 32 45 is_stmt 0 view .LVU28
+ 132 000c 50F8043F 		ldr	r3, [r0, #4]!
+ 133              		.loc 1 32 52 view .LVU29
+ 134 0010 5B68     		ldr	r3, [r3, #4]
+ 135              		.loc 1 32 7 view .LVU30
+ 136 0012 04F10801 		add	r1, r4, #8
+ 137 0016 9847     		blx	r3
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s 			page 4
 
 
- 134 0022 FFF7FEFF 		bl	mpu_6050_set_accel_config
- 135              	.LVL13:
-  38:sdk/app/main_app.c **** 	mpu_6050_calibrate(mpu) ;
- 136              		.loc 1 38 2 view .LVU30
- 137 0026 2046     		mov	r0, r4
- 138 0028 FFF7FEFF 		bl	mpu_6050_calibrate
- 139              	.LVL14:
-  39:sdk/app/main_app.c **** 	return 0;
- 140              		.loc 1 39 2 view .LVU31
- 141              		.loc 1 39 9 is_stmt 0 view .LVU32
- 142 002c 0020     		movs	r0, #0
- 143              	.LVL15:
- 144              	.L8:
-  40:sdk/app/main_app.c **** }
- 145              		.loc 1 40 1 view .LVU33
- 146 002e 38BD     		pop	{r3, r4, r5, pc}
- 147              	.LVL16:
- 148              	.L10:
-  33:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
- 149              		.loc 1 33 28 discriminator 3 view .LVU34
- 150 0030 4FF0FF30 		mov	r0, #-1
- 151              	.LVL17:
-  33:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
- 152              		.loc 1 33 28 discriminator 3 view .LVU35
- 153 0034 FBE7     		b	.L8
- 154              		.cfi_endproc
- 155              	.LFE138:
- 157              		.section	.text.main_app_init,"ax",%progbits
- 158              		.align	1
- 159              		.global	main_app_init
- 160              		.syntax unified
- 161              		.thumb
- 162              		.thumb_func
- 164              	main_app_init:
- 165              	.LFB139:
-  41:sdk/app/main_app.c **** 
-  42:sdk/app/main_app.c **** main_app_t* main_app_init(void){
- 166              		.loc 1 42 32 is_stmt 1 view -0
- 167              		.cfi_startproc
- 168              		@ args = 0, pretend = 0, frame = 0
- 169              		@ frame_needed = 0, uses_anonymous_args = 0
- 170 0000 08B5     		push	{r3, lr}
- 171              	.LCFI2:
- 172              		.cfi_def_cfa_offset 8
- 173              		.cfi_offset 3, -8
- 174              		.cfi_offset 14, -4
-  43:sdk/app/main_app.c **** 
-  44:sdk/app/main_app.c **** 	main_app = &g_main_app;
- 175              		.loc 1 44 2 view .LVU37
- 176              		.loc 1 44 11 is_stmt 0 view .LVU38
- 177 0002 0A48     		ldr	r0, .L17
- 178 0004 0A4B     		ldr	r3, .L17+4
- 179 0006 1860     		str	r0, [r3]
-  45:sdk/app/main_app.c **** 	if(main_app_drive_init(main_app) <  0) {
- 180              		.loc 1 45 2 is_stmt 1 view .LVU39
- 181              		.loc 1 45 5 is_stmt 0 view .LVU40
- 182 0008 FFF7FEFF 		bl	main_app_drive_init
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 5
+ 138              	.LVL11:
+ 139              		.loc 1 32 6 discriminator 1 view .LVU31
+ 140 0018 0028     		cmp	r0, #0
+ 141 001a 02DB     		blt	.L20
+  33:sdk/app/main_app.c **** 				&_this->m_storage.m_mpu_storage->m_base,&_this->m_config.m_mpu_config) < 0) {
+  34:sdk/app/main_app.c **** 			mpu_6050_calibrate(_this->m_mpu, _this->m_config.m_mpu_config);
+  35:sdk/app/main_app.c **** 		}
+  36:sdk/app/main_app.c **** 	}
+  37:sdk/app/main_app.c **** 	return 0;
+ 142              		.loc 1 37 9 view .LVU32
+ 143 001c 0020     		movs	r0, #0
+ 144              	.LVL12:
+ 145              	.L11:
+  38:sdk/app/main_app.c **** }
+ 146              		.loc 1 38 1 view .LVU33
+ 147 001e 05B0     		add	sp, sp, #20
+ 148              	.LCFI5:
+ 149              		.cfi_remember_state
+ 150              		.cfi_def_cfa_offset 12
+ 151              		@ sp needed
+ 152 0020 30BD     		pop	{r4, r5, pc}
+ 153              	.LVL13:
+ 154              	.L20:
+ 155              	.LCFI6:
+ 156              		.cfi_restore_state
+  34:sdk/app/main_app.c **** 		}
+ 157              		.loc 1 34 4 is_stmt 1 view .LVU34
+ 158 0022 2346     		mov	r3, r4
+ 159 0024 53F8145B 		ldr	r5, [r3], #20
+ 160 0028 93E80700 		ldm	r3, {r0, r1, r2}
+ 161 002c 8DE80700 		stm	sp, {r0, r1, r2}
+ 162 0030 0834     		adds	r4, r4, #8
+ 163              	.LVL14:
+  34:sdk/app/main_app.c **** 		}
+ 164              		.loc 1 34 4 is_stmt 0 view .LVU35
+ 165 0032 94E80E00 		ldm	r4, {r1, r2, r3}
+ 166 0036 2846     		mov	r0, r5
+ 167 0038 FFF7FEFF 		bl	mpu_6050_calibrate
+ 168              	.LVL15:
+  37:sdk/app/main_app.c **** }
+ 169              		.loc 1 37 9 view .LVU36
+ 170 003c 0020     		movs	r0, #0
+ 171 003e EEE7     		b	.L11
+ 172              	.LVL16:
+ 173              	.L13:
+ 174              	.LCFI7:
+ 175              		.cfi_def_cfa_offset 0
+ 176              		.cfi_restore 4
+ 177              		.cfi_restore 5
+ 178              		.cfi_restore 14
+  30:sdk/app/main_app.c **** 	if(_this->m_storage.m_mpu_storage){
+ 179              		.loc 1 30 21 discriminator 1 view .LVU37
+ 180 0040 4FF0FF30 		mov	r0, #-1
+ 181              	.LVL17:
+ 182              		.loc 1 38 1 view .LVU38
+ 183 0044 7047     		bx	lr
+ 184              	.LVL18:
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s 			page 5
 
 
- 183              	.LVL18:
- 184              		.loc 1 45 4 discriminator 1 view .LVU41
- 185 000c 0028     		cmp	r0, #0
- 186 000e 08DB     		blt	.L14
-  46:sdk/app/main_app.c **** 		return NULL;
-  47:sdk/app/main_app.c **** 	}
-  48:sdk/app/main_app.c **** 	if(main_app_mpu_6050_init(main_app) < 0){
- 187              		.loc 1 48 2 is_stmt 1 view .LVU42
- 188              		.loc 1 48 5 is_stmt 0 view .LVU43
- 189 0010 074B     		ldr	r3, .L17+4
- 190 0012 1868     		ldr	r0, [r3]
- 191 0014 FFF7FEFF 		bl	main_app_mpu_6050_init
- 192              	.LVL19:
- 193              		.loc 1 48 4 discriminator 1 view .LVU44
- 194 0018 0028     		cmp	r0, #0
- 195 001a 04DB     		blt	.L15
-  49:sdk/app/main_app.c **** 		return NULL;
-  50:sdk/app/main_app.c **** 	}
-  51:sdk/app/main_app.c **** 	return main_app;
- 196              		.loc 1 51 2 is_stmt 1 view .LVU45
- 197              		.loc 1 51 9 is_stmt 0 view .LVU46
- 198 001c 044B     		ldr	r3, .L17+4
- 199 001e 1868     		ldr	r0, [r3]
- 200              	.L12:
-  52:sdk/app/main_app.c **** }
- 201              		.loc 1 52 1 view .LVU47
- 202 0020 08BD     		pop	{r3, pc}
- 203              	.L14:
-  46:sdk/app/main_app.c **** 		return NULL;
- 204              		.loc 1 46 10 view .LVU48
- 205 0022 0020     		movs	r0, #0
- 206 0024 FCE7     		b	.L12
- 207              	.L15:
-  49:sdk/app/main_app.c **** 		return NULL;
- 208              		.loc 1 49 10 view .LVU49
- 209 0026 0020     		movs	r0, #0
- 210 0028 FAE7     		b	.L12
- 211              	.L18:
- 212 002a 00BF     		.align	2
- 213              	.L17:
- 214 002c 00000000 		.word	g_main_app
- 215 0030 00000000 		.word	main_app
- 216              		.cfi_endproc
- 217              	.LFE139:
- 219              		.global	main_app
- 220              		.section	.bss.main_app,"aw",%nobits
- 221              		.align	2
- 224              	main_app:
- 225 0000 00000000 		.space	4
- 226              		.section	.bss.g_main_app,"aw",%nobits
- 227              		.align	2
- 230              	g_main_app:
- 231 0000 00000000 		.space	8
- 231      00000000 
- 232              		.text
- 233              	.Letext0:
- 234              		.file 2 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 6
+ 185              	.L14:
+ 186              	.LCFI8:
+ 187              		.cfi_def_cfa_offset 32
+ 188              		.cfi_offset 4, -12
+ 189              		.cfi_offset 5, -8
+ 190              		.cfi_offset 14, -4
+  37:sdk/app/main_app.c **** }
+ 191              		.loc 1 37 9 view .LVU39
+ 192 0046 0020     		movs	r0, #0
+ 193 0048 E9E7     		b	.L11
+ 194              		.cfi_endproc
+ 195              	.LFE822:
+ 197              		.section	.text.main_app_mpu_6050_init,"ax",%progbits
+ 198              		.align	1
+ 199              		.syntax unified
+ 200              		.thumb
+ 201              		.thumb_func
+ 203              	main_app_mpu_6050_init:
+ 204              	.LVL19:
+ 205              	.LFB823:
+  39:sdk/app/main_app.c **** static int32_t main_app_mpu_6050_init(main_app_t* _this){
+ 206              		.loc 1 39 57 is_stmt 1 view -0
+ 207              		.cfi_startproc
+ 208              		@ args = 0, pretend = 0, frame = 0
+ 209              		@ frame_needed = 0, uses_anonymous_args = 0
+ 210              		.loc 1 39 57 is_stmt 0 view .LVU41
+ 211 0000 38B5     		push	{r3, r4, r5, lr}
+ 212              	.LCFI9:
+ 213              		.cfi_def_cfa_offset 16
+ 214              		.cfi_offset 3, -16
+ 215              		.cfi_offset 4, -12
+ 216              		.cfi_offset 5, -8
+ 217              		.cfi_offset 14, -4
+ 218 0002 0446     		mov	r4, r0
+  40:sdk/app/main_app.c **** 
+  41:sdk/app/main_app.c **** 	sm_hal_i2c_t *i2c = sm_bsp_get_mpu_i2c();
+ 219              		.loc 1 41 2 is_stmt 1 view .LVU42
+ 220              		.loc 1 41 22 is_stmt 0 view .LVU43
+ 221 0004 FFF7FEFF 		bl	sm_bsp_get_mpu_i2c
+ 222              	.LVL20:
+  42:sdk/app/main_app.c **** 	mpu_6050_t*mpu = mpu_6050_init(i2c);
+ 223              		.loc 1 42 2 is_stmt 1 view .LVU44
+ 224              		.loc 1 42 19 is_stmt 0 view .LVU45
+ 225 0008 FFF7FEFF 		bl	mpu_6050_init
+ 226              	.LVL21:
+  43:sdk/app/main_app.c **** 	if(!mpu || !_this) return -1;
+ 227              		.loc 1 43 2 is_stmt 1 view .LVU46
+ 228              		.loc 1 43 4 is_stmt 0 view .LVU47
+ 229 000c 78B1     		cbz	r0, .L23
+ 230 000e 0546     		mov	r5, r0
+ 231              		.loc 1 43 10 discriminator 2 view .LVU48
+ 232 0010 84B1     		cbz	r4, .L24
+  44:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
+ 233              		.loc 1 44 2 is_stmt 1 view .LVU49
+ 234              		.loc 1 44 15 is_stmt 0 view .LVU50
+ 235 0012 2060     		str	r0, [r4]
+  45:sdk/app/main_app.c **** 	mpu_6050_set_power_ctrl(mpu, 1);
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s 			page 6
 
 
- 235              		.file 3 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
- 236              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
- 237              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 238              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 239              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
- 240              		.file 8 "sdk/common/mpu_6050/mpu_6050.h"
- 241              		.file 9 "sdk/hal/sm_hal_i2c.h"
- 242              		.file 10 "sdk/app/main_app.h"
- 243              		.file 11 "Core/Inc/i2c.h"
-ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s 			page 7
+ 236              		.loc 1 45 2 is_stmt 1 view .LVU51
+ 237 0014 0121     		movs	r1, #1
+ 238 0016 FFF7FEFF 		bl	mpu_6050_set_power_ctrl
+ 239              	.LVL22:
+  46:sdk/app/main_app.c **** 	mpu_6050_set_gyro_config(mpu,GYRO_CONFIG_1000_DEG_S);
+ 240              		.loc 1 46 2 view .LVU52
+ 241 001a 1021     		movs	r1, #16
+ 242 001c 2846     		mov	r0, r5
+ 243 001e FFF7FEFF 		bl	mpu_6050_set_gyro_config
+ 244              	.LVL23:
+  47:sdk/app/main_app.c **** 	mpu_6050_set_accel_config(mpu,ACCEL_CONFIG_8_G);
+ 245              		.loc 1 47 2 view .LVU53
+ 246 0022 1021     		movs	r1, #16
+ 247 0024 2846     		mov	r0, r5
+ 248 0026 FFF7FEFF 		bl	mpu_6050_set_accel_config
+ 249              	.LVL24:
+  48:sdk/app/main_app.c **** 	return 0;
+ 250              		.loc 1 48 2 view .LVU54
+ 251              		.loc 1 48 9 is_stmt 0 view .LVU55
+ 252 002a 0020     		movs	r0, #0
+ 253              	.LVL25:
+ 254              	.L21:
+  49:sdk/app/main_app.c **** }
+ 255              		.loc 1 49 1 view .LVU56
+ 256 002c 38BD     		pop	{r3, r4, r5, pc}
+ 257              	.LVL26:
+ 258              	.L23:
+  43:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
+ 259              		.loc 1 43 28 discriminator 3 view .LVU57
+ 260 002e 4FF0FF30 		mov	r0, #-1
+ 261              	.LVL27:
+  43:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
+ 262              		.loc 1 43 28 discriminator 3 view .LVU58
+ 263 0032 FBE7     		b	.L21
+ 264              	.LVL28:
+ 265              	.L24:
+  43:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
+ 266              		.loc 1 43 28 discriminator 3 view .LVU59
+ 267 0034 4FF0FF30 		mov	r0, #-1
+ 268              	.LVL29:
+  43:sdk/app/main_app.c **** 	_this->m_mpu = mpu;
+ 269              		.loc 1 43 28 discriminator 3 view .LVU60
+ 270 0038 F8E7     		b	.L21
+ 271              		.cfi_endproc
+ 272              	.LFE823:
+ 274              		.section	.text.main_app_attitude_init,"ax",%progbits
+ 275              		.align	1
+ 276              		.syntax unified
+ 277              		.thumb
+ 278              		.thumb_func
+ 280              	main_app_attitude_init:
+ 281              	.LVL30:
+ 282              	.LFB824:
+  50:sdk/app/main_app.c **** 
+  51:sdk/app/main_app.c **** static int32_t main_app_attitude_init(main_app_t* _this){
+ 283              		.loc 1 51 57 is_stmt 1 view -0
+ 284              		.cfi_startproc
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s 			page 7
+
+
+ 285              		@ args = 0, pretend = 0, frame = 0
+ 286              		@ frame_needed = 0, uses_anonymous_args = 0
+ 287              		.loc 1 51 57 is_stmt 0 view .LVU62
+ 288 0000 10B5     		push	{r4, lr}
+ 289              	.LCFI10:
+ 290              		.cfi_def_cfa_offset 8
+ 291              		.cfi_offset 4, -8
+ 292              		.cfi_offset 14, -4
+ 293 0002 0446     		mov	r4, r0
+  52:sdk/app/main_app.c **** 
+  53:sdk/app/main_app.c **** 	sm_attitude_t*attitude = sm_attitude_est_init(_this->m_mpu);
+ 294              		.loc 1 53 2 is_stmt 1 view .LVU63
+ 295              		.loc 1 53 27 is_stmt 0 view .LVU64
+ 296 0004 0068     		ldr	r0, [r0]
+ 297              	.LVL31:
+ 298              		.loc 1 53 27 view .LVU65
+ 299 0006 FFF7FEFF 		bl	sm_attitude_est_init
+ 300              	.LVL32:
+  54:sdk/app/main_app.c **** 	if(!attitude || !_this) return -1;
+ 301              		.loc 1 54 2 is_stmt 1 view .LVU66
+ 302              		.loc 1 54 4 is_stmt 0 view .LVU67
+ 303 000a 10B1     		cbz	r0, .L28
+  55:sdk/app/main_app.c **** 	_this->m_attitude  = attitude;
+ 304              		.loc 1 55 2 is_stmt 1 view .LVU68
+ 305              		.loc 1 55 21 is_stmt 0 view .LVU69
+ 306 000c 6060     		str	r0, [r4, #4]
+  56:sdk/app/main_app.c **** 	return 0;
+ 307              		.loc 1 56 2 is_stmt 1 view .LVU70
+ 308              		.loc 1 56 9 is_stmt 0 view .LVU71
+ 309 000e 0020     		movs	r0, #0
+ 310              	.LVL33:
+ 311              	.L26:
+  57:sdk/app/main_app.c **** }
+ 312              		.loc 1 57 1 view .LVU72
+ 313 0010 10BD     		pop	{r4, pc}
+ 314              	.LVL34:
+ 315              	.L28:
+  54:sdk/app/main_app.c **** 	_this->m_attitude  = attitude;
+ 316              		.loc 1 54 33 discriminator 3 view .LVU73
+ 317 0012 4FF0FF30 		mov	r0, #-1
+ 318              	.LVL35:
+  54:sdk/app/main_app.c **** 	_this->m_attitude  = attitude;
+ 319              		.loc 1 54 33 discriminator 3 view .LVU74
+ 320 0016 FBE7     		b	.L26
+ 321              		.cfi_endproc
+ 322              	.LFE824:
+ 324              		.section	.text.main_app_init,"ax",%progbits
+ 325              		.align	1
+ 326              		.global	main_app_init
+ 327              		.syntax unified
+ 328              		.thumb
+ 329              		.thumb_func
+ 331              	main_app_init:
+ 332              	.LFB825:
+  58:sdk/app/main_app.c **** 
+  59:sdk/app/main_app.c **** main_app_t* main_app_init(void){
+ 333              		.loc 1 59 32 is_stmt 1 view -0
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s 			page 8
+
+
+ 334              		.cfi_startproc
+ 335              		@ args = 0, pretend = 0, frame = 0
+ 336              		@ frame_needed = 0, uses_anonymous_args = 0
+ 337 0000 10B5     		push	{r4, lr}
+ 338              	.LCFI11:
+ 339              		.cfi_def_cfa_offset 8
+ 340              		.cfi_offset 4, -8
+ 341              		.cfi_offset 14, -4
+  60:sdk/app/main_app.c **** 
+  61:sdk/app/main_app.c **** 	main_app = &g_main_app;
+ 342              		.loc 1 61 2 view .LVU76
+ 343              		.loc 1 61 11 is_stmt 0 view .LVU77
+ 344 0002 0E4C     		ldr	r4, .L36
+ 345 0004 0E48     		ldr	r0, .L36+4
+ 346 0006 2060     		str	r0, [r4]
+  62:sdk/app/main_app.c **** 	main_app_storage_init(main_app);
+ 347              		.loc 1 62 2 is_stmt 1 view .LVU78
+ 348 0008 FFF7FEFF 		bl	main_app_storage_init
+ 349              	.LVL36:
+  63:sdk/app/main_app.c **** 
+  64:sdk/app/main_app.c **** 	if(main_app_load_config(main_app) < 0){
+ 350              		.loc 1 64 2 view .LVU79
+ 351              		.loc 1 64 5 is_stmt 0 view .LVU80
+ 352 000c 2068     		ldr	r0, [r4]
+ 353 000e FFF7FEFF 		bl	main_app_load_config
+ 354              	.LVL37:
+ 355              		.loc 1 64 4 discriminator 1 view .LVU81
+ 356 0012 0028     		cmp	r0, #0
+ 357 0014 0BDB     		blt	.L32
+  65:sdk/app/main_app.c **** 		return NULL;
+  66:sdk/app/main_app.c **** 	}
+  67:sdk/app/main_app.c **** 	if(main_app_mpu_6050_init(main_app) < 0){
+ 358              		.loc 1 67 2 is_stmt 1 view .LVU82
+ 359              		.loc 1 67 5 is_stmt 0 view .LVU83
+ 360 0016 2068     		ldr	r0, [r4]
+ 361 0018 FFF7FEFF 		bl	main_app_mpu_6050_init
+ 362              	.LVL38:
+ 363              		.loc 1 67 4 discriminator 1 view .LVU84
+ 364 001c 0028     		cmp	r0, #0
+ 365 001e 08DB     		blt	.L33
+  68:sdk/app/main_app.c **** 		return NULL;
+  69:sdk/app/main_app.c **** 	}
+  70:sdk/app/main_app.c **** 	if(main_app_attitude_init(main_app) < 0){
+ 366              		.loc 1 70 2 is_stmt 1 view .LVU85
+ 367              		.loc 1 70 5 is_stmt 0 view .LVU86
+ 368 0020 2068     		ldr	r0, [r4]
+ 369 0022 FFF7FEFF 		bl	main_app_attitude_init
+ 370              	.LVL39:
+ 371              		.loc 1 70 4 discriminator 1 view .LVU87
+ 372 0026 0028     		cmp	r0, #0
+ 373 0028 05DB     		blt	.L34
+  71:sdk/app/main_app.c **** 		return NULL;
+  72:sdk/app/main_app.c **** 	}
+  73:sdk/app/main_app.c **** 	return main_app;
+ 374              		.loc 1 73 2 is_stmt 1 view .LVU88
+ 375              		.loc 1 73 9 is_stmt 0 view .LVU89
+ 376 002a 2068     		ldr	r0, [r4]
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s 			page 9
+
+
+ 377              	.L30:
+  74:sdk/app/main_app.c **** }
+ 378              		.loc 1 74 1 view .LVU90
+ 379 002c 10BD     		pop	{r4, pc}
+ 380              	.L32:
+  65:sdk/app/main_app.c **** 	}
+ 381              		.loc 1 65 10 view .LVU91
+ 382 002e 0020     		movs	r0, #0
+ 383 0030 FCE7     		b	.L30
+ 384              	.L33:
+  68:sdk/app/main_app.c **** 	}
+ 385              		.loc 1 68 10 view .LVU92
+ 386 0032 0020     		movs	r0, #0
+ 387 0034 FAE7     		b	.L30
+ 388              	.L34:
+  71:sdk/app/main_app.c **** 	}
+ 389              		.loc 1 71 10 view .LVU93
+ 390 0036 0020     		movs	r0, #0
+ 391 0038 F8E7     		b	.L30
+ 392              	.L37:
+ 393 003a 00BF     		.align	2
+ 394              	.L36:
+ 395 003c 00000000 		.word	main_app
+ 396 0040 00000000 		.word	g_main_app
+ 397              		.cfi_endproc
+ 398              	.LFE825:
+ 400              		.global	main_app
+ 401              		.section	.bss.main_app,"aw",%nobits
+ 402              		.align	2
+ 405              	main_app:
+ 406 0000 00000000 		.space	4
+ 407              		.section	.bss.g_main_app,"aw",%nobits
+ 408              		.align	2
+ 411              	g_main_app:
+ 412 0000 00000000 		.space	36
+ 412      00000000 
+ 412      00000000 
+ 412      00000000 
+ 412      00000000 
+ 413              		.text
+ 414              	.Letext0:
+ 415              		.file 2 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 416              		.file 3 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 417              		.file 4 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
+ 418              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
+ 419              		.file 6 "sdk/common/mpu_6050/mpu_6050.h"
+ 420              		.file 7 "sdk/hal/sm_hal_i2c.h"
+ 421              		.file 8 "sdk/common/attitude/attitude.h"
+ 422              		.file 9 "sdk/hal/sm_hal_flash.h"
+ 423              		.file 10 "sdk/services/storage/sm_storage.h"
+ 424              		.file 11 "sdk/app/main_app.h"
+ 425              		.file 12 "sdk/bsp/app_bsp.h"
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s 			page 10
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main_app.c
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:21     .text.main_app_drive_init:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:26     .text.main_app_drive_init:00000000 main_app_drive_init
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:82     .text.main_app_drive_init:00000028 $d
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:87     .text.main_app_mpu_6050_init:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:92     .text.main_app_mpu_6050_init:00000000 main_app_mpu_6050_init
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:158    .text.main_app_init:00000000 $t
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:164    .text.main_app_init:00000000 main_app_init
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:214    .text.main_app_init:0000002c $d
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:230    .bss.g_main_app:00000000 g_main_app
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:224    .bss.main_app:00000000 main_app
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:221    .bss.main_app:00000000 $d
-C:\Users\vanlo\AppData\Local\Temp\ccjKMPpE.s:227    .bss.g_main_app:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:21     .text.main_app_storage_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:26     .text.main_app_storage_init:00000000 main_app_storage_init
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:93     .text.main_app_storage_init:00000028 $d
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:98     .text.main_app_load_config:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:103    .text.main_app_load_config:00000000 main_app_load_config
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:198    .text.main_app_mpu_6050_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:203    .text.main_app_mpu_6050_init:00000000 main_app_mpu_6050_init
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:275    .text.main_app_attitude_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:280    .text.main_app_attitude_init:00000000 main_app_attitude_init
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:325    .text.main_app_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:331    .text.main_app_init:00000000 main_app_init
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:395    .text.main_app_init:0000003c $d
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:405    .bss.main_app:00000000 main_app
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:411    .bss.g_main_app:00000000 g_main_app
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:402    .bss.main_app:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\cc9VskIW.s:408    .bss.g_main_app:00000000 $d
 
 UNDEFINED SYMBOLS
-sm_hal_i2c_init
-sm_hal_i2c_open
-hi2c1
+sm_bsp_get_flash
+sm_storage_create
+mpu_6050_calibrate
+sm_bsp_get_mpu_i2c
 mpu_6050_init
 mpu_6050_set_power_ctrl
 mpu_6050_set_gyro_config
 mpu_6050_set_accel_config
-mpu_6050_calibrate
+sm_attitude_est_init

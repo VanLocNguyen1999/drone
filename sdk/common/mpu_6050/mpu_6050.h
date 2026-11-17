@@ -26,12 +26,27 @@ typedef enum {
 	ACCEL_CONFIG_16_G = 0x18,
 }ACCEL_CONFIG_DATA;
 
+typedef struct {
+    float accel_x;
+    float accel_y;
+    float accel_z;
+    float gyro_x;
+    float gyro_y;
+    float gyro_z;
+} mpu6050_data_t;
+
 typedef void mpu_6050_t;
 
 mpu_6050_t* mpu_6050_init(sm_hal_i2c_t* i2c);
 int32_t mpu_6050_set_power_ctrl(mpu_6050_t *_this, uint8_t enable);
+
 int32_t mpu_6050_set_gyro_config(mpu_6050_t* _this,GYRO_CONFIG_DATA gyro_config);
 int32_t mpu_6050_set_accel_config(mpu_6050_t* _this,ACCEL_CONFIG_DATA accel_config);
-int32_t mpu_6050_calibrate(mpu_6050_t* _this) ;
+
+int32_t mpu_6050_calibrate(mpu_6050_t* _this, mpu6050_data_t _offset_out) ;
+int32_t mpu_6050_set_offset(mpu_6050_t* _this, mpu6050_data_t _offset) ;
+
 void mpu_6050_process(mpu_6050_t* _this, uint32_t time_diff);
+
+int32_t mpu_6050_read_data(mpu_6050_t *_this, mpu6050_data_t *data);
 #endif /* SDK_COMMON_MPU_6050_MPU_6050_H_ */

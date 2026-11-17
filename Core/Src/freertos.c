@@ -145,11 +145,13 @@ void StartDefaultTask(void *argument)
 void StartMpuTask(void *argument)
 {
   /* USER CODE BEGIN StartMpuTask */
+	uint32_t next_tick = osKernelGetTickCount();
   /* Infinite loop */
   for(;;)
   {
-    osDelay(MPU_TASK_PERIOD_MS);
-    mpu_6050_process(main_app->m_mpu, MPU_TASK_PERIOD_MS);
+	next_tick += 10;
+	osDelayUntil(next_tick);
+    sm_attitude_est_update(main_app->m_attitude);
   }
   /* USER CODE END StartMpuTask */
 }

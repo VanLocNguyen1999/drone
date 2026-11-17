@@ -1,0 +1,17 @@
+/*
+ * sm_flash_config.h
+ *
+ *  Created on: Nov 17, 2026
+ *      Author: vanlo
+ */
+
+#ifndef SDK_PLATFORMS_STM32_F401RC_APP_BSP_SM_FLASH_CONFIG_H_
+#define SDK_PLATFORMS_STM32_F401RC_APP_BSP_SM_FLASH_CONFIG_H_
+#include "sm_types.h"
+
+#define FLASH_SECTOR_ADDR   		0x08020000U
+
+#define FLASH_MPU_OFFSET_CONFIG		FLASH_SECTOR_ADDR
+
+
+#endif /* SDK_PLATFORMS_STM32_F401RC_APP_BSP_SM_FLASH_CONFIG_H_ */

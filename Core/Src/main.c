@@ -19,12 +19,18 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "adc.h"
+#include "dma.h"
 #include "i2c.h"
+#include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "sm_hal_flash.h"
 #include "main_app.h"
+#include "app_bsp.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,6 +66,12 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+volatile int64_t sys_tick = 0;
+int64_t get_tick_count(){
+
+	sys_tick = xTaskGetTickCount();
+	return (int64_t)sys_tick;
+}
 void SYSTEM_TICK_UPDATE(void){
 	uwTick += uwTickFreq;
 }
@@ -94,13 +106,18 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_I2C1_Init();
+  MX_TIM2_Init();
+  MX_USART1_UART_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 //  __disable_irq();
 	NVIC_SetPriority(SysTick_IRQn,
 			NVIC_EncodePriority(NVIC_GetPriorityGrouping(),
 			0, 0));
   SysTick_Config((SYS_CLK/1000)*SYSTICK_PERIOD_MS);
+  sm_bsp_init();
   main_app_init();
   __enable_irq();
   /* USER CODE END 2 */

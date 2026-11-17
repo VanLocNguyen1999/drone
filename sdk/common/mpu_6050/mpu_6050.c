@@ -28,15 +28,6 @@ typedef struct {
 } mpu6050_raw_data_t;
 
 typedef struct {
-    float accel_x;
-    float accel_y;
-    float accel_z;
-    float gyro_x;
-    float gyro_y;
-    float gyro_z;
-} mpu6050_data_t;
-
-typedef struct {
     float roll;     // nghieng trai, phai
     float pitch;    // nghieng truoc, sau
     float yaw;      // xoay
@@ -147,7 +138,7 @@ static int32_t mpu_6050_get_data_raw(mpu_6050_impl_t* _this) {
 }
 
 // Dat MPU6050 nam ngang, dung yen, truc Z huong len khi calib.
-int32_t mpu_6050_calibrate(mpu_6050_t* _this) {
+int32_t mpu_6050_calibrate(mpu_6050_t* _this, mpu6050_data_t _offset_out) {
     if (!_this) return -1;
 
     if (_impl(_this)->m_accel_sensitivity < 0.0f ||
@@ -179,7 +170,7 @@ int32_t mpu_6050_calibrate(mpu_6050_t* _this) {
     offset.gyro_z /= sample_count;
 
     _impl(_this)->m_offset = offset;
-
+    memcpy(&_offset_out,&_impl(_this)->m_offset,sizeof(mpu6050_data_t));
     _impl(_this)->m_angle.roll = 0.0f;
     _impl(_this)->m_angle.pitch = 0.0f;
     _impl(_this)->m_angle.yaw = 0.0f;
@@ -187,6 +178,21 @@ int32_t mpu_6050_calibrate(mpu_6050_t* _this) {
     return 0;
 }
 
+int32_t mpu_6050_set_offset(mpu_6050_t* _this, mpu6050_data_t _offset){
+	if (!_this) return -1;
+	memcpy(&_impl(_this)->m_offset,&_offset,sizeof(mpu6050_data_t));
+	return 0;
+}
+
+int32_t mpu_6050_read_data(mpu_6050_t *_this, mpu6050_data_t *data) {
+	if (!_this || !data)
+		return -1;
+	if (mpu_6050_get_data_raw(_impl(_this)) < 0)
+		return -1;
+	*data = _impl(_this)->m_data;
+
+	return 0;
+}
 void mpu_6050_process(mpu_6050_t* _this, uint32_t time_diff) {
     if (!_this) return;
 

@@ -1,0 +1,751 @@
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"crc_calc.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "sdk/utils/crc_calc/crc_calc.c"
+  20              		.section	.text.CRC_ReverseBitOrder8,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	CRC_ReverseBitOrder8:
+  27              	.LVL0:
+  28              	.LFB6:
+   1:sdk/utils/crc_calc/crc_calc.c **** /*
+   2:sdk/utils/crc_calc/crc_calc.c ****  * crc_calc.c
+   3:sdk/utils/crc_calc/crc_calc.c ****  *
+   4:sdk/utils/crc_calc/crc_calc.c ****  *  Created on: Nov 17, 2026
+   5:sdk/utils/crc_calc/crc_calc.c ****  *      Author: vanlo
+   6:sdk/utils/crc_calc/crc_calc.c ****  */
+   7:sdk/utils/crc_calc/crc_calc.c **** #include "crc_calc.h"
+   8:sdk/utils/crc_calc/crc_calc.c **** 
+   9:sdk/utils/crc_calc/crc_calc.c **** static uint8_t CRC_ReverseBitOrder8(uint8_t value);
+  10:sdk/utils/crc_calc/crc_calc.c **** static uint32_t CRC_ReverseBitOrder32(uint32_t value);
+  11:sdk/utils/crc_calc/crc_calc.c **** 
+  12:sdk/utils/crc_calc/crc_calc.c **** uint8_t crc_calculate_8bit(const uint8_t *Buffer, uint16_t Length) {
+  13:sdk/utils/crc_calc/crc_calc.c **** 	uint8_t retVal = 0u;
+  14:sdk/utils/crc_calc/crc_calc.c **** 	uint16_t byteIndex = 0u;
+  15:sdk/utils/crc_calc/crc_calc.c **** 
+  16:sdk/utils/crc_calc/crc_calc.c **** 	if (Buffer != NULL) {
+  17:sdk/utils/crc_calc/crc_calc.c **** 		uint8_t bitIndex = 0u;
+  18:sdk/utils/crc_calc/crc_calc.c **** 
+  19:sdk/utils/crc_calc/crc_calc.c **** 		retVal = CRC_8_INIT_VALUE;
+  20:sdk/utils/crc_calc/crc_calc.c **** 
+  21:sdk/utils/crc_calc/crc_calc.c **** 		/* Do calculation procedure for each byte */
+  22:sdk/utils/crc_calc/crc_calc.c **** 		for (byteIndex = 0u; byteIndex < Length; byteIndex++) {
+  23:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+  24:sdk/utils/crc_calc/crc_calc.c **** 			retVal ^= (Buffer[byteIndex] << (CRC_8_RESULT_WIDTH - 8u));
+  25:sdk/utils/crc_calc/crc_calc.c **** 
+  26:sdk/utils/crc_calc/crc_calc.c **** 			/* Do calculation for current data */
+  27:sdk/utils/crc_calc/crc_calc.c **** 			for (bitIndex = 0u; bitIndex < 8u; bitIndex++) {
+  28:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_8_RESULT_WIDTH - 1u))) {
+  29:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (uint8_t) ((retVal << 1u) ^ CRC_8_POLYNOMIAL);
+  30:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 2
+
+
+  31:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (retVal << 1u);
+  32:sdk/utils/crc_calc/crc_calc.c **** 				}
+  33:sdk/utils/crc_calc/crc_calc.c **** 			}
+  34:sdk/utils/crc_calc/crc_calc.c **** 		}
+  35:sdk/utils/crc_calc/crc_calc.c **** 
+  36:sdk/utils/crc_calc/crc_calc.c **** 		/* XOR result with specified value */
+  37:sdk/utils/crc_calc/crc_calc.c **** 		retVal ^= CRC_8_XOR_VALUE;
+  38:sdk/utils/crc_calc/crc_calc.c **** 	}
+  39:sdk/utils/crc_calc/crc_calc.c **** 
+  40:sdk/utils/crc_calc/crc_calc.c **** 	return retVal;
+  41:sdk/utils/crc_calc/crc_calc.c **** }
+  42:sdk/utils/crc_calc/crc_calc.c **** 
+  43:sdk/utils/crc_calc/crc_calc.c **** uint16_t crc_calculate_16bit(const uint8_t *Buffer, uint32_t Length) {
+  44:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t retVal = 0u;
+  45:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t byteIndex = 0u;
+  46:sdk/utils/crc_calc/crc_calc.c **** 
+  47:sdk/utils/crc_calc/crc_calc.c **** 	if (Buffer != NULL) {
+  48:sdk/utils/crc_calc/crc_calc.c **** 		retVal = CRC_16_INIT_VALUE;
+  49:sdk/utils/crc_calc/crc_calc.c **** 
+  50:sdk/utils/crc_calc/crc_calc.c **** 		/* Do calculation procedure for each byte */
+  51:sdk/utils/crc_calc/crc_calc.c **** 		for (byteIndex = 0u; byteIndex < Length; byteIndex++) {
+  52:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+  53:sdk/utils/crc_calc/crc_calc.c **** 			retVal ^= (Buffer[byteIndex] << (CRC_16_RESULT_WIDTH - 8u));
+  54:sdk/utils/crc_calc/crc_calc.c **** 
+  55:sdk/utils/crc_calc/crc_calc.c **** 			uint8_t bitIndex = 0u;
+  56:sdk/utils/crc_calc/crc_calc.c **** 			/* Do calculation for current data */
+  57:sdk/utils/crc_calc/crc_calc.c **** 			for (bitIndex = 0u; bitIndex < 8u; bitIndex++) {
+  58:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_16_RESULT_WIDTH - 1u))) {
+  59:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (retVal << 1u) ^ CRC_16_POLYNOMIAL;
+  60:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+  61:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (retVal << 1u);
+  62:sdk/utils/crc_calc/crc_calc.c **** 				}
+  63:sdk/utils/crc_calc/crc_calc.c **** 			}
+  64:sdk/utils/crc_calc/crc_calc.c **** 		}
+  65:sdk/utils/crc_calc/crc_calc.c **** 
+  66:sdk/utils/crc_calc/crc_calc.c **** 		/* XOR result with specified value */
+  67:sdk/utils/crc_calc/crc_calc.c **** 		retVal ^= CRC_16_XOR_VALUE;
+  68:sdk/utils/crc_calc/crc_calc.c **** 	}
+  69:sdk/utils/crc_calc/crc_calc.c **** 
+  70:sdk/utils/crc_calc/crc_calc.c **** 	return retVal;
+  71:sdk/utils/crc_calc/crc_calc.c **** }
+  72:sdk/utils/crc_calc/crc_calc.c **** 
+  73:sdk/utils/crc_calc/crc_calc.c **** uint32_t crc_calculate_32bit(const uint8_t *Buffer, uint32_t Length) {
+  74:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t retVal = 0u;
+  75:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t byteIndex = 0u;
+  76:sdk/utils/crc_calc/crc_calc.c **** 
+  77:sdk/utils/crc_calc/crc_calc.c **** 	if (Buffer != NULL) {
+  78:sdk/utils/crc_calc/crc_calc.c **** 		retVal = CRC_32_INIT_VALUE;
+  79:sdk/utils/crc_calc/crc_calc.c **** 
+  80:sdk/utils/crc_calc/crc_calc.c **** 		/* Do calculation procedure for each byte */
+  81:sdk/utils/crc_calc/crc_calc.c **** 		for (byteIndex = 0u; byteIndex < Length; byteIndex++) {
+  82:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+  83:sdk/utils/crc_calc/crc_calc.c **** 			retVal ^= (CRC_ReverseBitOrder8(Buffer[byteIndex])
+  84:sdk/utils/crc_calc/crc_calc.c **** 					<< (CRC_32_RESULT_WIDTH - 8u));
+  85:sdk/utils/crc_calc/crc_calc.c **** 
+  86:sdk/utils/crc_calc/crc_calc.c **** 			uint8_t bitIndex = 0u;
+  87:sdk/utils/crc_calc/crc_calc.c **** 			/* Do calculation for current data */
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 3
+
+
+  88:sdk/utils/crc_calc/crc_calc.c **** 			for (bitIndex = 0u; bitIndex < 8u; bitIndex++) {
+  89:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_32_RESULT_WIDTH - 1u))) {
+  90:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (retVal << 1u) ^ CRC_32_POLYNOMIAL;
+  91:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+  92:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (retVal << 1u);
+  93:sdk/utils/crc_calc/crc_calc.c **** 				}
+  94:sdk/utils/crc_calc/crc_calc.c **** 			}
+  95:sdk/utils/crc_calc/crc_calc.c **** 		}
+  96:sdk/utils/crc_calc/crc_calc.c **** 
+  97:sdk/utils/crc_calc/crc_calc.c **** 		/* XOR result with specified value */
+  98:sdk/utils/crc_calc/crc_calc.c **** 		retVal ^= CRC_32_XOR_VALUE;
+  99:sdk/utils/crc_calc/crc_calc.c **** 	}
+ 100:sdk/utils/crc_calc/crc_calc.c **** 
+ 101:sdk/utils/crc_calc/crc_calc.c **** 	/* Reflect result */
+ 102:sdk/utils/crc_calc/crc_calc.c **** 	retVal = CRC_ReverseBitOrder32(retVal);
+ 103:sdk/utils/crc_calc/crc_calc.c **** 
+ 104:sdk/utils/crc_calc/crc_calc.c **** 	return retVal;
+ 105:sdk/utils/crc_calc/crc_calc.c **** }
+ 106:sdk/utils/crc_calc/crc_calc.c **** 
+ 107:sdk/utils/crc_calc/crc_calc.c **** static uint8_t CRC_ReverseBitOrder8(uint8_t value)
+ 108:sdk/utils/crc_calc/crc_calc.c **** {
+  29              		.loc 1 108 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+ 109:sdk/utils/crc_calc/crc_calc.c ****     value = (uint8_t)( (value & 0xF0) >> 4u | (value & 0x0F) << 4u );
+  34              		.loc 1 109 5 view .LVU1
+  35              		.loc 1 109 45 is_stmt 0 view .LVU2
+  36 0000 0301     		lsls	r3, r0, #4
+  37 0002 43EA1010 		orr	r0, r3, r0, lsr #4
+  38              	.LVL1:
+  39              		.loc 1 109 45 view .LVU3
+  40 0006 43B2     		sxtb	r3, r0
+  41              	.LVL2:
+ 110:sdk/utils/crc_calc/crc_calc.c ****     value = (uint8_t)( (value & 0xCC) >> 2u | (value & 0x33) << 2u );
+  42              		.loc 1 110 5 is_stmt 1 view .LVU4
+  43              		.loc 1 110 39 is_stmt 0 view .LVU5
+  44 0008 C0F38500 		ubfx	r0, r0, #2, #6
+  45              	.LVL3:
+  46              		.loc 1 110 45 view .LVU6
+  47 000c 9B00     		lsls	r3, r3, #2
+  48              	.LVL4:
+  49              		.loc 1 110 45 view .LVU7
+  50 000e 23F03303 		bic	r3, r3, #51
+  51 0012 00F03300 		and	r0, r0, #51
+  52 0016 0343     		orrs	r3, r3, r0
+  53 0018 58B2     		sxtb	r0, r3
+  54              	.LVL5:
+ 111:sdk/utils/crc_calc/crc_calc.c ****     value = (uint8_t)( (value & 0xAA) >> 1u | (value & 0x55) << 1u );
+  55              		.loc 1 111 5 is_stmt 1 view .LVU8
+  56              		.loc 1 111 39 is_stmt 0 view .LVU9
+  57 001a C3F34603 		ubfx	r3, r3, #1, #7
+  58              	.LVL6:
+  59              		.loc 1 111 45 view .LVU10
+  60 001e 4000     		lsls	r0, r0, #1
+  61              	.LVL7:
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 4
+
+
+  62              		.loc 1 111 45 view .LVU11
+  63 0020 20F05500 		bic	r0, r0, #85
+  64 0024 03F05503 		and	r3, r3, #85
+  65 0028 1843     		orrs	r0, r0, r3
+  66              	.LVL8:
+ 112:sdk/utils/crc_calc/crc_calc.c **** 
+ 113:sdk/utils/crc_calc/crc_calc.c ****     return value;
+  67              		.loc 1 113 5 is_stmt 1 view .LVU12
+ 114:sdk/utils/crc_calc/crc_calc.c **** }
+  68              		.loc 1 114 1 is_stmt 0 view .LVU13
+  69 002a C0B2     		uxtb	r0, r0
+  70              		.loc 1 114 1 view .LVU14
+  71 002c 7047     		bx	lr
+  72              		.cfi_endproc
+  73              	.LFE6:
+  75              		.section	.text.CRC_ReverseBitOrder32,"ax",%progbits
+  76              		.align	1
+  77              		.syntax unified
+  78              		.thumb
+  79              		.thumb_func
+  81              	CRC_ReverseBitOrder32:
+  82              	.LVL9:
+  83              	.LFB7:
+ 115:sdk/utils/crc_calc/crc_calc.c **** 
+ 116:sdk/utils/crc_calc/crc_calc.c **** 
+ 117:sdk/utils/crc_calc/crc_calc.c **** static uint32_t CRC_ReverseBitOrder32(uint32_t value)
+ 118:sdk/utils/crc_calc/crc_calc.c **** {
+  84              		.loc 1 118 1 is_stmt 1 view -0
+  85              		.cfi_startproc
+  86              		@ args = 0, pretend = 0, frame = 0
+  87              		@ frame_needed = 0, uses_anonymous_args = 0
+  88              		@ link register save eliminated.
+  89              		.loc 1 118 1 is_stmt 0 view .LVU16
+  90 0000 0246     		mov	r2, r0
+ 119:sdk/utils/crc_calc/crc_calc.c ****     uint32_t reversed = 0u;
+  91              		.loc 1 119 5 is_stmt 1 view .LVU17
+  92              	.LVL10:
+ 120:sdk/utils/crc_calc/crc_calc.c **** 
+ 121:sdk/utils/crc_calc/crc_calc.c ****     for(uint8_t i = 31u; value; )
+  93              		.loc 1 121 5 view .LVU18
+  94              	.LBB2:
+  95              		.loc 1 121 9 view .LVU19
+  96              		.loc 1 121 17 is_stmt 0 view .LVU20
+  97 0002 1F23     		movs	r3, #31
+  98              	.LBE2:
+ 119:sdk/utils/crc_calc/crc_calc.c ****     uint32_t reversed = 0u;
+  99              		.loc 1 119 14 view .LVU21
+ 100 0004 0020     		movs	r0, #0
+ 101              	.LVL11:
+ 102              	.LBB3:
+ 103              		.loc 1 121 5 view .LVU22
+ 104 0006 06E0     		b	.L3
+ 105              	.LVL12:
+ 106              	.L4:
+ 122:sdk/utils/crc_calc/crc_calc.c ****     {
+ 123:sdk/utils/crc_calc/crc_calc.c ****         reversed |= (value & 1u) << i;
+ 107              		.loc 1 123 9 is_stmt 1 view .LVU23
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 5
+
+
+ 108              		.loc 1 123 28 is_stmt 0 view .LVU24
+ 109 0008 02F00101 		and	r1, r2, #1
+ 110              		.loc 1 123 34 view .LVU25
+ 111 000c 9940     		lsls	r1, r1, r3
+ 112              		.loc 1 123 18 view .LVU26
+ 113 000e 0843     		orrs	r0, r0, r1
+ 114              	.LVL13:
+ 124:sdk/utils/crc_calc/crc_calc.c ****         value >>= 1u;
+ 115              		.loc 1 124 9 is_stmt 1 view .LVU27
+ 116              		.loc 1 124 15 is_stmt 0 view .LVU28
+ 117 0010 5208     		lsrs	r2, r2, #1
+ 118              	.LVL14:
+ 125:sdk/utils/crc_calc/crc_calc.c ****         -- i;
+ 119              		.loc 1 125 9 is_stmt 1 view .LVU29
+ 120 0012 013B     		subs	r3, r3, #1
+ 121              	.LVL15:
+ 122              		.loc 1 125 9 is_stmt 0 view .LVU30
+ 123 0014 DBB2     		uxtb	r3, r3
+ 124              	.LVL16:
+ 125              	.L3:
+ 121:sdk/utils/crc_calc/crc_calc.c ****     {
+ 126              		.loc 1 121 26 is_stmt 1 discriminator 1 view .LVU31
+ 127 0016 002A     		cmp	r2, #0
+ 128 0018 F6D1     		bne	.L4
+ 121:sdk/utils/crc_calc/crc_calc.c ****     {
+ 129              		.loc 1 121 26 is_stmt 0 discriminator 1 view .LVU32
+ 130              	.LBE3:
+ 126:sdk/utils/crc_calc/crc_calc.c ****     }
+ 127:sdk/utils/crc_calc/crc_calc.c **** 
+ 128:sdk/utils/crc_calc/crc_calc.c ****     return reversed;
+ 131              		.loc 1 128 5 is_stmt 1 view .LVU33
+ 129:sdk/utils/crc_calc/crc_calc.c **** }
+ 132              		.loc 1 129 1 is_stmt 0 view .LVU34
+ 133 001a 7047     		bx	lr
+ 134              		.cfi_endproc
+ 135              	.LFE7:
+ 137              		.section	.text.crc_calculate_8bit,"ax",%progbits
+ 138              		.align	1
+ 139              		.global	crc_calculate_8bit
+ 140              		.syntax unified
+ 141              		.thumb
+ 142              		.thumb_func
+ 144              	crc_calculate_8bit:
+ 145              	.LVL17:
+ 146              	.LFB3:
+  12:sdk/utils/crc_calc/crc_calc.c **** 	uint8_t retVal = 0u;
+ 147              		.loc 1 12 68 is_stmt 1 view -0
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151              		@ link register save eliminated.
+  13:sdk/utils/crc_calc/crc_calc.c **** 	uint16_t byteIndex = 0u;
+ 152              		.loc 1 13 2 view .LVU36
+  14:sdk/utils/crc_calc/crc_calc.c **** 
+ 153              		.loc 1 14 2 view .LVU37
+  16:sdk/utils/crc_calc/crc_calc.c **** 		uint8_t bitIndex = 0u;
+ 154              		.loc 1 16 2 view .LVU38
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 6
+
+
+  16:sdk/utils/crc_calc/crc_calc.c **** 		uint8_t bitIndex = 0u;
+ 155              		.loc 1 16 5 is_stmt 0 view .LVU39
+ 156 0000 8446     		mov	ip, r0
+ 157 0002 10B1     		cbz	r0, .L14
+ 158              	.LBB4:
+  22:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+ 159              		.loc 1 22 18 view .LVU40
+ 160 0004 0020     		movs	r0, #0
+ 161              	.LVL18:
+  19:sdk/utils/crc_calc/crc_calc.c **** 
+ 162              		.loc 1 19 10 view .LVU41
+ 163 0006 FF23     		movs	r3, #255
+ 164 0008 10E0     		b	.L6
+ 165              	.LVL19:
+ 166              	.L14:
+  19:sdk/utils/crc_calc/crc_calc.c **** 
+ 167              		.loc 1 19 10 view .LVU42
+ 168 000a 7047     		bx	lr
+ 169              	.LVL20:
+ 170              	.L16:
+  29:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ 171              		.loc 1 29 6 is_stmt 1 view .LVU43
+  29:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ 172              		.loc 1 29 34 is_stmt 0 view .LVU44
+ 173 000c 5B00     		lsls	r3, r3, #1
+ 174              	.LVL21:
+  29:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ 175              		.loc 1 29 34 view .LVU45
+ 176 000e DBB2     		uxtb	r3, r3
+  29:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ 177              		.loc 1 29 13 view .LVU46
+ 178 0010 83F01D03 		eor	r3, r3, #29
+ 179              	.LVL22:
+ 180              	.L10:
+  27:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_8_RESULT_WIDTH - 1u))) {
+ 181              		.loc 1 27 47 is_stmt 1 discriminator 2 view .LVU47
+ 182 0014 0132     		adds	r2, r2, #1
+ 183              	.LVL23:
+  27:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_8_RESULT_WIDTH - 1u))) {
+ 184              		.loc 1 27 47 is_stmt 0 discriminator 2 view .LVU48
+ 185 0016 D2B2     		uxtb	r2, r2
+ 186              	.LVL24:
+ 187              	.L8:
+  27:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_8_RESULT_WIDTH - 1u))) {
+ 188              		.loc 1 27 33 is_stmt 1 discriminator 1 view .LVU49
+ 189 0018 072A     		cmp	r2, #7
+ 190 001a 05D8     		bhi	.L15
+  28:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (uint8_t) ((retVal << 1u) ^ CRC_8_POLYNOMIAL);
+ 191              		.loc 1 28 5 view .LVU50
+  28:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (uint8_t) ((retVal << 1u) ^ CRC_8_POLYNOMIAL);
+ 192              		.loc 1 28 8 is_stmt 0 view .LVU51
+ 193 001c 13F0800F 		tst	r3, #128
+ 194 0020 F4D1     		bne	.L16
+  31:sdk/utils/crc_calc/crc_calc.c **** 				}
+ 195              		.loc 1 31 6 is_stmt 1 view .LVU52
+  31:sdk/utils/crc_calc/crc_calc.c **** 				}
+ 196              		.loc 1 31 13 is_stmt 0 view .LVU53
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 7
+
+
+ 197 0022 5B00     		lsls	r3, r3, #1
+ 198              	.LVL25:
+  31:sdk/utils/crc_calc/crc_calc.c **** 				}
+ 199              		.loc 1 31 13 view .LVU54
+ 200 0024 DBB2     		uxtb	r3, r3
+ 201 0026 F5E7     		b	.L10
+ 202              	.LVL26:
+ 203              	.L15:
+  22:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+ 204              		.loc 1 22 53 is_stmt 1 discriminator 2 view .LVU55
+ 205 0028 0130     		adds	r0, r0, #1
+ 206              	.LVL27:
+  22:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+ 207              		.loc 1 22 53 is_stmt 0 discriminator 2 view .LVU56
+ 208 002a 80B2     		uxth	r0, r0
+ 209              	.LVL28:
+ 210              	.L6:
+  22:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+ 211              		.loc 1 22 34 is_stmt 1 discriminator 1 view .LVU57
+ 212 002c 8842     		cmp	r0, r1
+ 213 002e 04D2     		bcs	.L17
+  24:sdk/utils/crc_calc/crc_calc.c **** 
+ 214              		.loc 1 24 4 view .LVU58
+  24:sdk/utils/crc_calc/crc_calc.c **** 
+ 215              		.loc 1 24 11 is_stmt 0 view .LVU59
+ 216 0030 1CF80020 		ldrb	r2, [ip, r0]	@ zero_extendqisi2
+ 217 0034 5340     		eors	r3, r3, r2
+ 218              	.LVL29:
+  27:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_8_RESULT_WIDTH - 1u))) {
+ 219              		.loc 1 27 4 is_stmt 1 view .LVU60
+  27:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_8_RESULT_WIDTH - 1u))) {
+ 220              		.loc 1 27 18 is_stmt 0 view .LVU61
+ 221 0036 0022     		movs	r2, #0
+  27:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_8_RESULT_WIDTH - 1u))) {
+ 222              		.loc 1 27 4 view .LVU62
+ 223 0038 EEE7     		b	.L8
+ 224              	.LVL30:
+ 225              	.L17:
+  37:sdk/utils/crc_calc/crc_calc.c **** 	}
+ 226              		.loc 1 37 3 is_stmt 1 view .LVU63
+  37:sdk/utils/crc_calc/crc_calc.c **** 	}
+ 227              		.loc 1 37 10 is_stmt 0 view .LVU64
+ 228 003a DB43     		mvns	r3, r3
+ 229              	.LVL31:
+  37:sdk/utils/crc_calc/crc_calc.c **** 	}
+ 230              		.loc 1 37 10 view .LVU65
+ 231 003c D8B2     		uxtb	r0, r3
+ 232              	.LVL32:
+  37:sdk/utils/crc_calc/crc_calc.c **** 	}
+ 233              		.loc 1 37 10 view .LVU66
+ 234              	.LBE4:
+  40:sdk/utils/crc_calc/crc_calc.c **** }
+ 235              		.loc 1 40 2 is_stmt 1 view .LVU67
+  41:sdk/utils/crc_calc/crc_calc.c **** 
+ 236              		.loc 1 41 1 is_stmt 0 view .LVU68
+ 237 003e 7047     		bx	lr
+ 238              		.cfi_endproc
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 8
+
+
+ 239              	.LFE3:
+ 241              		.section	.text.crc_calculate_16bit,"ax",%progbits
+ 242              		.align	1
+ 243              		.global	crc_calculate_16bit
+ 244              		.syntax unified
+ 245              		.thumb
+ 246              		.thumb_func
+ 248              	crc_calculate_16bit:
+ 249              	.LVL33:
+ 250              	.LFB4:
+  43:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t retVal = 0u;
+ 251              		.loc 1 43 70 is_stmt 1 view -0
+ 252              		.cfi_startproc
+ 253              		@ args = 0, pretend = 0, frame = 0
+ 254              		@ frame_needed = 0, uses_anonymous_args = 0
+  44:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t byteIndex = 0u;
+ 255              		.loc 1 44 2 view .LVU70
+  45:sdk/utils/crc_calc/crc_calc.c **** 
+ 256              		.loc 1 45 2 view .LVU71
+  47:sdk/utils/crc_calc/crc_calc.c **** 		retVal = CRC_16_INIT_VALUE;
+ 257              		.loc 1 47 2 view .LVU72
+  47:sdk/utils/crc_calc/crc_calc.c **** 		retVal = CRC_16_INIT_VALUE;
+ 258              		.loc 1 47 5 is_stmt 0 view .LVU73
+ 259 0000 F8B1     		cbz	r0, .L30
+  43:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t retVal = 0u;
+ 260              		.loc 1 43 70 view .LVU74
+ 261 0002 00B5     		push	{lr}
+ 262              	.LCFI0:
+ 263              		.cfi_def_cfa_offset 4
+ 264              		.cfi_offset 14, -4
+ 265 0004 8646     		mov	lr, r0
+  51:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+ 266              		.loc 1 51 18 view .LVU75
+ 267 0006 4FF0000C 		mov	ip, #0
+  48:sdk/utils/crc_calc/crc_calc.c **** 
+ 268              		.loc 1 48 10 view .LVU76
+ 269 000a 4FF6FF70 		movw	r0, #65535
+ 270              	.LVL34:
+  48:sdk/utils/crc_calc/crc_calc.c **** 
+ 271              		.loc 1 48 10 view .LVU77
+ 272 000e 0EE0     		b	.L19
+ 273              	.LVL35:
+ 274              	.L22:
+ 275              	.LBB5:
+  61:sdk/utils/crc_calc/crc_calc.c **** 				}
+ 276              		.loc 1 61 6 is_stmt 1 view .LVU78
+  61:sdk/utils/crc_calc/crc_calc.c **** 				}
+ 277              		.loc 1 61 13 is_stmt 0 view .LVU79
+ 278 0010 4000     		lsls	r0, r0, #1
+ 279              	.LVL36:
+ 280              	.L23:
+  57:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_16_RESULT_WIDTH - 1u))) {
+ 281              		.loc 1 57 47 is_stmt 1 discriminator 2 view .LVU80
+ 282 0012 0133     		adds	r3, r3, #1
+ 283              	.LVL37:
+  57:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_16_RESULT_WIDTH - 1u))) {
+ 284              		.loc 1 57 47 is_stmt 0 discriminator 2 view .LVU81
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 9
+
+
+ 285 0014 DBB2     		uxtb	r3, r3
+ 286              	.LVL38:
+ 287              	.L21:
+  57:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_16_RESULT_WIDTH - 1u))) {
+ 288              		.loc 1 57 33 is_stmt 1 discriminator 1 view .LVU82
+ 289 0016 072B     		cmp	r3, #7
+ 290 0018 07D8     		bhi	.L31
+  58:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (retVal << 1u) ^ CRC_16_POLYNOMIAL;
+ 291              		.loc 1 58 5 view .LVU83
+  58:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (retVal << 1u) ^ CRC_16_POLYNOMIAL;
+ 292              		.loc 1 58 8 is_stmt 0 view .LVU84
+ 293 001a 10F4004F 		tst	r0, #32768
+ 294 001e F7D0     		beq	.L22
+  59:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ 295              		.loc 1 59 6 is_stmt 1 view .LVU85
+  59:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ 296              		.loc 1 59 13 is_stmt 0 view .LVU86
+ 297 0020 41F22102 		movw	r2, #4129
+ 298 0024 82EA4000 		eor	r0, r2, r0, lsl #1
+ 299              	.LVL39:
+  59:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ 300              		.loc 1 59 13 view .LVU87
+ 301 0028 F3E7     		b	.L23
+ 302              	.L31:
+  59:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ 303              		.loc 1 59 13 view .LVU88
+ 304              	.LBE5:
+  51:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+ 305              		.loc 1 51 53 is_stmt 1 discriminator 2 view .LVU89
+ 306 002a 0CF1010C 		add	ip, ip, #1
+ 307              	.LVL40:
+ 308              	.L19:
+  51:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+ 309              		.loc 1 51 34 discriminator 1 view .LVU90
+ 310 002e 8C45     		cmp	ip, r1
+ 311 0030 05D2     		bcs	.L32
+ 312              	.LBB6:
+  53:sdk/utils/crc_calc/crc_calc.c **** 
+ 313              		.loc 1 53 4 view .LVU91
+  53:sdk/utils/crc_calc/crc_calc.c **** 
+ 314              		.loc 1 53 21 is_stmt 0 view .LVU92
+ 315 0032 1EF80C30 		ldrb	r3, [lr, ip]	@ zero_extendqisi2
+  53:sdk/utils/crc_calc/crc_calc.c **** 
+ 316              		.loc 1 53 11 view .LVU93
+ 317 0036 80EA0320 		eor	r0, r0, r3, lsl #8
+ 318              	.LVL41:
+  55:sdk/utils/crc_calc/crc_calc.c **** 			/* Do calculation for current data */
+ 319              		.loc 1 55 4 is_stmt 1 view .LVU94
+  57:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_16_RESULT_WIDTH - 1u))) {
+ 320              		.loc 1 57 4 view .LVU95
+  57:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_16_RESULT_WIDTH - 1u))) {
+ 321              		.loc 1 57 18 is_stmt 0 view .LVU96
+ 322 003a 0023     		movs	r3, #0
+  57:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_16_RESULT_WIDTH - 1u))) {
+ 323              		.loc 1 57 4 view .LVU97
+ 324 003c EBE7     		b	.L21
+ 325              	.LVL42:
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 10
+
+
+ 326              	.L32:
+  57:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_16_RESULT_WIDTH - 1u))) {
+ 327              		.loc 1 57 4 view .LVU98
+ 328              	.LBE6:
+  70:sdk/utils/crc_calc/crc_calc.c **** }
+ 329              		.loc 1 70 2 is_stmt 1 view .LVU99
+  71:sdk/utils/crc_calc/crc_calc.c **** 
+ 330              		.loc 1 71 1 is_stmt 0 view .LVU100
+ 331 003e 80B2     		uxth	r0, r0
+ 332              	.LVL43:
+  71:sdk/utils/crc_calc/crc_calc.c **** 
+ 333              		.loc 1 71 1 view .LVU101
+ 334 0040 00BD     		pop	{pc}
+ 335              	.LVL44:
+ 336              	.L30:
+ 337              	.LCFI1:
+ 338              		.cfi_def_cfa_offset 0
+ 339              		.cfi_restore 14
+  70:sdk/utils/crc_calc/crc_calc.c **** }
+ 340              		.loc 1 70 2 is_stmt 1 view .LVU102
+  71:sdk/utils/crc_calc/crc_calc.c **** 
+ 341              		.loc 1 71 1 is_stmt 0 view .LVU103
+ 342 0042 80B2     		uxth	r0, r0
+ 343              	.LVL45:
+  71:sdk/utils/crc_calc/crc_calc.c **** 
+ 344              		.loc 1 71 1 view .LVU104
+ 345 0044 7047     		bx	lr
+ 346              		.cfi_endproc
+ 347              	.LFE4:
+ 349              		.section	.text.crc_calculate_32bit,"ax",%progbits
+ 350              		.align	1
+ 351              		.global	crc_calculate_32bit
+ 352              		.syntax unified
+ 353              		.thumb
+ 354              		.thumb_func
+ 356              	crc_calculate_32bit:
+ 357              	.LVL46:
+ 358              	.LFB5:
+  73:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t retVal = 0u;
+ 359              		.loc 1 73 70 is_stmt 1 view -0
+ 360              		.cfi_startproc
+ 361              		@ args = 0, pretend = 0, frame = 0
+ 362              		@ frame_needed = 0, uses_anonymous_args = 0
+  73:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t retVal = 0u;
+ 363              		.loc 1 73 70 is_stmt 0 view .LVU106
+ 364 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 365              	.LCFI2:
+ 366              		.cfi_def_cfa_offset 24
+ 367              		.cfi_offset 3, -24
+ 368              		.cfi_offset 4, -20
+ 369              		.cfi_offset 5, -16
+ 370              		.cfi_offset 6, -12
+ 371              		.cfi_offset 7, -8
+ 372              		.cfi_offset 14, -4
+  74:sdk/utils/crc_calc/crc_calc.c **** 	uint32_t byteIndex = 0u;
+ 373              		.loc 1 74 2 is_stmt 1 view .LVU107
+ 374              	.LVL47:
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 11
+
+
+  75:sdk/utils/crc_calc/crc_calc.c **** 
+ 375              		.loc 1 75 2 view .LVU108
+  77:sdk/utils/crc_calc/crc_calc.c **** 		retVal = CRC_32_INIT_VALUE;
+ 376              		.loc 1 77 2 view .LVU109
+  77:sdk/utils/crc_calc/crc_calc.c **** 		retVal = CRC_32_INIT_VALUE;
+ 377              		.loc 1 77 5 is_stmt 0 view .LVU110
+ 378 0002 D8B1     		cbz	r0, .L35
+ 379 0004 0E46     		mov	r6, r1
+ 380 0006 0746     		mov	r7, r0
+  81:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+ 381              		.loc 1 81 18 view .LVU111
+ 382 0008 0025     		movs	r5, #0
+  78:sdk/utils/crc_calc/crc_calc.c **** 
+ 383              		.loc 1 78 10 view .LVU112
+ 384 000a 4FF0FF34 		mov	r4, #-1
+ 385 000e 0BE0     		b	.L34
+ 386              	.LVL48:
+ 387              	.L44:
+ 388              	.LBB7:
+  90:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ 389              		.loc 1 90 6 is_stmt 1 view .LVU113
+  90:sdk/utils/crc_calc/crc_calc.c **** 				} else {
+ 390              		.loc 1 90 13 is_stmt 0 view .LVU114
+ 391 0010 0C4A     		ldr	r2, .L46
+ 392 0012 82EA4404 		eor	r4, r2, r4, lsl #1
+ 393              	.LVL49:
+ 394              	.L38:
+  88:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_32_RESULT_WIDTH - 1u))) {
+ 395              		.loc 1 88 47 is_stmt 1 discriminator 2 view .LVU115
+ 396 0016 0133     		adds	r3, r3, #1
+ 397              	.LVL50:
+  88:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_32_RESULT_WIDTH - 1u))) {
+ 398              		.loc 1 88 47 is_stmt 0 discriminator 2 view .LVU116
+ 399 0018 DBB2     		uxtb	r3, r3
+ 400              	.LVL51:
+ 401              	.L36:
+  88:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_32_RESULT_WIDTH - 1u))) {
+ 402              		.loc 1 88 33 is_stmt 1 discriminator 1 view .LVU117
+ 403 001a 072B     		cmp	r3, #7
+ 404 001c 03D8     		bhi	.L43
+  89:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (retVal << 1u) ^ CRC_32_POLYNOMIAL;
+ 405              		.loc 1 89 5 view .LVU118
+  89:sdk/utils/crc_calc/crc_calc.c **** 					retVal = (retVal << 1u) ^ CRC_32_POLYNOMIAL;
+ 406              		.loc 1 89 8 is_stmt 0 view .LVU119
+ 407 001e 002C     		cmp	r4, #0
+ 408 0020 F6DB     		blt	.L44
+  92:sdk/utils/crc_calc/crc_calc.c **** 				}
+ 409              		.loc 1 92 6 is_stmt 1 view .LVU120
+  92:sdk/utils/crc_calc/crc_calc.c **** 				}
+ 410              		.loc 1 92 13 is_stmt 0 view .LVU121
+ 411 0022 6400     		lsls	r4, r4, #1
+ 412              	.LVL52:
+  92:sdk/utils/crc_calc/crc_calc.c **** 				}
+ 413              		.loc 1 92 13 view .LVU122
+ 414 0024 F7E7     		b	.L38
+ 415              	.LVL53:
+ 416              	.L43:
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 12
+
+
+  92:sdk/utils/crc_calc/crc_calc.c **** 				}
+ 417              		.loc 1 92 13 view .LVU123
+ 418              	.LBE7:
+  81:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+ 419              		.loc 1 81 53 is_stmt 1 discriminator 2 view .LVU124
+ 420 0026 0135     		adds	r5, r5, #1
+ 421              	.LVL54:
+ 422              	.L34:
+  81:sdk/utils/crc_calc/crc_calc.c **** 			/* XOR new byte with temp result */
+ 423              		.loc 1 81 34 discriminator 1 view .LVU125
+ 424 0028 B542     		cmp	r5, r6
+ 425 002a 06D2     		bcs	.L45
+ 426              	.LBB8:
+  83:sdk/utils/crc_calc/crc_calc.c **** 					<< (CRC_32_RESULT_WIDTH - 8u));
+ 427              		.loc 1 83 4 view .LVU126
+  83:sdk/utils/crc_calc/crc_calc.c **** 					<< (CRC_32_RESULT_WIDTH - 8u));
+ 428              		.loc 1 83 15 is_stmt 0 view .LVU127
+ 429 002c 785D     		ldrb	r0, [r7, r5]	@ zero_extendqisi2
+ 430 002e FFF7FEFF 		bl	CRC_ReverseBitOrder8
+ 431              	.LVL55:
+  83:sdk/utils/crc_calc/crc_calc.c **** 					<< (CRC_32_RESULT_WIDTH - 8u));
+ 432              		.loc 1 83 11 view .LVU128
+ 433 0032 84EA0064 		eor	r4, r4, r0, lsl #24
+ 434              	.LVL56:
+  86:sdk/utils/crc_calc/crc_calc.c **** 			/* Do calculation for current data */
+ 435              		.loc 1 86 4 is_stmt 1 view .LVU129
+  88:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_32_RESULT_WIDTH - 1u))) {
+ 436              		.loc 1 88 4 view .LVU130
+  88:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_32_RESULT_WIDTH - 1u))) {
+ 437              		.loc 1 88 18 is_stmt 0 view .LVU131
+ 438 0036 0023     		movs	r3, #0
+  88:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_32_RESULT_WIDTH - 1u))) {
+ 439              		.loc 1 88 4 view .LVU132
+ 440 0038 EFE7     		b	.L36
+ 441              	.LVL57:
+ 442              	.L45:
+  88:sdk/utils/crc_calc/crc_calc.c **** 				if (retVal & (1u << (CRC_32_RESULT_WIDTH - 1u))) {
+ 443              		.loc 1 88 4 view .LVU133
+ 444              	.LBE8:
+  98:sdk/utils/crc_calc/crc_calc.c **** 	}
+ 445              		.loc 1 98 3 is_stmt 1 view .LVU134
+  98:sdk/utils/crc_calc/crc_calc.c **** 	}
+ 446              		.loc 1 98 10 is_stmt 0 view .LVU135
+ 447 003a E043     		mvns	r0, r4
+ 448              	.LVL58:
+ 449              	.L35:
+ 102:sdk/utils/crc_calc/crc_calc.c **** 
+ 450              		.loc 1 102 2 is_stmt 1 view .LVU136
+ 102:sdk/utils/crc_calc/crc_calc.c **** 
+ 451              		.loc 1 102 11 is_stmt 0 view .LVU137
+ 452 003c FFF7FEFF 		bl	CRC_ReverseBitOrder32
+ 453              	.LVL59:
+ 104:sdk/utils/crc_calc/crc_calc.c **** }
+ 454              		.loc 1 104 2 is_stmt 1 view .LVU138
+ 105:sdk/utils/crc_calc/crc_calc.c **** 
+ 455              		.loc 1 105 1 is_stmt 0 view .LVU139
+ 456 0040 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 13
+
+
+ 457              	.L47:
+ 458 0042 00BF     		.align	2
+ 459              	.L46:
+ 460 0044 B71DC104 		.word	79764919
+ 461              		.cfi_endproc
+ 462              	.LFE5:
+ 464              		.text
+ 465              	.Letext0:
+ 466              		.file 2 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 467              		.file 3 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 crc_calc.c
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:21     .text.CRC_ReverseBitOrder8:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:26     .text.CRC_ReverseBitOrder8:00000000 CRC_ReverseBitOrder8
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:76     .text.CRC_ReverseBitOrder32:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:81     .text.CRC_ReverseBitOrder32:00000000 CRC_ReverseBitOrder32
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:138    .text.crc_calculate_8bit:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:144    .text.crc_calculate_8bit:00000000 crc_calculate_8bit
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:242    .text.crc_calculate_16bit:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:248    .text.crc_calculate_16bit:00000000 crc_calculate_16bit
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:350    .text.crc_calculate_32bit:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:356    .text.crc_calculate_32bit:00000000 crc_calculate_32bit
+C:\Users\vanlo\AppData\Local\Temp\cctmuWoc.s:460    .text.crc_calculate_32bit:00000044 $d
+
+NO UNDEFINED SYMBOLS

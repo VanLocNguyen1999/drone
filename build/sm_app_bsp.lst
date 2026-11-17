@@ -1,0 +1,385 @@
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"sm_app_bsp.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c"
+  20              		.section	.text.sm_bsp_io_init,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	sm_bsp_io_init:
+  27              	.LFB822:
+   1:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** /*
+   2:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c ****  * sm_app_bsp.c
+   3:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c ****  *
+   4:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c ****  *  Created on: Nov 17, 2026
+   5:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c ****  *      Author: vanlo
+   6:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c ****  */
+   7:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+   8:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** #ifndef SDK_PLATFORMS_STM32_F401RC_APP_BSP_SM_APP_BSP_C_
+   9:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** #define SDK_PLATFORMS_STM32_F401RC_APP_BSP_SM_APP_BSP_C_
+  10:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** #include "app_bsp.h"
+  11:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** #include "stm32f4xx_hal.h"
+  12:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** #include "i2c.h"
+  13:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+  14:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** sm_hal_i2c_t *g_mpu_i2c;
+  15:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** sm_hal_flash_t *g_flash;
+  16:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** sm_hal_io_t * g_led;
+  17:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+  18:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** static void sm_bsp_io_init(void);
+  19:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** static void sm_bsp_i2c_init(void);
+  20:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** static void sm_bsp_flash_init(void);
+  21:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** void sm_bsp_init(void){
+  22:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+  23:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	sm_bsp_io_init();
+  24:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	sm_bsp_i2c_init();
+  25:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	sm_bsp_flash_init();
+  26:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** }
+  27:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+  28:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** static void sm_bsp_io_init(void){
+  28              		.loc 1 28 33 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s 			page 2
+
+
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 14, -4
+  29:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+  30:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	g_led = sm_hal_io_init(GPIOC, GPIO_PIN_13);
+  37              		.loc 1 30 2 view .LVU1
+  38              		.loc 1 30 10 is_stmt 0 view .LVU2
+  39 0002 4FF40051 		mov	r1, #8192
+  40 0006 0648     		ldr	r0, .L3
+  41 0008 FFF7FEFF 		bl	sm_hal_io_init
+  42              	.LVL0:
+  43              		.loc 1 30 8 discriminator 1 view .LVU3
+  44 000c 054C     		ldr	r4, .L3+4
+  45 000e 2060     		str	r0, [r4]
+  31:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	sm_hal_io_open(g_led,SM_HAL_IO_OUTPUT_PP);
+  46              		.loc 1 31 2 is_stmt 1 view .LVU4
+  47 0010 0321     		movs	r1, #3
+  48 0012 FFF7FEFF 		bl	sm_hal_io_open
+  49              	.LVL1:
+  32:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	sm_hal_io_write(g_led, SM_HAL_IO_RESET);
+  50              		.loc 1 32 2 view .LVU5
+  51 0016 0021     		movs	r1, #0
+  52 0018 2068     		ldr	r0, [r4]
+  53 001a FFF7FEFF 		bl	sm_hal_io_write
+  54              	.LVL2:
+  33:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** }
+  55              		.loc 1 33 1 is_stmt 0 view .LVU6
+  56 001e 10BD     		pop	{r4, pc}
+  57              	.L4:
+  58              		.align	2
+  59              	.L3:
+  60 0020 00080240 		.word	1073874944
+  61 0024 00000000 		.word	g_led
+  62              		.cfi_endproc
+  63              	.LFE822:
+  65              		.section	.text.sm_bsp_i2c_init,"ax",%progbits
+  66              		.align	1
+  67              		.syntax unified
+  68              		.thumb
+  69              		.thumb_func
+  71              	sm_bsp_i2c_init:
+  72              	.LFB824:
+  34:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** sm_hal_io_t * sm_bsp_get_io_led(void){
+  35:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+  36:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	return g_led;
+  37:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** }
+  38:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+  39:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** static void sm_bsp_i2c_init(void){
+  73              		.loc 1 39 34 is_stmt 1 view -0
+  74              		.cfi_startproc
+  75              		@ args = 0, pretend = 0, frame = 0
+  76              		@ frame_needed = 0, uses_anonymous_args = 0
+  77 0000 08B5     		push	{r3, lr}
+  78              	.LCFI1:
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s 			page 3
+
+
+  79              		.cfi_def_cfa_offset 8
+  80              		.cfi_offset 3, -8
+  81              		.cfi_offset 14, -4
+  40:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	g_mpu_i2c = sm_hal_i2c_init(&hi2c1, 0);
+  82              		.loc 1 40 2 view .LVU8
+  83              		.loc 1 40 14 is_stmt 0 view .LVU9
+  84 0002 0021     		movs	r1, #0
+  85 0004 0348     		ldr	r0, .L7
+  86 0006 FFF7FEFF 		bl	sm_hal_i2c_init
+  87              	.LVL3:
+  88              		.loc 1 40 12 discriminator 1 view .LVU10
+  89 000a 034B     		ldr	r3, .L7+4
+  90 000c 1860     		str	r0, [r3]
+  41:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	sm_hal_i2c_open(g_mpu_i2c);
+  91              		.loc 1 41 2 is_stmt 1 view .LVU11
+  92 000e FFF7FEFF 		bl	sm_hal_i2c_open
+  93              	.LVL4:
+  42:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** }
+  94              		.loc 1 42 1 is_stmt 0 view .LVU12
+  95 0012 08BD     		pop	{r3, pc}
+  96              	.L8:
+  97              		.align	2
+  98              	.L7:
+  99 0014 00000000 		.word	hi2c1
+ 100 0018 00000000 		.word	g_mpu_i2c
+ 101              		.cfi_endproc
+ 102              	.LFE824:
+ 104              		.section	.text.sm_bsp_flash_init,"ax",%progbits
+ 105              		.align	1
+ 106              		.syntax unified
+ 107              		.thumb
+ 108              		.thumb_func
+ 110              	sm_bsp_flash_init:
+ 111              	.LFB826:
+  43:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** sm_hal_i2c_t * sm_bsp_get_mpu_i2c(void){
+  44:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+  45:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	return g_mpu_i2c;
+  46:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** }
+  47:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+  48:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** static void sm_bsp_flash_init(void){
+ 112              		.loc 1 48 36 is_stmt 1 view -0
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 0
+ 115              		@ frame_needed = 0, uses_anonymous_args = 0
+ 116 0000 08B5     		push	{r3, lr}
+ 117              	.LCFI2:
+ 118              		.cfi_def_cfa_offset 8
+ 119              		.cfi_offset 3, -8
+ 120              		.cfi_offset 14, -4
+  49:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	g_flash = sm_hal_flash_init(NULL);
+ 121              		.loc 1 49 2 view .LVU14
+ 122              		.loc 1 49 12 is_stmt 0 view .LVU15
+ 123 0002 0020     		movs	r0, #0
+ 124 0004 FFF7FEFF 		bl	sm_hal_flash_init
+ 125              	.LVL5:
+ 126              		.loc 1 49 10 discriminator 1 view .LVU16
+ 127 0008 014B     		ldr	r3, .L11
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s 			page 4
+
+
+ 128 000a 1860     		str	r0, [r3]
+  50:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** }
+ 129              		.loc 1 50 1 view .LVU17
+ 130 000c 08BD     		pop	{r3, pc}
+ 131              	.L12:
+ 132 000e 00BF     		.align	2
+ 133              	.L11:
+ 134 0010 00000000 		.word	g_flash
+ 135              		.cfi_endproc
+ 136              	.LFE826:
+ 138              		.section	.text.sm_bsp_init,"ax",%progbits
+ 139              		.align	1
+ 140              		.global	sm_bsp_init
+ 141              		.syntax unified
+ 142              		.thumb
+ 143              		.thumb_func
+ 145              	sm_bsp_init:
+ 146              	.LFB821:
+  21:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+ 147              		.loc 1 21 23 is_stmt 1 view -0
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151 0000 08B5     		push	{r3, lr}
+ 152              	.LCFI3:
+ 153              		.cfi_def_cfa_offset 8
+ 154              		.cfi_offset 3, -8
+ 155              		.cfi_offset 14, -4
+  23:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	sm_bsp_i2c_init();
+ 156              		.loc 1 23 2 view .LVU19
+ 157 0002 FFF7FEFF 		bl	sm_bsp_io_init
+ 158              	.LVL6:
+  24:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	sm_bsp_flash_init();
+ 159              		.loc 1 24 2 view .LVU20
+ 160 0006 FFF7FEFF 		bl	sm_bsp_i2c_init
+ 161              	.LVL7:
+  25:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** }
+ 162              		.loc 1 25 2 view .LVU21
+ 163 000a FFF7FEFF 		bl	sm_bsp_flash_init
+ 164              	.LVL8:
+  26:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+ 165              		.loc 1 26 1 is_stmt 0 view .LVU22
+ 166 000e 08BD     		pop	{r3, pc}
+ 167              		.cfi_endproc
+ 168              	.LFE821:
+ 170              		.section	.text.sm_bsp_get_io_led,"ax",%progbits
+ 171              		.align	1
+ 172              		.global	sm_bsp_get_io_led
+ 173              		.syntax unified
+ 174              		.thumb
+ 175              		.thumb_func
+ 177              	sm_bsp_get_io_led:
+ 178              	.LFB823:
+  34:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+ 179              		.loc 1 34 38 is_stmt 1 view -0
+ 180              		.cfi_startproc
+ 181              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s 			page 5
+
+
+ 182              		@ frame_needed = 0, uses_anonymous_args = 0
+ 183              		@ link register save eliminated.
+  36:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** }
+ 184              		.loc 1 36 2 view .LVU24
+  37:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+ 185              		.loc 1 37 1 is_stmt 0 view .LVU25
+ 186 0000 014B     		ldr	r3, .L16
+ 187 0002 1868     		ldr	r0, [r3]
+ 188 0004 7047     		bx	lr
+ 189              	.L17:
+ 190 0006 00BF     		.align	2
+ 191              	.L16:
+ 192 0008 00000000 		.word	g_led
+ 193              		.cfi_endproc
+ 194              	.LFE823:
+ 196              		.section	.text.sm_bsp_get_mpu_i2c,"ax",%progbits
+ 197              		.align	1
+ 198              		.global	sm_bsp_get_mpu_i2c
+ 199              		.syntax unified
+ 200              		.thumb
+ 201              		.thumb_func
+ 203              	sm_bsp_get_mpu_i2c:
+ 204              	.LFB825:
+  43:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+ 205              		.loc 1 43 40 is_stmt 1 view -0
+ 206              		.cfi_startproc
+ 207              		@ args = 0, pretend = 0, frame = 0
+ 208              		@ frame_needed = 0, uses_anonymous_args = 0
+ 209              		@ link register save eliminated.
+  45:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** }
+ 210              		.loc 1 45 2 view .LVU27
+  46:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+ 211              		.loc 1 46 1 is_stmt 0 view .LVU28
+ 212 0000 014B     		ldr	r3, .L19
+ 213 0002 1868     		ldr	r0, [r3]
+ 214 0004 7047     		bx	lr
+ 215              	.L20:
+ 216 0006 00BF     		.align	2
+ 217              	.L19:
+ 218 0008 00000000 		.word	g_mpu_i2c
+ 219              		.cfi_endproc
+ 220              	.LFE825:
+ 222              		.section	.text.sm_bsp_get_flash,"ax",%progbits
+ 223              		.align	1
+ 224              		.global	sm_bsp_get_flash
+ 225              		.syntax unified
+ 226              		.thumb
+ 227              		.thumb_func
+ 229              	sm_bsp_get_flash:
+ 230              	.LFB827:
+  51:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** sm_hal_flash_t * sm_bsp_get_flash(void){
+ 231              		.loc 1 51 40 is_stmt 1 view -0
+ 232              		.cfi_startproc
+ 233              		@ args = 0, pretend = 0, frame = 0
+ 234              		@ frame_needed = 0, uses_anonymous_args = 0
+ 235              		@ link register save eliminated.
+  52:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s 			page 6
+
+
+  53:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** 	return g_flash;
+ 236              		.loc 1 53 2 view .LVU30
+  54:sdk/platforms/stm32_f401rc/app_bsp/sm_app_bsp.c **** }
+ 237              		.loc 1 54 1 is_stmt 0 view .LVU31
+ 238 0000 014B     		ldr	r3, .L22
+ 239 0002 1868     		ldr	r0, [r3]
+ 240 0004 7047     		bx	lr
+ 241              	.L23:
+ 242 0006 00BF     		.align	2
+ 243              	.L22:
+ 244 0008 00000000 		.word	g_flash
+ 245              		.cfi_endproc
+ 246              	.LFE827:
+ 248              		.global	g_led
+ 249              		.section	.bss.g_led,"aw",%nobits
+ 250              		.align	2
+ 253              	g_led:
+ 254 0000 00000000 		.space	4
+ 255              		.global	g_flash
+ 256              		.section	.bss.g_flash,"aw",%nobits
+ 257              		.align	2
+ 260              	g_flash:
+ 261 0000 00000000 		.space	4
+ 262              		.global	g_mpu_i2c
+ 263              		.section	.bss.g_mpu_i2c,"aw",%nobits
+ 264              		.align	2
+ 267              	g_mpu_i2c:
+ 268 0000 00000000 		.space	4
+ 269              		.text
+ 270              	.Letext0:
+ 271              		.file 2 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 272              		.file 3 "C:\\ST\\STM32CubeIDE_1.15.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 273              		.file 4 "sdk/hal/sm_hal_io.h"
+ 274              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ 275              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 276              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 277              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 278              		.file 9 "sdk/hal/sm_hal_i2c.h"
+ 279              		.file 10 "sdk/hal/sm_hal_flash.h"
+ 280              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
+ 281              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
+ 282              		.file 13 "Core/Inc/i2c.h"
+ARM GAS  C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sm_app_bsp.c
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:21     .text.sm_bsp_io_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:26     .text.sm_bsp_io_init:00000000 sm_bsp_io_init
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:60     .text.sm_bsp_io_init:00000020 $d
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:253    .bss.g_led:00000000 g_led
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:66     .text.sm_bsp_i2c_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:71     .text.sm_bsp_i2c_init:00000000 sm_bsp_i2c_init
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:99     .text.sm_bsp_i2c_init:00000014 $d
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:267    .bss.g_mpu_i2c:00000000 g_mpu_i2c
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:105    .text.sm_bsp_flash_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:110    .text.sm_bsp_flash_init:00000000 sm_bsp_flash_init
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:134    .text.sm_bsp_flash_init:00000010 $d
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:260    .bss.g_flash:00000000 g_flash
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:139    .text.sm_bsp_init:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:145    .text.sm_bsp_init:00000000 sm_bsp_init
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:171    .text.sm_bsp_get_io_led:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:177    .text.sm_bsp_get_io_led:00000000 sm_bsp_get_io_led
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:192    .text.sm_bsp_get_io_led:00000008 $d
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:197    .text.sm_bsp_get_mpu_i2c:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:203    .text.sm_bsp_get_mpu_i2c:00000000 sm_bsp_get_mpu_i2c
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:218    .text.sm_bsp_get_mpu_i2c:00000008 $d
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:223    .text.sm_bsp_get_flash:00000000 $t
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:229    .text.sm_bsp_get_flash:00000000 sm_bsp_get_flash
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:244    .text.sm_bsp_get_flash:00000008 $d
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:250    .bss.g_led:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:257    .bss.g_flash:00000000 $d
+C:\Users\vanlo\AppData\Local\Temp\ccy9ivx5.s:264    .bss.g_mpu_i2c:00000000 $d
+
+UNDEFINED SYMBOLS
+sm_hal_io_init
+sm_hal_io_open
+sm_hal_io_write
+sm_hal_i2c_init
+sm_hal_i2c_open
+hi2c1
+sm_hal_flash_init

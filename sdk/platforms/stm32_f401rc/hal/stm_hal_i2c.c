@@ -9,13 +9,13 @@
 typedef struct {
 	I2C_HandleTypeDef   *m_channel;
 	uint16_t			m_devaddress;
-}ra_i2c_t;
-#define _impl(x)         ((ra_i2c_t*)(x))
+}stm_i2c_t;
+#define _impl(x)         ((stm_i2c_t*)(x))
 
 sm_hal_i2c_t* sm_hal_i2c_init(void* _channel, uint16_t _addr){
 
 	if(!_channel) return NULL;
-	ra_i2c_t* _this = (ra_i2c_t*)(malloc(sizeof(ra_i2c_t)));
+	stm_i2c_t* _this = (stm_i2c_t*)(malloc(sizeof(stm_i2c_t)));
 	_this->m_channel = _channel;
 	_this->m_devaddress = _addr;
 	return (sm_hal_i2c_t*)_this;
