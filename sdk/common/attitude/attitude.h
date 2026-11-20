@@ -13,6 +13,10 @@ typedef struct {
 	float roll;
 	float pitch;
 	float yaw;
+
+    float gx;
+    float gy;
+    float gz;
 } sm_attitude_angle_t;
 
 typedef struct {

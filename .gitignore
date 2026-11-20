@@ -22,7 +22,8 @@ project.uvguix.*
 *.uvoptx
 *.uvprojx
 /*.uvoptx
-.project
+.lst
+.o
 
 .metadata
 build/
@@ -80,11 +81,5 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
-<<<<<<< HEAD
- ~*
-=======
-
-#Excel template file
 *.xls#
->>>>>>> dev-mark-and-v2.0-new-pid
 /Default/

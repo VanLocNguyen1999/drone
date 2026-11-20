@@ -142,7 +142,9 @@ int32_t sm_attitude_est_update(sm_attitude_t *this) {
 	mpu6050_data_t data;
 	if (mpu_6050_read_data(this->m_mpu, &data) < 0)
 		return -1;
-
+	this->angle.gx = data.gyro_x;
+	this->angle.gy = data.gyro_y;
+	this->angle.gz = data.gyro_z;
 	uint32_t now = HAL_GetTick();
 	if (!this->started) {
 		this->started = 1;

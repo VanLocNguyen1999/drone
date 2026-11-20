@@ -54,5 +54,11 @@ typedef void* sm_mutex;
 #define MATH_MAX2(a, b)                                       (((a) > (b)) ? (a) : (b))
 #define SAT(input, up, down) 								  (((input) > (up)) ? (up) : (((input) < (down)) ? (down) : (input)))
 
-
+static inline float clampf(float x, float min, float max) {
+	if (x < min)
+		return min;
+	if (x > max)
+		return max;
+	return x;
+}
 #endif /* SDK_UTILS_SM_TYPES_H_ */
