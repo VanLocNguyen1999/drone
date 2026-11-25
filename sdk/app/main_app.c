@@ -11,6 +11,19 @@
 #include "sm_flash_config.h"
 #include "app_bsp.h"
 
+/* ESC: 400 Hz (chu ky 2500 us), 1000..2000 us. O 500 Hz chu ky chi 2000 us
+ * nen xung 2000 us = duty 100%, ESC khong doc duoc -> init se bao loi. */
+/* motor_mix M1 FL, M2 FR, M3 RR, M4 RL
+ * -> TIM2 CH1 PA5, CH2 PB3, CH3 PA2, CH4 PA3. Doi bang nay neu day noi khac. */
+static const sm_motor_output_cfg_t g_motor_out_cfg = {
+		.pwm = NULL,			/* gan trong main_app_drive_init */
+		.channel = { PWM_CHANNEL_1, PWM_CHANNEL_2, PWM_CHANNEL_3, PWM_CHANNEL_4 },
+		.freq_hz = 400,
+		.us_min = 1000.0f,
+		.us_max = 2000.0f,
+		.mode = MOTOR_OUTPUT_MODE_ESC_US,
+};
+
 static main_app_t g_main_app = {
 
 		.m_attitude = NULL,
@@ -59,6 +72,11 @@ static int32_t main_app_drive_init(main_app_t* _this){
 	mpu_6050_set_accel_config(mpu,ACCEL_CONFIG_8_G);
 
 	_this->m_drive.m_pwm_channel2 = sm_bsp_get_pwm2();
+
+	sm_motor_output_cfg_t out_cfg = g_motor_out_cfg;
+	out_cfg.pwm = _this->m_drive.m_pwm_channel2;
+	_this->m_drive.m_motor_out = sm_motor_output_init(&out_cfg);
+	if(!_this->m_drive.m_motor_out) return -1;
 	return 0;
 }
 
@@ -76,15 +94,10 @@ static void sm_remote_frame_callback(const sm_remote_ctrl_t *ctrl, void *arg){
 
 	if(!ctrl || !arg) return;
 	main_app_t* _this = (main_app_t*) arg;
+	/* Chi toggle co arm. Xuat PWM do flightTask lam (500 Hz). */
 	if(ctrl->sw && !last_sw) {
 
 		_this->m_motor_run = !_this->m_motor_run;
-		if(_this->m_motor_run){
-
-			sm_hal_pwm_set_duty_sat(_this->m_drive.m_pwm_channel2, 0.95f, 0.3f);
-		}else {
-			sm_hal_pwm_set_duty_sat(_this->m_drive.m_pwm_channel2, 0.0f, 0.0f);
-		}
 	}
 	last_sw = ctrl->sw;
 }

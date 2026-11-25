@@ -12,6 +12,7 @@
 #include "mpu_6050.h"
 #include "attitude.h"
 #include "sm_remote.h"
+#include "motor_output.h"
 
 #include "sm_storage.h"
 
@@ -25,6 +26,7 @@ typedef struct main_app {
 		mpu_6050_t* m_mpu;
 
 		sm_hal_pwm_t* m_pwm_channel2;
+		sm_motor_output_t* m_motor_out;
 	}m_drive;
 
 	struct {
@@ -37,7 +39,7 @@ typedef struct main_app {
 		sm_storage_config_t* m_mpu_storage;
 	}m_storage;
 
-	bool m_motor_run;
+	volatile bool m_motor_run;	/* toggle trong ngat UART, flightTask doc/xoa */
 }main_app_t;
 
 main_app_t* main_app_init(void);

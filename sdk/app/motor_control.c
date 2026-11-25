@@ -24,6 +24,15 @@
 #define PITCH_LIMIT    0.3f
 #define YAW_LIMIT      0.2f
 
+/* Rate PID: output chuan hoa cho mixer, input deg/s.
+ * Gia tri khoi dau, PHAI tune tren gia (thao canh khi test dau). */
+#define RATE_RP_KP     0.0015f
+#define RATE_RP_KI     0.0030f
+#define RATE_RP_KD     0.00003f
+#define RATE_YAW_KP    0.0030f
+#define RATE_YAW_KI    0.0050f
+#define RATE_YAW_KD    0.0f
+
 typedef struct {
 	pid_control_t *angle;
 	pid_control_t *rate;
@@ -63,9 +72,10 @@ sm_motor_control_t* sm_motor_control_init(void) {
 
 	// Inner loop: Rate PID, 500 Hz
 	// PID gains must be tuned on test rig
-	this->roll.rate = sm_pid_control_init(0, 0, 0, 0, RATE_DT);
-	this->pitch.rate = sm_pid_control_init(0, 0, 0, 0, RATE_DT);
-	this->yaw_rate = sm_pid_control_init(0, 0, 0, 0, RATE_DT);
+	/* sm_pid_control_init(initial, ki, kp, kc, td) */
+	this->roll.rate = sm_pid_control_init(0, RATE_RP_KI, RATE_RP_KP, 0, RATE_DT);
+	this->pitch.rate = sm_pid_control_init(0, RATE_RP_KI, RATE_RP_KP, 0, RATE_DT);
+	this->yaw_rate = sm_pid_control_init(0, RATE_YAW_KI, RATE_YAW_KP, 0, RATE_DT);
 
 	if (!this->roll.angle || !this->pitch.angle || !this->roll.rate
 			|| !this->pitch.rate || !this->yaw_rate) {
@@ -79,9 +89,9 @@ sm_motor_control_t* sm_motor_control_init(void) {
 	sm_pid_control_config(this->pitch.angle, 0, MAX_RATE, 0, 0);
 
 	// Rate outputs = normalized mixer commands
-	sm_pid_control_config(this->roll.rate, 0, ROLL_LIMIT, 0.2f, 30);
-	sm_pid_control_config(this->pitch.rate, 0, PITCH_LIMIT, 0.2f, 30);
-	sm_pid_control_config(this->yaw_rate, 0, YAW_LIMIT, 0.1f, 30);
+	sm_pid_control_config(this->roll.rate, RATE_RP_KD, ROLL_LIMIT, 0.2f, 30);
+	sm_pid_control_config(this->pitch.rate, RATE_RP_KD, PITCH_LIMIT, 0.2f, 30);
+	sm_pid_control_config(this->yaw_rate, RATE_YAW_KD, YAW_LIMIT, 0.1f, 30);
 
 	return this;
 }
