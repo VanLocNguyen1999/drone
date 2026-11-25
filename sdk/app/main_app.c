@@ -20,6 +20,7 @@ static main_app_t g_main_app = {
 		.m_storage = {
 				.m_mpu_storage = NULL,
 		},
+		.m_motor_run = 0,
 };
 
 main_app_t* main_app = NULL;
@@ -56,6 +57,8 @@ static int32_t main_app_drive_init(main_app_t* _this){
 	mpu_6050_set_power_ctrl(mpu, 1);
 	mpu_6050_set_gyro_config(mpu,GYRO_CONFIG_1000_DEG_S);
 	mpu_6050_set_accel_config(mpu,ACCEL_CONFIG_8_G);
+
+	_this->m_drive.m_pwm_channel2 = sm_bsp_get_pwm2();
 	return 0;
 }
 
@@ -64,6 +67,36 @@ static int32_t main_app_attitude_init(main_app_t* _this){
 	sm_attitude_t*attitude = sm_attitude_est_init(_this->m_drive.m_mpu);
 	if(!attitude || !_this) return -1;
 	_this->m_attitude  = attitude;
+	return 0;
+}
+
+static uint8_t last_sw = 0;
+static void sm_remote_frame_callback(const sm_remote_ctrl_t *ctrl, void *arg){
+
+
+	if(!ctrl || !arg) return;
+	main_app_t* _this = (main_app_t*) arg;
+	if(ctrl->sw && !last_sw) {
+
+		_this->m_motor_run = !_this->m_motor_run;
+		if(_this->m_motor_run){
+
+			sm_hal_pwm_set_duty_sat(_this->m_drive.m_pwm_channel2, 0.95f, 0.3f);
+		}else {
+			sm_hal_pwm_set_duty_sat(_this->m_drive.m_pwm_channel2, 0.0f, 0.0f);
+		}
+	}
+	last_sw = ctrl->sw;
+}
+
+static int32_t main_app_remote_init(main_app_t* _this){
+
+	sm_hal_uart_t* uart_remote = sm_bsp_get_uart1();
+	sm_remote_t*remote = sm_remote_init(uart_remote,1000);
+	if(!remote || !_this) return -1;
+	_this->m_remote  = remote;
+	sm_remote_set_frame_callback(remote, sm_remote_frame_callback, _this);
+	sm_remote_start(remote);
 	return 0;
 }
 
@@ -79,6 +112,9 @@ main_app_t* main_app_init(void){
 		return NULL;
 	}
 	if(main_app_attitude_init(main_app) < 0){
+		return NULL;
+	}
+	if(main_app_remote_init(main_app) < 0){
 		return NULL;
 	}
 	return main_app;

@@ -26,8 +26,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "main_app.h"
-
+#include "app_bsp.h"
 #define MPU_TASK_PERIOD_MS			10
+
+sm_remote_ctrl_t remote_data = {0};
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -130,7 +132,10 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(100);
+//	  main_app_t* app = main_app;
+//	  sm_remote_read(app->m_remote, &remote_data);
+//	  sm_hal_pwm_set_duty(app->m_drive.m_pwm_channel2,PWM_CHANNEL_2,remote_data.throttle*0.01f);
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -152,6 +157,12 @@ void StartMpuTask(void *argument)
 	next_tick += 10;
 	osDelayUntil(next_tick);
     sm_attitude_est_update(main_app->m_attitude);
+	main_app_t *app = main_app;
+	sm_remote_read(app->m_remote, &remote_data);
+	sm_hal_pwm_set_duty(app->m_drive.m_pwm_channel2, PWM_CHANNEL_1,remote_data.throttle * 0.01f);
+	sm_hal_pwm_set_duty(app->m_drive.m_pwm_channel2, PWM_CHANNEL_2,remote_data.throttle * 0.01f);
+	sm_hal_pwm_set_duty(app->m_drive.m_pwm_channel2, PWM_CHANNEL_3,remote_data.throttle * 0.01f);
+	sm_hal_pwm_set_duty(app->m_drive.m_pwm_channel2, PWM_CHANNEL_4,remote_data.throttle * 0.01f);
   }
   /* USER CODE END StartMpuTask */
 }

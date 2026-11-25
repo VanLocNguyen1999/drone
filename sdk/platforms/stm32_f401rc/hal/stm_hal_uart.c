@@ -142,7 +142,6 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
 		}
 	}
 }
-
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 
 	for (int i = 0; i < MAX_UART_CHANNEL; i++) {
@@ -150,7 +149,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 		if (uart->m_uart == huart) {
 			uint8_t data = uart->m_rx_byte;
 			HAL_UART_Receive_IT(uart->m_uart, &uart->m_rx_byte, 1);
-			if (uart->m_rx_cb)uart->m_rx_cb(data, uart->m_rx_arg);
+			if (uart->m_rx_cb){
+				uart->m_rx_cb(data, uart->m_rx_arg);
+			}
 			break;
 		}
 	}

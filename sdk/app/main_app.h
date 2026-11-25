@@ -7,10 +7,11 @@
 
 #ifndef SDK_APP_MAIN_APP_H_
 #define SDK_APP_MAIN_APP_H_
-#include "sm_hal_i2c.h"
+#include "sm_hal.h"
 
 #include "mpu_6050.h"
 #include "attitude.h"
+#include "sm_remote.h"
 
 #include "sm_storage.h"
 
@@ -18,10 +19,12 @@ typedef struct main_app {
 
 
 	sm_attitude_t* m_attitude;
-
+	sm_remote_t* m_remote;
 	struct {
 
-		mpu_6050_t* m_mpu;;
+		mpu_6050_t* m_mpu;
+
+		sm_hal_pwm_t* m_pwm_channel2;
 	}m_drive;
 
 	struct {
@@ -33,6 +36,8 @@ typedef struct main_app {
 
 		sm_storage_config_t* m_mpu_storage;
 	}m_storage;
+
+	bool m_motor_run;
 }main_app_t;
 
 main_app_t* main_app_init(void);

@@ -31,6 +31,8 @@ int32_t sm_hal_pwm_set_frequency(sm_hal_pwm_t* _this, uint32_t frequency);
 int32_t sm_hal_pwm_set_deadtime(sm_hal_pwm_t* _this, uint32_t deadtime_ns);
 int32_t sm_hal_pwm_set_duty(sm_hal_pwm_t* _this,uint32_t channel ,float duty);
 
+int32_t sm_hal_pwm_set_duty_sat(sm_hal_pwm_t* _this ,float _max_duty, float _min_duty);
+
 int32_t sm_hal_pwm_enable_update_duty(sm_hal_pwm_t* _this);
 int32_t sm_hal_pwm_disable_update_duty(sm_hal_pwm_t* _this);
 #endif /* SDK_HAL_SM_HAL_PWM_H_ */

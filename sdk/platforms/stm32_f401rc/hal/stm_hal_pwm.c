@@ -189,7 +189,13 @@ int32_t sm_hal_pwm_set_duty(sm_hal_pwm_t* _this, uint32_t channel, float duty) {
 	}
 	return 0;
 }
+int32_t sm_hal_pwm_set_duty_sat(sm_hal_pwm_t *_this, float _max_duty, float _min_duty) {
 
+	if(!_this) return -1;
+	_impl(_this)->m_max_duty = _max_duty;
+	_impl(_this)->m_min_duty = _min_duty;
+	return 0;
+}
 int32_t sm_hal_pwm_enable_update_duty(sm_hal_pwm_t* _this){
 
 	if(!_this) return -1;

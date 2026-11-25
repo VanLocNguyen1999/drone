@@ -136,7 +136,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+//	  main_app_t* app = main_app;
+//	  sm_remote_read(app->m_remote, &remote_data);
+////	  sm_hal_pwm_set_duty(app->m_drive.m_pwm_channel2, PWM_CHANNEL_1, remote_data.throttle*0.01f);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
